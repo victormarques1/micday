@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id String @id @default(uuid())
+  nome String
+  email String 
+  senha String
+  cpf Int?
+  tipo String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@map("usuarios")
+  fisioterapeutas Fisioterapeuta[]
+  pacientes Paciente[]
+}
+
+model Fisioterapeuta {
+  id String @id @default(uuid())
+
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  usuario Usuario @relation(fields: [usuario_id], references: [id])
+
+  @@map("fisioterapeutas")
+  usuario_id String
+  pacientes Paciente[]
+  orientacoes Orientacao[]
+}
+
+model Paciente {
+  id String @id @default(uuid())
+  data_nasc DateTime @db.Date
+  altura String
+  peso String
+  etnia String?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  usuario Usuario @relation(fields: [usuario_id], references: [id])
+  fisioterapeuta Fisioterapeuta @relation(fields: [fisioterapeuta_id], references: [id])
+  tipo TipoIncontinencia @relation(fields:[tipo_id], references: [id] )
+   
+
+  @@map("pacientes")
+  usuario_id String
+  fisioterapeuta_id String
+  tipo_id String
+
+  urinas Urina[]
+  bebidas Bebida[]
+  orientacoes Orientacao[]
+}
+
+model TipoIncontinencia {
+  id String @id @default(uuid())
+  nome String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@map("tipos_incontinencia")
+  pacientes Paciente[]
+}
+
+model Urina {
+  id String @id @default(uuid())
+  data DateTime @default(now())
+  quantidade String
+  perda_urina Boolean
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  paciente Paciente @relation(fields:[paciente_id], references: [id])
+
+  @@map("urinas")
+  paciente_id String
+}
+
+model Bebida {
+  id String @id @default(uuid())
+  tipo String
+  data DateTime @default(now())
+  quantidade String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  paciente Paciente @relation(fields:[paciente_id], references: [id])
+
+  @@map("bebidas")
+  paciente_id String
+}
+
+model Orientacao {
+  id String @id @default(uuid())
+  descricao String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  fisioterapeuta Fisioterapeuta @relation(fields:[fisioterapeuta_id], references: [id])
+  paciente Paciente @relation(fields:[paciente_id], references: [id])
+
+  @@map("orientacoes")
+  fisioterapeuta_id String
+  paciente_id String
+}
