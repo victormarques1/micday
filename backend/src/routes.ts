@@ -4,6 +4,7 @@ import { CriarUsuarioController } from "./controllers/usuario/CriarUsuarioContro
 import { AuthUsuarioController } from "./controllers/usuario/AuthUsuarioController";
 import { DetailUsuarioController } from "./controllers/usuario/DetailUsuarioController";
 import { CriarFisioterapeutaController } from "./controllers/fisioterapeuta/CriarFisioterapeutaController";
+import { CriarPacienteController } from "./controllers/paciente/CriarPacienteController";
 
 import { authPaciente } from "./middlewares/authPaciente";
 import { authFisioterapeuta } from "./middlewares/authFisioterapeuta";
@@ -16,9 +17,8 @@ router.post('/login', new AuthUsuarioController().handle);
 
 // ROTAS FISIOTERAPEUTA
 router.post('/fisioterapeuta', authFisioterapeuta, new CriarFisioterapeutaController().handle)
-//router.get('/me', authFisioterapeuta , new DetailUsuarioController().handle);
 
 // ROTAS PACIENTE --
-//router.get('/me', authPaciente , new DetailUsuarioController().handle);
+router.post('/paciente', authPaciente, new CriarPacienteController().handle)
 
 export { router };

@@ -18,7 +18,7 @@ model Usuario {
   cpf Int?
   tipo String
   created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt 
 
   @@map("usuarios")
   fisioterapeutas Fisioterapeuta[]
@@ -29,7 +29,7 @@ model Fisioterapeuta {
   id String @id @default(uuid())
 
   created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
 
   usuario Usuario @relation(fields: [usuario_id], references: [id])
 
@@ -41,12 +41,12 @@ model Fisioterapeuta {
 
 model Paciente {
   id String @id @default(uuid())
-  data_nasc DateTime @db.Date
+  idade Int
   altura String
   peso String
   etnia String?
   created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
 
   usuario Usuario @relation(fields: [usuario_id], references: [id])
   fisioterapeuta Fisioterapeuta @relation(fields: [fisioterapeuta_id], references: [id])
@@ -67,7 +67,7 @@ model TipoIncontinencia {
   id String @id @default(uuid())
   nome String
   created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
 
   @@map("tipos_incontinencia")
   pacientes Paciente[]
@@ -79,7 +79,7 @@ model Urina {
   quantidade String
   perda_urina Boolean
   created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
 
   paciente Paciente @relation(fields:[paciente_id], references: [id])
 
@@ -93,7 +93,7 @@ model Bebida {
   data DateTime @default(now())
   quantidade String
   created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
 
   paciente Paciente @relation(fields:[paciente_id], references: [id])
 
@@ -105,7 +105,7 @@ model Orientacao {
   id String @id @default(uuid())
   descricao String
   created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
 
   fisioterapeuta Fisioterapeuta @relation(fields:[fisioterapeuta_id], references: [id])
   paciente Paciente @relation(fields:[paciente_id], references: [id])

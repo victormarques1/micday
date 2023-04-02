@@ -1,5 +1,4 @@
 import prismaClient from "../../prisma";
-import { CriarUsuarioService } from "../../services/usuario/CriarUsuarioService"
 
 interface FisioterapeutaRequest {
     usuario_id: string;
