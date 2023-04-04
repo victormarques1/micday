@@ -16,6 +16,9 @@ import { ListarBebidaController } from "./controllers/bebida/ListarBebidaControl
 import { DeletarUrinaController } from "./controllers/urina/DeletarUrinaController";
 import { DeletarBebidaController } from "./controllers/bebida/DeletarBebidaController"
 import { DeletarOrientacaoController } from "./controllers/orientacao/DeletarOrientacaoController";
+import { AtualizarBebidaController } from "./controllers/bebida/AtualizarBebidaController";
+import { AtualizarUrinaController } from "./controllers/urina/AtualizarUrinaController";
+import { AtualizarOrientacaoController } from "./controllers/orientacao/AtualizarOrientacaoController";
 
 import { authPaciente } from "./middlewares/authPaciente";
 import { authFisioterapeuta } from "./middlewares/authFisioterapeuta";
@@ -31,6 +34,7 @@ router.post('/fisioterapeuta', authFisioterapeuta, new CriarFisioterapeutaContro
 router.post('/orientacoes', authFisioterapeuta, new CriarOrientacaoController().handle);
 router.get('/pacientes', authFisioterapeuta, new ListarPacienteController().handle)
 router.delete('/orientacoes', authFisioterapeuta, new DeletarOrientacaoController().handle)
+router.put('/orientacoes', authFisioterapeuta, new AtualizarOrientacaoController().handle)
 
 //ROTAS NEUTRAS
 router.get('/orientacoes', new ListarOrientacaoController().handle)
@@ -44,5 +48,7 @@ router.get('/paciente/urinas', authPaciente, new ListarUrinaController().handle)
 router.get('/paciente/bebidas', authPaciente, new ListarBebidaController().handle)
 router.delete('/paciente/urinas', authPaciente, new DeletarUrinaController().handle)
 router.delete('/paciente/bebidas', authPaciente, new DeletarBebidaController().handle)
+router.put('/paciente/bebidas', authPaciente, new AtualizarBebidaController().handle)
+router.put('/paciente/urinas', authPaciente, new AtualizarUrinaController().handle)
 
 export { router };
