@@ -24,14 +24,14 @@ class AuthUsuarioService {
     if (!senhaCorreta) {
       throw new Error("Senha incorreta");
     }
-
-    if (usuario.tipo === "Fisioterapeuta") {
-      const tokenFisioterapeuta = sign(
+     
+      const token = sign(
         {
           nome: usuario.nome,
           email: usuario.email,
+          tipo_usuario: usuario.tipo
         },
-        process.env.JWT_FISIOTERAPEUTA,
+        process.env.JWT_USUARIO,
         {
           subject: usuario.id,
           expiresIn: "30d",
@@ -43,31 +43,52 @@ class AuthUsuarioService {
         nome: usuario.nome,
         email: usuario.email,
         tipo: usuario.tipo,
-        tokenUsuario: tokenFisioterapeuta,
+        tokenUsuario: token,
       };
-    }
 
-    if (usuario.tipo === "Paciente") {
-        const tokenPaciente = sign(
-          {
-            nome: usuario.nome,
-            email: usuario.email,
-          },
-          process.env.JWT_PACIENTE,
-          {
-            subject: usuario.id,
-            expiresIn: "30d",
-          }
-        );
+    // if (usuario.tipo === "Fisioterapeuta") {
+    //   const tokenFisioterapeuta = sign(
+    //     {
+    //       nome: usuario.nome,
+    //       email: usuario.email,
+    //     },
+    //     process.env.JWT_FISIOTERAPEUTA,
+    //     {
+    //       subject: usuario.id,
+    //       expiresIn: "30d",
+    //     }
+    //   );
+
+    //   return {
+    //     id: usuario.id,
+    //     nome: usuario.nome,
+    //     email: usuario.email,
+    //     tipo: usuario.tipo,
+    //     tokenUsuario: tokenFisioterapeuta,
+    //   };
+    // }
+
+    // if (usuario.tipo === "Paciente") {
+    //     const tokenPaciente = sign(
+    //       {
+    //         nome: usuario.nome,
+    //         email: usuario.email,
+    //       },
+    //       process.env.JWT_PACIENTE,
+    //       {
+    //         subject: usuario.id,
+    //         expiresIn: "30d",
+    //       }
+    //     );
   
-        return {
-          id: usuario.id,
-          nome: usuario.nome,
-          email: usuario.email,
-          tipo: usuario.tipo,
-          tokenUsuario: tokenPaciente,
-        };
-      }
+    //     return {
+    //       id: usuario.id,
+    //       nome: usuario.nome,
+    //       email: usuario.email,
+    //       tipo: usuario.tipo,
+    //       tokenUsuario: tokenPaciente,
+    //     };
+    //   }
 
   }
 }

@@ -2,7 +2,6 @@ import { Router } from "express";
 
 import { CriarUsuarioController } from "./controllers/usuario/CriarUsuarioController";
 import { AuthUsuarioController } from "./controllers/usuario/AuthUsuarioController";
-import { DetailUsuarioController } from "./controllers/usuario/DetailUsuarioController";
 import { CriarFisioterapeutaController } from "./controllers/fisioterapeuta/CriarFisioterapeutaController";
 import { CriarPacienteController } from "./controllers/paciente/CriarPacienteController";
 import { CriarOrientacaoController } from "./controllers/orientacao/CriarOrientacaoController";
@@ -20,8 +19,9 @@ import { AtualizarBebidaController } from "./controllers/bebida/AtualizarBebidaC
 import { AtualizarUrinaController } from "./controllers/urina/AtualizarUrinaController";
 import { AtualizarOrientacaoController } from "./controllers/orientacao/AtualizarOrientacaoController";
 
-import { authPaciente } from "./middlewares/authPaciente";
-import { authFisioterapeuta } from "./middlewares/authFisioterapeuta";
+import { authUsuario } from "./middlewares/authUsuario";
+import { protegeRotaFisioterapeuta } from "./middlewares/authUsuario";
+import { protegeRotaPaciente } from "./middlewares/authUsuario";
 
 const router = Router();
 
@@ -30,25 +30,25 @@ router.post('/usuarios', new CriarUsuarioController().handle);
 router.post('/login', new AuthUsuarioController().handle);
 
 // ROTAS FISIOTERAPEUTA
-router.post('/fisioterapeuta', authFisioterapeuta, new CriarFisioterapeutaController().handle);
-router.post('/orientacoes', authFisioterapeuta, new CriarOrientacaoController().handle);
-router.get('/pacientes', authFisioterapeuta, new ListarPacienteController().handle)
-router.delete('/orientacoes', authFisioterapeuta, new DeletarOrientacaoController().handle)
-router.put('/orientacoes', authFisioterapeuta, new AtualizarOrientacaoController().handle)
+router.post('/fisioterapeuta', authUsuario, protegeRotaFisioterapeuta, new CriarFisioterapeutaController().handle);
+router.post('/orientacoes', authUsuario, protegeRotaFisioterapeuta, new CriarOrientacaoController().handle);
+router.get('/pacientes', authUsuario, protegeRotaFisioterapeuta, new ListarPacienteController().handle)
+router.delete('/orientacoes', authUsuario, protegeRotaFisioterapeuta, new DeletarOrientacaoController().handle)
+router.put('/orientacoes', authUsuario, protegeRotaFisioterapeuta, new AtualizarOrientacaoController().handle)
 
 //ROTAS NEUTRAS
-router.get('/orientacoes', new ListarOrientacaoController().handle)
+router.get('/orientacoes', authUsuario, new ListarOrientacaoController().handle)
 
 // ROTAS PACIENTE --
-router.post('/paciente', authPaciente, new CriarPacienteController().handle)
-router.post('/urinas', authPaciente, new CriarUrinaController().handle )
-router.post('/bebidas', authPaciente, new CriarBebidaController().handle)
-router.get('/fisioterapeutas', authPaciente, new ListarFisioterapeutaController().handle)
-router.get('/paciente/urinas', authPaciente, new ListarUrinaController().handle)
-router.get('/paciente/bebidas', authPaciente, new ListarBebidaController().handle)
-router.delete('/paciente/urinas', authPaciente, new DeletarUrinaController().handle)
-router.delete('/paciente/bebidas', authPaciente, new DeletarBebidaController().handle)
-router.put('/paciente/bebidas', authPaciente, new AtualizarBebidaController().handle)
-router.put('/paciente/urinas', authPaciente, new AtualizarUrinaController().handle)
+router.post('/paciente', authUsuario, protegeRotaPaciente, new CriarPacienteController().handle)
+router.post('/urinas', authUsuario, protegeRotaPaciente, new CriarUrinaController().handle )
+router.post('/bebidas', authUsuario, protegeRotaPaciente,new CriarBebidaController().handle)
+router.get('/fisioterapeutas', authUsuario, protegeRotaPaciente, new ListarFisioterapeutaController().handle)
+router.get('/paciente/urinas', authUsuario, protegeRotaPaciente, new ListarUrinaController().handle)
+router.get('/paciente/bebidas', authUsuario, protegeRotaPaciente, new ListarBebidaController().handle)
+router.delete('/paciente/urinas', authUsuario, protegeRotaPaciente,new DeletarUrinaController().handle)
+router.delete('/paciente/bebidas', authUsuario, protegeRotaPaciente, new DeletarBebidaController().handle)
+router.put('/paciente/bebidas', authUsuario, protegeRotaPaciente, new AtualizarBebidaController().handle)
+router.put('/paciente/urinas', authUsuario, protegeRotaPaciente, new AtualizarUrinaController().handle)
 
 export { router };

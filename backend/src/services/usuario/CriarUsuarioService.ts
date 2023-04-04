@@ -43,7 +43,8 @@ class CriarUsuarioService {
             select: {
                 id: true,
                 nome: true,
-                email: true
+                email: true,
+                tipo: true
             }
         })
 
