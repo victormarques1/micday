@@ -43,53 +43,9 @@ class AuthUsuarioService {
         nome: usuario.nome,
         email: usuario.email,
         tipo: usuario.tipo,
+        cpf: usuario.cpf,
         tokenUsuario: token,
       };
-
-    // if (usuario.tipo === "Fisioterapeuta") {
-    //   const tokenFisioterapeuta = sign(
-    //     {
-    //       nome: usuario.nome,
-    //       email: usuario.email,
-    //     },
-    //     process.env.JWT_FISIOTERAPEUTA,
-    //     {
-    //       subject: usuario.id,
-    //       expiresIn: "30d",
-    //     }
-    //   );
-
-    //   return {
-    //     id: usuario.id,
-    //     nome: usuario.nome,
-    //     email: usuario.email,
-    //     tipo: usuario.tipo,
-    //     tokenUsuario: tokenFisioterapeuta,
-    //   };
-    // }
-
-    // if (usuario.tipo === "Paciente") {
-    //     const tokenPaciente = sign(
-    //       {
-    //         nome: usuario.nome,
-    //         email: usuario.email,
-    //       },
-    //       process.env.JWT_PACIENTE,
-    //       {
-    //         subject: usuario.id,
-    //         expiresIn: "30d",
-    //       }
-    //     );
-  
-    //     return {
-    //       id: usuario.id,
-    //       nome: usuario.nome,
-    //       email: usuario.email,
-    //       tipo: usuario.tipo,
-    //       tokenUsuario: tokenPaciente,
-    //     };
-    //   }
-
   }
 }
 

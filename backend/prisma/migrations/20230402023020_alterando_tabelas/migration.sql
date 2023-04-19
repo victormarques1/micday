@@ -27,3 +27,4 @@ ALTER TABLE "urinas" ALTER COLUMN "updated_at" DROP DEFAULT;
 
 -- AlterTable
 ALTER TABLE "usuarios" ALTER COLUMN "updated_at" DROP DEFAULT;
+

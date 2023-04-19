@@ -3,11 +3,10 @@ import { ListarFisioterapeutaService } from '../../services/fisioterapeuta/Lista
 
 class ListarFisioterapeutaController {
     async handle(req: Request, res: Response){
-        const {usuario_id} = req.body;
 
         const listarFisioterapeutaService = new ListarFisioterapeutaService();
 
-        const fisioterapeutas = await listarFisioterapeutaService.execute({usuario_id});
+        const fisioterapeutas = await listarFisioterapeutaService.execute();
 
         return res.json(fisioterapeutas);
     }

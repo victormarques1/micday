@@ -15,7 +15,7 @@ model Usuario {
   nome String
   email String 
   senha String
-  cpf Int?
+  cpf String
   tipo String
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt 
@@ -27,6 +27,8 @@ model Usuario {
 
 model Fisioterapeuta {
   id String @id @default(uuid())
+  crefito String
+  atuacao String
 
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt

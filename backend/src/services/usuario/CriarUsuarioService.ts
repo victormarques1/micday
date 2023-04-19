@@ -5,7 +5,7 @@ interface UsuarioRequest {
     nome: string;
     email: string;
     senha: string;
-    cpf: number;
+    cpf: string;
     tipo: string;
 }
 
