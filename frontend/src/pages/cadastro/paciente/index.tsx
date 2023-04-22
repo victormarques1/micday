@@ -2,12 +2,27 @@ import { useState, useEffect } from "react";
 
 import Head from "next/head";
 import Image from "next/image";
-import introImg from "../../../../public/images/intro.svg";
-import { Flex, Text, Center, Input, Button, Select } from "@chakra-ui/react";
+import Logo from "../../../../public/images/logo.svg";
+import {
+  Flex,
+  Text,
+  Center,
+  Input,
+  Button,
+  Select,
+  InputGroup,
+  InputLeftElement,
+} from "@chakra-ui/react";
+
+import { Icon } from "@chakra-ui/react";
+import { HiOfficeBuilding, HiIdentification } from "react-icons/hi";
+import { GiBodyHeight } from "react-icons/gi";
+import { BiBody } from "react-icons/bi";
 
 import { toast } from "react-toastify";
 
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 import { canSSRGuest } from "@/utils/canSSRGuest";
 import { setupAPIClient } from "@/services/api";
@@ -23,7 +38,8 @@ export default function CadastroPaciente() {
   const [tiposIncontinencia, setTipoIncontinencia] = useState([]);
   const [tipoSelecionado, setTipoSelecionado] = useState("");
   const [fisioterapeutas, setFisioterapeutas] = useState([]);
-  const [fisioterapeutaSelecionado, setFisioterapeutaSelecionado] = useState("");
+  const [fisioterapeutaSelecionado, setFisioterapeutaSelecionado] =
+    useState("");
 
   useEffect(() => {
     async function fetchTipos() {
@@ -44,148 +60,186 @@ export default function CadastroPaciente() {
   }, []);
 
   async function handleCadastro() {
-    if( idade === '' || altura === '' || peso === '' || etnia === '' || tipoSelecionado === '' || fisioterapeutaSelecionado === ''){
-      toast.error("Preencha todos os campos.")
+    if (
+      idade === "" ||
+      altura === "" ||
+      peso === "" ||
+      etnia === "" ||
+      tipoSelecionado === "" ||
+      fisioterapeutaSelecionado === ""
+    ) {
+      toast.error("Preencha todos os campos.");
       return;
     }
-    
-    try{
+
+    try {
       const apiClient = setupAPIClient();
-      await apiClient.post('/paciente', {
+      await apiClient.post("/paciente", {
         idade: Number(idade),
         altura: altura,
         peso: peso,
         etnia: etnia,
         usuario_id: usuario_id,
         fisioterapeuta_id: fisioterapeutaSelecionado,
-        tipo_id: tipoSelecionado
-      })
+        tipo_id: tipoSelecionado,
+      });
 
-      toast.success("Cadastrado com sucesso!!")
-      router.push('/login')
-
-    }
-    catch(err){
+      toast.success("Cadastrado com sucesso!!");
+      router.push("/login");
+    } catch (err) {
       console.log(err);
-      toast.error("Erro ao cadastrar.")
+      toast.error("Erro ao cadastrar.");
     }
   }
 
   return (
     <>
       <Head>
-        <title> Cadastro de Pacientes </title>
+        <title> Cadastro Paciente | mic.day </title>
       </Head>
-      <Flex height="100vh" alignItems="center" justifyContent="center">
-        <Flex width={640} direction="column" p={14} rounded={8}>
-          <Center p={4} mb={4}>
-            <Image
-              src={introImg}
-              quality={100}
-              width={260}
-              objectFit="fill"
-              alt="Imagem introdução"
-            />
-          </Center>
+      <Flex direction={["column", "row"]} height="100vh">
+        <Flex
+          width={["100%", "65%"]}
+          flexGrow="1"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Flex width={640} direction="column" p={14} rounded={8}>
+            <Flex mb={5}>
+              <Image src={Logo} quality={100} width={120} alt="Logo mic.day" />
+            </Flex>
 
-          <Input
-            borderColor="pink.500"
-            variant={"filled"}
-            size="lg"
-            placeholder="Informe sua idade"
-            focusBorderColor="pink.400"
-            type="text"
-            mb={3}
-            value={idade}
-            onChange={(e) => setIdade(e.target.value)}
-          />
+            <Text mb={4} fontSize={24} fontWeight="bold">
+              Dados do Paciente
+            </Text>
 
-          <Input
-            borderColor="pink.500"
-            variant={"filled"}
-            size="lg"
-            placeholder="Informe sua altura (cm)"
-            focusBorderColor="pink.400"
-            type="email"
-            mb={3}
-            value={altura}
-            onChange={(e) => setAltura(e.target.value)}
-          />
+            <InputGroup size="lg">
+              <InputLeftElement
+                children={
+                  <Icon as={HiIdentification} color="gray.400" w={5} h={5} />
+                }
+              />
+              <Input
+                size="lg"
+                placeholder="Idade"
+                _placeholder={{ color: "gray.400" }}
+                focusBorderColor="pink.600"
+                type="text"
+                mb={3}
+                value={idade}
+                onChange={(e) => setIdade(e.target.value)}
+              />
+            </InputGroup>
 
-          <Input
-            borderColor="pink.500"
-            variant={"filled"}
-            size="lg"
-            placeholder="Informe seu peso (kg)"
-            focusBorderColor="pink.400"
-            type="email"
-            mb={3}
-            value={peso}
-            onChange={(e) => setPeso(e.target.value)}
-          />
+            <InputGroup size="lg">
+              <InputLeftElement
+                children={<Icon as={GiBodyHeight} color="gray.400" />}
+              />
+              <Input
+                size="lg"
+                placeholder="Altura (cm)"
+                _placeholder={{ color: "gray.400" }}
+                focusBorderColor="pink.600"
+                type="email"
+                mb={3}
+                value={altura}
+                onChange={(e) => setAltura(e.target.value)}
+              />
+            </InputGroup>
 
-          <Select
-            borderColor="pink.500"
-            variant={"filled"}
-            size="lg"
-            focusBorderColor="pink.400"
-            placeholder="Etnia"
-            mb={3}
-            value={etnia}
-            onChange={(e) => setEtnia(e.target.value)}
-          >
-            <option value="Branca">Branca</option>
-            <option value="Preta">Preta</option>
-            <option value="Parda">Parda</option>
-          </Select>
+            <InputGroup size="lg">
+              <InputLeftElement
+                children={<Icon as={BiBody} color="gray.400" w={5} h={5} />}
+              />
+              <Input
+                size="lg"
+                placeholder="Peso (kg)"
+                _placeholder={{ color: "gray.400" }}
+                focusBorderColor="pink.600"
+                type="email"
+                mb={3}
+                value={peso}
+                onChange={(e) => setPeso(e.target.value)}
+              />
+            </InputGroup>
 
-          <Select
-            borderColor="pink.500"
-            variant={"filled"}
-            size="lg"
-            focusBorderColor="pink.400"
-            placeholder="Tipo de incontinência urinária"
-            mb={3}
-            value={tipoSelecionado}
-            onChange={(e) => setTipoSelecionado(e.target.value)}
-          >
-            {tiposIncontinencia.map((tipoIncontinencia) => (
-              <option key={tipoIncontinencia.id} value={tipoIncontinencia.id}>
-                {tipoIncontinencia.nome}
-              </option>
-            ))}
-          </Select>
+            <Select
+              size="lg"
+              focusBorderColor="pink.600"
+              placeholder="Etnia"
+              mb={3}
+              value={etnia}
+              onChange={(e) => setEtnia(e.target.value)}
+            >
+              <option value="Branca">Branca</option>
+              <option value="Preta">Preta</option>
+              <option value="Parda">Parda</option>
+            </Select>
 
-          <Select
-            borderColor="pink.500"
-            variant={"filled"}
-            size="lg"
-            focusBorderColor="pink.400"
-            placeholder="Fisioterapeuta Responsável"
-            mb={6}
-            value={fisioterapeutaSelecionado}
-            onChange={(e) => setFisioterapeutaSelecionado(e.target.value)}
-          >
-            {fisioterapeutas.map((fisioterapeuta) => (
-              <option key={fisioterapeuta.id} value={fisioterapeuta.id}>
-                {fisioterapeuta.usuario.nome}
-              </option>
-            ))}
-          </Select>
+            <Select
+              size="lg"
+              focusBorderColor="pink.600"
+              placeholder="Tipo de incontinência urinária"
+              mb={3}
+              value={tipoSelecionado}
+              onChange={(e) => setTipoSelecionado(e.target.value)}
+            >
+              {tiposIncontinencia.map((tipoIncontinencia) => (
+                <option key={tipoIncontinencia.id} value={tipoIncontinencia.id}>
+                  {tipoIncontinencia.nome}
+                </option>
+              ))}
+            </Select>
 
-          <Button
-            onClick={handleCadastro}
-            background="pink.500"
-            color="#FFF"
-            size="lg"
-            borderRadius={24}
-            mb={7}
-            _hover={{ bg: "pink.400" }}
-          >
-            Completar cadastro
-          </Button>
+            <Select
+              size="lg"
+              focusBorderColor="pink.600"
+              placeholder="Fisioterapeuta Responsável"
+              mb={6}
+              value={fisioterapeutaSelecionado}
+              onChange={(e) => setFisioterapeutaSelecionado(e.target.value)}
+            >
+              {fisioterapeutas.map((fisioterapeuta) => (
+                <option key={fisioterapeuta.id} value={fisioterapeuta.id}>
+                  {fisioterapeuta.usuario.nome}
+                </option>
+              ))}
+            </Select>
 
+            <Center justifyContent="center">
+              <Text mb={6} fontSize={16}>
+                Ao se registrar, você aceita nossos
+                <Link href="/cadastro/fisioterapeuta" color="blue.500">
+                  <strong style={{ color: "#B83280" }}> termos de uso </strong>
+                </Link>
+                e a
+                <Link href="/cadastro/fisioterapeuta" color="blue.500">
+                  <strong style={{ color: "#B83280" }}>
+                    {" "}
+                    nossa política de privacidade
+                  </strong>
+                </Link>
+                .
+              </Text>
+            </Center>
+
+            <Button
+              onClick={handleCadastro}
+              background="pink.600"
+              color="#FFF"
+              size="lg"
+              borderRadius={24}
+              mb={7}
+              _hover={{ bg: "pink.500" }}
+            >
+              Completar cadastro
+            </Button>
           </Flex>
+        </Flex>
+
+        <Flex bg="pink.700" width={["100%", "35%"]} flexShrink="0">
+          -
+        </Flex>
       </Flex>
     </>
   );

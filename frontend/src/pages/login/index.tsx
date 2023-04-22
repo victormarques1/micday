@@ -2,87 +2,129 @@ import { useState, useContext } from "react";
 
 import Head from "next/head";
 import Image from "next/image";
-import introImg from "../../../public/images/intro.svg";
-import { Flex, Text, Center, Input, InputGroup, InputRightElement, Button } from "@chakra-ui/react";
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
+import Logo from "../../../public/images/Logo.svg";
+import Entrar from "../../../public/images/entrar.svg";
+
+import {
+  Stack,
+  Flex,
+  Text,
+  Center,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  Button,
+  useMediaQuery
+} from "@chakra-ui/react";
+import { ViewIcon, ViewOffIcon, EmailIcon, LockIcon } from "@chakra-ui/icons";
 
 import Link from "next/link";
 
-import { AuthContext } from '../../context/AuthContext'
+import { AuthContext } from "../../context/AuthContext";
 
 import { canSSRGuest } from "@/utils/canSSRGuest";
 
 export default function Login() {
   const { logarUsuario } = useContext(AuthContext);
 
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
 
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
-  
-  async function handleLogin(){
-    if(email === '' || senha === ''){
+
+  async function handleLogin() {
+    if (email === "" || senha === "") {
       return;
     }
-    
-    try{
+
+    try {
       await logarUsuario({
         email,
         senha,
-      })  
-      console.log()
-    } 
-    catch (err){
+      });
+      console.log();
+    } catch (err) {
       console.log(err);
     }
-
-
   }
 
   return (
     <>
       <Head>
-        <title> TCC - Faça login para acessar </title>
+        <title>Login | mic.day</title>
       </Head>
-      <Flex height="100vh" alignItems="center" justifyContent="center">
-        <Flex width={640} direction="column" p={14} rounded={8}>
-          <Center p={4} mb={4}>
-            <Image
-              src={introImg}
-              quality={100}
-              width={260}
-              objectFit="fill"
-              alt="Imagem introdução"
-            />
-          </Center>
+      <Flex
+        height="100vh"
+        alignItems={{ base: "flex-start", md: "center" }}
+        justifyContent={{ base: "flex-start", md: "center" }}
+        flexDirection={{ base: "column", md: "row" }}
+      >
+        <Flex
+          minW={500}
+          maxW={{ base: "100%", md: "640px" }}
+          direction="column"
+          p={14}
+          rounded={8}
+        >
+          <Flex mb={5}>
+            <Image src={Logo} quality={100} width={120} alt="Logo mic.day" />
+          </Flex>
 
-          <Input
-            borderColor="pink.500"
-            variant={"filled"}
-            size="lg"
-            placeholder="exemplo@email.com"
-            focusBorderColor="pink.400"
-            type="email"
-            mb={3}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)} 
-          />
+          <Text mb={4} fontSize={24} fontWeight="bold">
+            Entrar no sistema
+          </Text>
+
+          <InputGroup size="lg">
+            <InputLeftElement children={<EmailIcon color="gray.400" />} />
+            <Input
+              variant={"outline"}
+              size="lg"
+              placeholder="exemplo@email.com"
+              _placeholder={{ color: "gray.400" }}
+              focusBorderColor="pink.500"
+              type="email"
+              mb={5}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </InputGroup>
 
           <InputGroup size="lg" mb={3}>
+            <InputLeftElement children={<LockIcon color="gray.400" />} />
             <Input
               pr="4.5rem"
               type={show ? "text" : "password"}
-              borderColor="pink.500"
-              variant={'filled'}
+              variant={"outline"}
               placeholder="Digite sua senha"
-              focusBorderColor="pink.400"
+              _placeholder={{ color: "gray.400" }}
+              focusBorderColor="pink.500"
               value={senha}
-              onChange={(e) => setSenha(e.target.value)} 
+              onChange={(e) => setSenha(e.target.value)}
             />
             <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={handleClick} >
-                {show ? <ViewOffIcon boxSize={6} color="pink.300"/> : <ViewIcon boxSize={6} color="pink.300"/>}
+              <Button
+                bg="transparent"
+                size="sm"
+                onClick={handleClick}
+                _hover={{ bg: "transparent" }}
+              >
+                {show ? (
+                  <ViewOffIcon
+                    boxSize={6}
+                    bg=""
+                    color="pink.600"
+                    _hover={{ bg: "transparent" }}
+                  />
+                ) : (
+                  <ViewIcon
+                    boxSize={6}
+                    bg="transparent"
+                    color="pink.600"
+                    _hover={{ bg: "transparent" }}
+                  />
+                )}
               </Button>
             </InputRightElement>
           </InputGroup>
@@ -91,10 +133,10 @@ export default function Login() {
             <Link href="/">
               <Text
                 cursor="pointer"
-                color="pink.500"
+                color="pink.600"
                 fontSize={16}
                 fontWeight={"semibold"}
-                _hover={{ color: "pink.400" }}
+                _hover={{ color: "pink.500" }}
               >
                 Esqueceu sua senha?
               </Text>
@@ -102,23 +144,29 @@ export default function Login() {
           </Center>
 
           <Button
-            background="pink.500"
+            background="pink.600"
             color="#FFF"
             size="lg"
             borderRadius={24}
             mb={7}
-            _hover={{ bg: "pink.400" }}
+            _hover={{ bg: "pink.500" }}
             onClick={handleLogin}
           >
-            Acessar
+            Entrar
           </Button>
 
           <Center>
             <Link href="/cadastro">
               <Text cursor="pointer">
-                Ainda não possui conta? <strong>Cadastre-se</strong>
+                Ainda não possui conta? <strong >Cadastre-se</strong>
               </Text>
             </Link>
+          </Center>
+        </Flex>
+
+        <Flex>
+          <Center p={4} mb={5} minW={350}>
+            <Image src={Entrar} quality={100} width={500} alt="Image login" />
           </Center>
         </Flex>
       </Flex>
@@ -127,7 +175,7 @@ export default function Login() {
 }
 
 export const getServerSideProps = canSSRGuest(async (ctx) => {
-  return{
-    props:{}
-  }
-})
+  return {
+    props: {},
+  };
+});

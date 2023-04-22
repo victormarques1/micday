@@ -2,16 +2,22 @@ import { useState } from "react";
 
 import Head from "next/head";
 import Image from "next/image";
-import introImg from "../../../../public/images/intro.svg";
+import Logo from "../../../../public/images/Logo.svg";
 import {
   Flex,
-  Text,
   Center,
+  Text,
+  InputGroup,
   Input,
+  InputLeftElement,
   Button,
 } from "@chakra-ui/react";
 
+import { Icon } from "@chakra-ui/react";
+import { HiOfficeBuilding, HiIdentification } from "react-icons/hi";
+
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 import { useRouter } from "next/router";
 
@@ -19,7 +25,6 @@ import { canSSRGuest } from "@/utils/canSSRGuest";
 import { setupAPIClient } from "@/services/api";
 
 export default function CadastroFisioterapeuta() {
-  
   const router = useRouter();
   const usuario_id = router.query.id;
 
@@ -27,82 +32,114 @@ export default function CadastroFisioterapeuta() {
   const [crefito, setCrefito] = useState("");
 
   async function handleCadastro() {
-    if( atuacao === '' || crefito === ''){
-      toast.error("Preencha todos os campos")
+    if (atuacao === "" || crefito === "") {
+      toast.error("Preencha todos os campos");
       return;
     }
 
-    try{
+    try {
       const apiClient = setupAPIClient();
-      await apiClient.post('/fisioterapeuta', {
+      await apiClient.post("/fisioterapeuta", {
         usuario_id: usuario_id,
         atuacao: atuacao,
         crefito: crefito,
-      })
+      });
 
-      toast.success("Cadastrado com sucesso!")
-      router.push('/login')
-
-    }
-    catch(err){
+      toast.success("Cadastrado com sucesso!");
+      router.push("/login");
+    } catch (err) {
       console.log(err);
-      toast.error("Erro ao cadastrar.")
+      toast.error("Erro ao cadastrar.");
     }
   }
 
   return (
     <>
       <Head>
-        <title> Cadastro de Pacientes </title>
+        <title> Cadastro Fisioterapeuta | mic.day </title>
       </Head>
-      <Flex height="100vh" alignItems="center" justifyContent="center">
-        <Flex width={640} direction="column" p={14} rounded={8}>
-          <Center p={4} mb={4}>
-            <Image
-              src={introImg}
-              quality={100}
-              width={260}
-              objectFit="fill"
-              alt="Imagem introdução"
-            />
-          </Center>
+      <Flex direction={["column", "row"]} height="100vh">
+        <Flex
+          width={["100%", "65%"]}
+          flexGrow="1"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Flex width={640} direction="column" p={14} rounded={8}>
+            <Flex mb={5}>
+              <Image src={Logo} quality={100} width={120} alt="Logo mic.day" />
+            </Flex>
 
-          <Input
-            borderColor="pink.500"
-            variant={"filled"}
-            size="lg"
-            placeholder="Informe o seu CREFITO"
-            focusBorderColor="pink.400"
-            type="text"
-            mb={3}
-            value={crefito}
-            onChange={(e) => setCrefito(e.target.value)}
-          />
+            <Text mb={4} fontSize={24} fontWeight="bold">
+              Dados do Fisioterapeuta
+            </Text>
 
-          <Input
-            borderColor="pink.500"
-            variant={"filled"}
-            size="lg"
-            placeholder="Informe o seu local de atuação"
-            focusBorderColor="pink.400"
-            type="email"
-            mb={6}
-            value={atuacao}
-            onChange={(e) => setAtuacao(e.target.value)}
-          />
+            <InputGroup size="lg">
+              <InputLeftElement
+                children={
+                  <Icon as={HiIdentification} color="gray.400" w={5} h={5} />
+                }
+              />
+              <Input
+                size="lg"
+                placeholder="Código CREFITO"
+                _placeholder={{ color: "gray.400" }}
+                focusBorderColor="pink.600"
+                type="text"
+                mb={3}
+                value={crefito}
+                onChange={(e) => setCrefito(e.target.value)}
+              />
+            </InputGroup>
 
-          <Button
-            onClick={handleCadastro}
-            background="pink.500"
-            color="#FFF"
-            size="lg"
-            borderRadius={24}
-            mb={7}
-            _hover={{ bg: "pink.400" }}
-          >
-            Completar cadastro
-          </Button>
+            <InputGroup size="lg">
+              <InputLeftElement
+                children={
+                  <Icon as={HiOfficeBuilding} color="gray.400" w={5} h={5} />
+                }
+              />
+              <Input
+                size="lg"
+                placeholder="Local de atuação"
+                _placeholder={{ color: "gray.400" }}
+                focusBorderColor="pink.600"
+                type="email"
+                mb={4}
+                value={atuacao}
+                onChange={(e) => setAtuacao(e.target.value)}
+              />
+            </InputGroup>
 
+            <Center justifyContent="center">
+              <Text mb={6} fontSize={16}>
+                Ao se registrar, você aceita nossos 
+                <Link href="/cadastro/fisioterapeuta" color="blue.500">
+                  <strong style={{ color: '#B83280' }}> termos de uso </strong>
+                </Link>
+                e a
+                <Link href="/cadastro/fisioterapeuta" color="blue.500">
+                  <strong style={{ color: '#B83280' }}> nossa política de privacidade</strong>
+                </Link>
+                .
+              </Text>
+            </Center>
+
+            <Button
+              onClick={handleCadastro}
+              background="pink.600"
+              color="#FFF"
+              size="lg"
+              borderRadius={24}
+              mb={7}
+              _hover={{ bg: "pink.500" }}
+            >
+              Completar cadastro
+            </Button>
+          </Flex>
+        </Flex>
+
+        <Flex bg="pink.700" width={["100%", "35%"]} flexShrink="0">
+          -
         </Flex>
       </Flex>
     </>
@@ -110,7 +147,7 @@ export default function CadastroFisioterapeuta() {
 }
 
 export const getServerSideProps = canSSRGuest(async (ctx) => {
-  return{
-    props:{}
-  }
-})
+  return {
+    props: {},
+  };
+});

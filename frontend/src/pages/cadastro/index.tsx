@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 
 import Head from "next/head";
 import Image from "next/image";
-import introImg from "../../../public/images/intro.svg";
+import Logo from "../../../public/images/Logo.svg";
 import {
   Flex,
   Stack,
@@ -11,33 +11,43 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  InputLeftElement,
   Button,
   Radio,
-  RadioGroup
+  RadioGroup,
 } from "@chakra-ui/react";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { ViewIcon, ViewOffIcon, EmailIcon, LockIcon } from "@chakra-ui/icons";
+
+import { Icon } from "@chakra-ui/react";
+import { HiUser, HiClipboardList } from "react-icons/hi";
 
 import Link from "next/link";
 
-import { AuthContext } from '../../context/AuthContext'
+import { AuthContext } from "../../context/AuthContext";
 
 import { toast } from "react-toastify";
 
 export default function Cadastro() {
   const { cadastrarUsuario } = useContext(AuthContext);
 
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [tipo, setTipo] = useState('');
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [tipo, setTipo] = useState("");
 
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
 
-  async function handleCadastro(){
-    if(nome === '' || email === '' || senha === '' || cpf === '' || tipo === ''){
-      toast.error("Preencha todos os campos.")
+  async function handleCadastro() {
+    if (
+      nome === "" ||
+      email === "" ||
+      senha === "" ||
+      cpf === "" ||
+      tipo === ""
+    ) {
+      toast.error("Preencha todos os campos.");
       return;
     }
 
@@ -46,111 +56,161 @@ export default function Cadastro() {
       email,
       senha,
       cpf,
-      tipo
-    })
+      tipo,
+    });
   }
 
   return (
     <>
       <Head>
-        <title> TCC - Crie sua conta </title>
+        <title> Cadastro | mic.day </title>
       </Head>
-      <Flex height="100vh" alignItems="center" justifyContent="center">
-        <Flex width={640} direction="column" p={14} rounded={8}>
-          <Center p={4} mb={4}>
-            <Image
-              src={introImg}
-              quality={100}
-              width={260}
-              objectFit="fill"
-              alt="Imagem introdução"
-            />
-          </Center>
+      <Flex direction={["column", "row"]} height="100vh">
+        <Flex
+          width={["100%", "65%"]}
+          flexGrow="1"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Flex width={640} direction="column" p={14} rounded={8}>
+            <Flex mb={5}>
+              <Image src={Logo} quality={100} width={120} alt="Logo mic.day" />
+            </Flex>
 
-          <Input
-            borderColor="pink.500"
-            variant={"filled"}
-            size="lg"
-            placeholder="Digite seu nome completo"
-            focusBorderColor="pink.400"
-            type="text"
-            mb={3}
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-          />
+            <Text mb={4} fontSize={24} fontWeight="bold">
+              Criar uma conta
+            </Text>
 
-          <Input
-            borderColor="pink.500"
-            variant={"filled"}
-            size="lg"
-            placeholder="Digite seu email"
-            focusBorderColor="pink.400"
-            type="email"
-            mb={3}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+            <InputGroup size="lg">
+              <InputLeftElement
+                children={<Icon as={HiUser} color="gray.400" w={5} h={5} />}
+              />
+              <Input
+                size="lg"
+                placeholder="Nome completo"
+                _placeholder={{ color: "gray.400" }}
+                focusBorderColor="pink.500"
+                type="text"
+                mb={3}
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+              />
+            </InputGroup>
 
-          <InputGroup size="lg" mb={3}>
-            <Input
-              pr="4.5rem"
-              type={show ? "text" : "password"}
-              borderColor="pink.500"
-              variant={"filled"}
-              placeholder="Digite sua senha"
-              focusBorderColor="pink.400"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-            />
-            <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={handleClick}>
-                {show ? (
-                  <ViewOffIcon boxSize={6} color="pink.300" />
-                ) : (
-                  <ViewIcon boxSize={6} color="pink.300" />
-                )}
-              </Button>
-            </InputRightElement>
-          </InputGroup>
+            <InputGroup size="lg">
+              <InputLeftElement children={<EmailIcon color="gray.400" />} />
+              <Input
+                variant={"outline"}
+                size="lg"
+                placeholder="E-mail"
+                _placeholder={{ color: "gray.400" }}
+                focusBorderColor="pink.500"
+                type="email"
+                mb={3}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </InputGroup>
 
-          <Input
-            borderColor="pink.500"
-            variant={"filled"}
-            size="lg"
-            placeholder="Digite seu CPF (apenas números)"
-            focusBorderColor="pink.400"
-            type="number"
-            mb={3}
-            value={cpf}
-            onChange={(e) => setCpf(e.target.value)}
-          />
-          
-          <RadioGroup size="lg" p={1} mb={3} value={tipo} onChange={setTipo}>
-            <Stack spacing={6} direction="row" mb={3}>
-              <Radio value="Paciente" colorScheme='pink' borderColor="pink.500">Paciente</Radio>
-              <Radio value="Fisioterapeuta" colorScheme='pink' borderColor="pink.500">Fisioterapeuta</Radio>
-            </Stack>
-          </RadioGroup>
+            <InputGroup size="lg" mb={3}>
+              <InputLeftElement children={<LockIcon color="gray.400" />} />
+              <Input
+                pr="4.5rem"
+                type={show ? "text" : "password"}
+                variant={"outline"}
+                placeholder="Senha"
+                _placeholder={{ color: "gray.400" }}
+                focusBorderColor="pink.500"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+              />
+              <InputRightElement width="4.5rem">
+                <Button
+                  bg="transparent"
+                  size="sm"
+                  onClick={handleClick}
+                  _hover={{ bg: "transparent" }}
+                >
+                  {show ? (
+                    <ViewOffIcon
+                      boxSize={6}
+                      bg=""
+                      color="pink.600"
+                      _hover={{ bg: "transparent" }}
+                    />
+                  ) : (
+                    <ViewIcon
+                      boxSize={6}
+                      bg="transparent"
+                      color="pink.600"
+                      _hover={{ bg: "transparent" }}
+                    />
+                  )}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
 
-          <Button
-            onClick={handleCadastro}
-            background="pink.500"
-            color="#FFF"
-            size="lg"
-            borderRadius={24}
-            mb={7}
-            _hover={{ bg: "pink.400" }}
-          >
-            Criar conta
-          </Button>
+            <InputGroup size="lg">
+              <InputLeftElement
+                children={
+                  <Icon as={HiClipboardList} color="gray.400" w={5} h={5} />
+                }
+              />
+              <Input
+                size="lg"
+                placeholder="CPF (apenas números)"
+                _placeholder={{ color: "gray.400" }}
+                focusBorderColor="pink.500"
+                type="number"
+                mb={3}
+                value={cpf}
+                onChange={(e) => setCpf(e.target.value)}
+              />
+            </InputGroup>
 
-          <Center>
-            <Link href="/login">
-              <Text cursor="pointer">
-                Já possui conta? <strong>Faça login</strong>
-              </Text>
-            </Link>
-          </Center>
+            <RadioGroup size="lg" p={1} mb={3} value={tipo} onChange={setTipo}>
+              <Stack spacing={6} direction="row" mb={3}>
+                <Radio
+                  value="Paciente"
+                  colorScheme="pink"
+                  borderColor="pink.600"
+                >
+                  Paciente
+                </Radio>
+                <Radio
+                  value="Fisioterapeuta"
+                  colorScheme="pink"
+                  borderColor="pink.600"
+                >
+                  Fisioterapeuta
+                </Radio>
+              </Stack>
+            </RadioGroup>
+
+            <Button
+              onClick={handleCadastro}
+              background="pink.600"
+              color="#FFF"
+              size="lg"
+              borderRadius={24}
+              mb={7}
+              _hover={{ bg: "pink.500" }}
+            >
+              Criar conta
+            </Button>
+
+            <Center>
+              <Link href="/login">
+                <Text cursor="pointer">
+                  Já possui conta? <strong>Faça login</strong>
+                </Text>
+              </Link>
+            </Center>
+          </Flex>
+        </Flex>
+
+        <Flex bg="pink.700" width={["100%", "35%"]} flexShrink="0">
+          -
         </Flex>
       </Flex>
     </>
