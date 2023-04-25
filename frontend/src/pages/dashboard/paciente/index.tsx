@@ -8,7 +8,7 @@ export default function DashboardPaciente(){
     return(
         <>
             <Head>
-                <title>TCC</title>
+                <title>Página Inicial | mic.day </title>
             </Head>
             <SidebarPaciente>
                 <Flex>

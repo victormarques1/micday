@@ -5,5 +5,6 @@ declare namespace Express {
         bebida_id: string;
         orientacao_id: string;
         tipo_usuario: string;
+        fisioterapeuta_id: string;
     }
 }

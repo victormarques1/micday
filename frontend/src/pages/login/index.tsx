@@ -6,7 +6,6 @@ import Logo from "../../../public/images/Logo.svg";
 import Entrar from "../../../public/images/entrar.svg";
 
 import {
-  Stack,
   Flex,
   Text,
   Center,
@@ -15,7 +14,6 @@ import {
   InputLeftElement,
   InputRightElement,
   Button,
-  useMediaQuery
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon, EmailIcon, LockIcon } from "@chakra-ui/icons";
 

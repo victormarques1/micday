@@ -210,7 +210,7 @@ export default function Cadastro() {
         </Flex>
 
         <Flex bg="pink.700" width={["100%", "35%"]} flexShrink="0">
-          -
+          
         </Flex>
       </Flex>
     </>

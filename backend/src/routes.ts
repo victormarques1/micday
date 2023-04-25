@@ -7,7 +7,8 @@ import { CriarPacienteController } from "./controllers/paciente/CriarPacienteCon
 import { CriarOrientacaoController } from "./controllers/orientacao/CriarOrientacaoController";
 import { CriarUrinaController } from "./controllers/urina/CriarUrinaController";
 import { CriarBebidaController } from "./controllers/bebida/CriarBebidaController";
-import { ListarPacienteController } from './controllers/paciente/ListarPacienteController'
+import { DetalhesPacienteController } from './controllers/paciente/DetalhesPacienteController'
+import { DetalhesFisioterapeutaController } from "./controllers/fisioterapeuta/DetalhesFisioterapeutaController";
 import { ListarFisioterapeutaController } from "./controllers/fisioterapeuta/ListarFisioterapeutaController";
 import { ListarOrientacaoController } from "./controllers/orientacao/ListarOrientacaoController";
 import { ListarUrinaController } from "./controllers/urina/ListarUrinaController"
@@ -18,13 +19,16 @@ import { DeletarOrientacaoController } from "./controllers/orientacao/DeletarOri
 import { AtualizarBebidaController } from "./controllers/bebida/AtualizarBebidaController";
 import { AtualizarUrinaController } from "./controllers/urina/AtualizarUrinaController";
 import { AtualizarOrientacaoController } from "./controllers/orientacao/AtualizarOrientacaoController";
-import { ListarUsuarioController } from "./controllers/usuario/ListarUsuarioController";
+import { AtualizarPacienteController } from "./controllers/paciente/AtualizarPacienteController";
+import { ListarUsuarioController } from "./controllers/usuario/DetalhesUsuarioController";
 import { CriarTipoIncotinenciaController } from "./controllers/incontinencia/CriarTipoIncontinenciaController";
 import { ListarTipoIncontinenciaController } from "./controllers/incontinencia/ListarTipoIncontinenciaController";
 
 import { authUsuario } from "./middlewares/authUsuario";
 import { protegeRotaFisioterapeuta } from "./middlewares/authUsuario";
 import { protegeRotaPaciente } from "./middlewares/authUsuario";
+import { AtualizarUsuarioController } from "./controllers/usuario/AtualizarUsuarioController";
+import { AtualizarFisioterapeutaController } from "./controllers/fisioterapeuta/AtualizarFisioterapeutaController";
 
 const router = Router();
 
@@ -37,17 +41,22 @@ router.get('/fisioterapeutas',  new ListarFisioterapeutaController().handle)
 
 // ROTAS FISIOTERAPEUTA
 router.post('/orientacoes', authUsuario, protegeRotaFisioterapeuta, new CriarOrientacaoController().handle);
-router.get('/pacientes', authUsuario, protegeRotaFisioterapeuta, new ListarPacienteController().handle)
 router.delete('/orientacoes', authUsuario, protegeRotaFisioterapeuta, new DeletarOrientacaoController().handle)
 router.put('/orientacoes', authUsuario, protegeRotaFisioterapeuta, new AtualizarOrientacaoController().handle)
+router.get('/fisioterapeuta/detalhes', authUsuario, protegeRotaFisioterapeuta,  new DetalhesFisioterapeutaController().handle)
+router.put('/fisioterapeuta', authUsuario, protegeRotaFisioterapeuta, new AtualizarFisioterapeutaController().handle)
+
 
 //ROTAS NEUTRAS
 router.get('/orientacoes', authUsuario, new ListarOrientacaoController().handle)
 router.get('/detalhes', authUsuario, new ListarUsuarioController().handle)
 router.post('/tipo', new CriarTipoIncotinenciaController().handle);
 router.get('/tipos', new ListarTipoIncontinenciaController().handle)
+router.put('/usuario', authUsuario, new AtualizarUsuarioController().handle)
 
 // ROTAS PACIENTE --
+router.get('/paciente/detalhes', authUsuario, protegeRotaPaciente,  new DetalhesPacienteController().handle)
+router.put('/paciente', authUsuario, protegeRotaPaciente, new AtualizarPacienteController().handle)
 router.post('/urinas', authUsuario, protegeRotaPaciente, new CriarUrinaController().handle )
 router.post('/bebidas', authUsuario, protegeRotaPaciente,new CriarBebidaController().handle)
 router.get('/paciente/urinas', authUsuario, protegeRotaPaciente, new ListarUrinaController().handle)

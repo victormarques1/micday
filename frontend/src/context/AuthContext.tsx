@@ -152,6 +152,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   async function deslogarUsuario() {
     try {
       destroyCookie(null, "@fisio.token", { path: "/" });
+      destroyCookie(null, "@fisio.tipoUsuario", { path: "/" });
       Router.push("/login");
       setUsuario(null);
     } catch (err) {

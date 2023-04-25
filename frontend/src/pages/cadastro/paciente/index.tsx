@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 
 import { Icon } from "@chakra-ui/react";
-import { HiOfficeBuilding, HiIdentification } from "react-icons/hi";
+import { HiIdentification } from "react-icons/hi";
 import { GiBodyHeight } from "react-icons/gi";
 import { BiBody } from "react-icons/bi";
 
@@ -124,7 +124,7 @@ export default function CadastroPaciente() {
                 placeholder="Idade"
                 _placeholder={{ color: "gray.400" }}
                 focusBorderColor="pink.600"
-                type="text"
+                type="number"
                 mb={3}
                 value={idade}
                 onChange={(e) => setIdade(e.target.value)}
@@ -140,7 +140,7 @@ export default function CadastroPaciente() {
                 placeholder="Altura (cm)"
                 _placeholder={{ color: "gray.400" }}
                 focusBorderColor="pink.600"
-                type="email"
+                type="number"
                 mb={3}
                 value={altura}
                 onChange={(e) => setAltura(e.target.value)}
@@ -156,7 +156,7 @@ export default function CadastroPaciente() {
                 placeholder="Peso (kg)"
                 _placeholder={{ color: "gray.400" }}
                 focusBorderColor="pink.600"
-                type="email"
+                type="number"
                 mb={3}
                 value={peso}
                 onChange={(e) => setPeso(e.target.value)}
@@ -238,7 +238,7 @@ export default function CadastroPaciente() {
         </Flex>
 
         <Flex bg="pink.700" width={["100%", "35%"]} flexShrink="0">
-          -
+          
         </Flex>
       </Flex>
     </>

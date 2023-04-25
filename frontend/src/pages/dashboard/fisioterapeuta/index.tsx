@@ -2,11 +2,20 @@ import Head from "next/head";
 import {Flex, Text} from '@chakra-ui/react'
 
 import { canSSRAuth } from "@/utils/canSSRAuth";
+import { SidebarFisioterapeuta } from '../../../components/sidebar/fisioterapeuta'
+
 
 export default function DashboardFisioterapeuta(){
     return(
         <>
-            <h1> TELA FISIOTERAPEUTA </h1>
+            <Head>
+                <title>Página Inicial | mic.day</title>
+            </Head>
+            <SidebarFisioterapeuta>
+            <Flex>
+                    <Text>Dashboard Fisioterapeuta</Text>
+                </Flex>
+            </SidebarFisioterapeuta>
         </>
     )
 }

@@ -103,7 +103,7 @@ export default function CadastroFisioterapeuta() {
                 placeholder="Local de atuação"
                 _placeholder={{ color: "gray.400" }}
                 focusBorderColor="pink.600"
-                type="email"
+                type="text"
                 mb={4}
                 value={atuacao}
                 onChange={(e) => setAtuacao(e.target.value)}
@@ -139,7 +139,7 @@ export default function CadastroFisioterapeuta() {
         </Flex>
 
         <Flex bg="pink.700" width={["100%", "35%"]} flexShrink="0">
-          -
+          
         </Flex>
       </Flex>
     </>
