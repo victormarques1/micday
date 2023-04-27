@@ -51,6 +51,16 @@ export default function Cadastro() {
       return;
     }
 
+    if(senha.length < 6){
+      toast.warning("Sua senha precisar ter no mínimo 6 dígitos!")
+      return;
+    }
+
+    if(cpf.length != 11){
+      toast.warning("CPF Inválido! Informe apenas os 11 números.")
+      return;
+    }
+
     await cadastrarUsuario({
       nome,
       email,

@@ -3,7 +3,7 @@ import prismaClient from "../../prisma";
 interface AtualizaUrinaRequest {
     urina_id: string;
     paciente_id: string;
-    quantidade: string;
+    quantidade: number;
     perda_urina: boolean;
 }
 

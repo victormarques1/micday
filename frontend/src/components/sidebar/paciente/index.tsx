@@ -34,7 +34,7 @@ interface LinkItemProps {
 
 const LinkItems: Array<LinkItemProps> = [
   { nome: "Página Inicial", icon: HiHome, rota: "/dashboard/paciente" },
-  { nome: "Registrar Urina", icon: FaToilet, rota: "/" },
+  { nome: "Registrar Urina", icon: FaToilet, rota: "/urina" },
   { nome: "Registrar Bebida", icon: MdLocalDrink, rota: "/" },
   { nome: "Orientações", icon: FaBell, rota: "/" },
   { nome: "Minha Conta", icon: FiSettings, rota: "/perfil/paciente"},

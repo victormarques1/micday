@@ -15,6 +15,7 @@ class ListarUrinaService {
                 id: true,
                 data: true,
                 perda_urina: true,
+                necessidade_urina: true,
                 paciente_id: true
             }
         }) 

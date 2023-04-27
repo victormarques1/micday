@@ -1,23 +1,43 @@
 import prismaClient from '../../prisma/index'
 
 interface UrinaRequest {
-    quantidade: string;
+    quantidade: number;
     perda_urina: boolean;
-    paciente_id: string;
+    necessidade_urina: boolean;
+    usuario_id: string;
 }
 
 class CriarUrinaService {
-    async execute({ quantidade, perda_urina, paciente_id}: UrinaRequest){
+    async execute({ quantidade, perda_urina, necessidade_urina, usuario_id }: UrinaRequest) {
+      try {
+        const paciente = await prismaClient.paciente.findFirst({
+          where: {
+            usuario_id
+          },
+        });
+  
+        if (!paciente) {
+          throw new Error("Paciente não encontrado.");
+        }
+  
         const urina = await prismaClient.urina.create({
-            data:{
-                quantidade: quantidade,
-                perda_urina: perda_urina,
-                paciente_id: paciente_id
-            }
-        })
-
+          data: {
+            quantidade,
+            perda_urina,
+            necessidade_urina,
+            paciente: {
+              connect: {
+                id: paciente.id,
+              },
+            },
+          },
+        });
+  
         return urina;
+      } catch (error) {
+        console.error(error);
+        throw new Error("Não foi possível criar o registro de urina.");
+      }
     }
-}
-
+  }
 export { CriarUrinaService }

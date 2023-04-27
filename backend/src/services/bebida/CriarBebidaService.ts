@@ -2,7 +2,7 @@ import prismaClient from "../../prisma";
 
 interface BebidaRequest {
    tipo: string;
-   quantidade: string;
+   quantidade: number;
    paciente_id: string; 
 }
 

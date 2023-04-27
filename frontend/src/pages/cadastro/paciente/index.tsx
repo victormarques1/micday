@@ -72,12 +72,27 @@ export default function CadastroPaciente() {
       return;
     }
 
+    if(+idade > 110 ){
+      toast.warning("Informe uma idade válida.")
+      return;
+    }
+
+    if(+altura > 2.3){
+      toast.warning("Informe uma altura válida. Exemplo: 1.65")
+      return;
+    }
+
+    if(+peso < 10 || +peso > 180){
+      toast.warning("Informe um peso válido em kg. Exemplo: 75.5")
+      return;
+    }
+
     try {
       const apiClient = setupAPIClient();
       await apiClient.post("/paciente", {
         idade: Number(idade),
-        altura: altura,
-        peso: peso,
+        altura: Number(altura),
+        peso: Number(peso),
         etnia: etnia,
         usuario_id: usuario_id,
         fisioterapeuta_id: fisioterapeutaSelecionado,
@@ -137,7 +152,7 @@ export default function CadastroPaciente() {
               />
               <Input
                 size="lg"
-                placeholder="Altura (cm)"
+                placeholder="Altura (m)"
                 _placeholder={{ color: "gray.400" }}
                 focusBorderColor="pink.600"
                 type="number"

@@ -59,6 +59,16 @@ export default function PerfilFisioterapeuta({
       return;
     }
 
+    if(cpf.length != 11){
+      toast.warning("CPF Inválido! Informe apenas os 11 números.")
+      return;
+    }
+
+    if(crefito.length < 5){
+      toast.warning("Informe um código CREFITO válido!")
+      return;
+    }
+
     try {
       const apiClient = setupAPIClient();
 
@@ -74,6 +84,7 @@ export default function PerfilFisioterapeuta({
 
       toast.success("Perfil atualizado sucesso!");
     } catch (err) {
+      console.log(err)
       toast.error("Erro ao editar perfil");
     }
   }
@@ -141,7 +152,7 @@ export default function PerfilFisioterapeuta({
                 borderColor={"pink.700"}
                 _hover={{ borderColor: "pink.600" }}
                 size="lg"
-                type="text"
+                type="number"
                 mb={3}
                 value={cpf}
                 onChange={(e) => setCpf(e.target.value)}

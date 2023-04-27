@@ -2,8 +2,8 @@ import prismaClient from "../../prisma";
 
 interface PacienteRequest {
   idade: number;
-  altura: string;
-  peso: string;
+  altura: number;
+  peso: number;
   etnia?: string;
   usuario_id: string;
   fisioterapeuta_id: string;

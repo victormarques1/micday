@@ -3,14 +3,16 @@ import { CriarUrinaService } from "../../services/urina/CriarUrinaService"
 
 class CriarUrinaController {
     async handle(req: Request, res: Response){
-        const { quantidade, perda_urina, paciente_id } = req.body;
+        const { quantidade, perda_urina, necessidade_urina } = req.body;
+        const usuario_id = req.usuario_id;
 
         const criarUrinaService = new CriarUrinaService();
-
+        
         const urina = await criarUrinaService.execute({
             quantidade,
             perda_urina,
-            paciente_id
+            necessidade_urina,
+            usuario_id
         });
 
         return res.json(urina);

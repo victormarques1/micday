@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <ChakraProvider>
       <AuthProvider>
         <Component {...pageProps} />
-        <ToastContainer autoClose={1200} />
+        <ToastContainer autoClose={1200} position="top-center" />
       </AuthProvider>
     </ChakraProvider>
   );

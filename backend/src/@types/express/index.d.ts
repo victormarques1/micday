@@ -6,5 +6,6 @@ declare namespace Express {
         orientacao_id: string;
         tipo_usuario: string;
         fisioterapeuta_id: string;
+        urina_id: string;
     }
 }

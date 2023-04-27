@@ -4,7 +4,7 @@ interface AtualizaBebidaRequest {
     bebida_id: string;
     paciente_id: string;
     tipo: string;
-    quantidade: string;
+    quantidade: number;
 }
 
 class AtualizarBebidaService {

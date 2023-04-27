@@ -29,6 +29,7 @@ import { protegeRotaFisioterapeuta } from "./middlewares/authUsuario";
 import { protegeRotaPaciente } from "./middlewares/authUsuario";
 import { AtualizarUsuarioController } from "./controllers/usuario/AtualizarUsuarioController";
 import { AtualizarFisioterapeutaController } from "./controllers/fisioterapeuta/AtualizarFisioterapeutaController";
+import { DetalhesUrinaController } from "./controllers/urina/DetalhesUrinaController";
 
 const router = Router();
 
@@ -57,9 +58,10 @@ router.put('/usuario', authUsuario, new AtualizarUsuarioController().handle)
 // ROTAS PACIENTE --
 router.get('/paciente/detalhes', authUsuario, protegeRotaPaciente,  new DetalhesPacienteController().handle)
 router.put('/paciente', authUsuario, protegeRotaPaciente, new AtualizarPacienteController().handle)
-router.post('/urinas', authUsuario, protegeRotaPaciente, new CriarUrinaController().handle )
+router.post('/urina', authUsuario, protegeRotaPaciente, new CriarUrinaController().handle )
 router.post('/bebidas', authUsuario, protegeRotaPaciente,new CriarBebidaController().handle)
-router.get('/paciente/urinas', authUsuario, protegeRotaPaciente, new ListarUrinaController().handle)
+router.get('/urinas', authUsuario, protegeRotaPaciente, new ListarUrinaController().handle)
+router.get('/urina/detalhes', authUsuario, protegeRotaPaciente, new DetalhesUrinaController().handle)
 router.get('/paciente/bebidas', authUsuario, protegeRotaPaciente, new ListarBebidaController().handle)
 router.delete('/paciente/urinas', authUsuario, protegeRotaPaciente,new DeletarUrinaController().handle)
 router.delete('/paciente/bebidas', authUsuario, protegeRotaPaciente, new DeletarBebidaController().handle)

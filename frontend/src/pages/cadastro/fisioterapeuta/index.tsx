@@ -37,6 +37,11 @@ export default function CadastroFisioterapeuta() {
       return;
     }
 
+    if(crefito.length < 5){
+      toast.warning("Informe um código CREFITO válido!")
+      return;
+    }
+
     try {
       const apiClient = setupAPIClient();
       await apiClient.post("/fisioterapeuta", {

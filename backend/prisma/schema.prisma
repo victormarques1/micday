@@ -44,8 +44,8 @@ model Fisioterapeuta {
 model Paciente {
   id String @id @default(uuid())
   idade Int
-  altura String
-  peso String
+  altura Float
+  peso Float
   etnia String?
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
@@ -78,8 +78,9 @@ model TipoIncontinencia {
 model Urina {
   id String @id @default(uuid())
   data DateTime @default(now())
-  quantidade String
+  quantidade Float
   perda_urina Boolean
+  necessidade_urina Boolean
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
 
@@ -93,7 +94,7 @@ model Bebida {
   id String @id @default(uuid())
   tipo String
   data DateTime @default(now())
-  quantidade String
+  quantidade Float
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
 
@@ -106,6 +107,7 @@ model Bebida {
 model Orientacao {
   id String @id @default(uuid())
   descricao String
+  data DateTime @default(now())
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
 

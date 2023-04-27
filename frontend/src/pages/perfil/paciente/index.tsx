@@ -56,6 +56,26 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
       return;
     }
 
+    if(cpf.length != 11){
+      toast.warning("CPF Inválido! Informe apenas os 11 números.")
+      return;
+    }
+
+    if(+idade > 110 ){
+      toast.warning("Informe uma idade válida.")
+      return;
+    }
+
+    if(+altura > 2.3){
+      toast.warning("Informe uma altura válida. Exemplo: 1.65")
+      return;
+    }
+
+    if(+peso < 10 || +peso > 180){
+      toast.warning("Informe um peso válido em kg. Exemplo: 75.5")
+      return;
+    }
+
     try {
       const apiClient = setupAPIClient();
 
@@ -65,8 +85,8 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
       });
 
       await apiClient.put("/paciente", {
-        altura: altura,
-        peso: peso,
+        altura: Number(altura),
+        peso: Number(peso),
         idade: Number(idade),
         etnia: etnia,
       });
@@ -141,7 +161,7 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
                 borderColor={"pink.700"}
                 _hover={{ borderColor: "pink.600" }}
                 size="lg"
-                type="text"
+                type="number"
                 mb={3}
                 value={cpf}
                 onChange={(e) => setCpf(e.target.value)}
@@ -164,7 +184,7 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
               />
 
               <Text mb={2} fontSize="xl" fontWeight={"bold"}>
-                Altura (cm):{" "}
+                Altura (metros):{" "}
               </Text>
               <Input
                 w="100%"
@@ -173,7 +193,7 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
                 borderColor={"pink.700"}
                 _hover={{ borderColor: "pink.600" }}
                 size="lg"
-                type="text"
+                type="number"
                 mb={3}
                 value={altura}
                 onChange={(e) => setAltura(e.target.value)}
@@ -189,7 +209,7 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
                 borderColor={"pink.700"}
                 _hover={{ borderColor: "pink.600" }}
                 size="lg"
-                type="text"
+                type="number"
                 mb={3}
                 value={peso}
                 onChange={(e) => setPeso(e.target.value)}
@@ -228,12 +248,12 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
               <Button
                 w="100%"
                 mb={4}
-                bg="blackAlpha.400"
+                bg="transparent"
                 borderColor={"pink.600"}
                 borderWidth={1}
-                color="pink.600"
+                color="black"
                 size="lg"
-                _hover={{ bg: "blackAlpha.300" }}
+                _hover={{ bg: "transparent" }}
                 onClick={handleLogout}
               >
                 Sair da conta

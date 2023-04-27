@@ -3,7 +3,7 @@ import { ListarUrinaService } from "../../services/urina/ListarUrinaService";
 
 class ListarUrinaController {
     async handle(req: Request, res: Response) {
-        const { paciente_id } = req.body;
+        const  paciente_id  = req.paciente_id;
 
         const listarUrinaService = new ListarUrinaService();
 
