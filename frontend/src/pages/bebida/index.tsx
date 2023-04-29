@@ -9,9 +9,9 @@ import {
   Button,
   useMediaQuery,
   Input,
-  Checkbox,
   InputGroup,
   InputLeftElement,
+  Select,
 } from "@chakra-ui/react";
 
 import { Icon } from "@chakra-ui/react";
@@ -33,7 +33,7 @@ interface UrinaProps {
   urina: UrinaRequest;
 }
 
-export default function Urina() {
+export default function Bebida() {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
   const [data, setData] = useState(
@@ -59,8 +59,7 @@ export default function Urina() {
       });
 
       toast.success("Registrado com sucesso!");
-      Router.push("/dashboard/paciente")
-
+      Router.push("/dashboard/paciente");
     } catch (err) {
       toast.error("Erro ao registrar urina.");
     }
@@ -69,7 +68,7 @@ export default function Urina() {
   return (
     <>
       <Head>
-        <title>Registro de Urina | mic.day</title>
+        <title>Registro de Bebida | mic.day</title>
       </Head>
       <SidebarPaciente>
         <Flex
@@ -105,7 +104,7 @@ export default function Urina() {
               mb={4}
               fontSize={isMobile ? "28px" : "3xl"}
             >
-              Registro de Urina
+              Registro de Bebida
             </Heading>
           </Flex>
 
@@ -141,6 +140,24 @@ export default function Urina() {
               onChange={(e) => setData(e.target.value)}
             />
 
+            <Flex justifyContent="flex-start" w="85%" direction="column">
+              <Text fontSize="lg" mb={1}>
+                Tipo de bebida
+              </Text>
+              <Select
+                size="lg"
+                focusBorderColor="pink.700"
+                borderColor={"pink.700"}
+                _hover={{ borderColor: "pink.700" }}
+                placeholder="Selecione o tipo de bebida"
+                mb={4}
+              >
+                <option value="Agua">Água</option>
+                <option value="Café">Café</option>
+                <option value="Refrigerante">Refrigerante</option>
+              </Select>
+            </Flex>
+
             <Flex justifyContent="flex-start" w="85%">
               <Text fontSize="lg" mb={1}>
                 Quantidade (ml)
@@ -170,29 +187,6 @@ export default function Urina() {
                   onChange={(e) => setQuantidade(e.target.value)}
                 />
               </InputGroup>
-            </Flex>
-
-            <Flex flexDirection="column" alignItems="flex-start">
-              <Checkbox
-                colorScheme="pink"
-                size="lg"
-                mb={4}
-                borderColor="pink.700"
-                isChecked={necessidade}
-                onChange={(e) => setNecessidade(e.target.checked)}
-              >
-                Necessidade urgente de urinar?
-              </Checkbox>
-              <Checkbox
-                colorScheme="pink"
-                size="lg"
-                borderColor="pink.700"
-                mb={6}
-                isChecked={perda}
-                onChange={(e) => setPerda(e.target.checked)}
-              >
-                Houve perda de urina?
-              </Checkbox>
             </Flex>
 
             <Button

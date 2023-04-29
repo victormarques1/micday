@@ -1,75 +1,75 @@
 import { useState } from "react";
 import Head from "next/head";
-import { SidebarPaciente } from "../../components/sidebar/paciente";
+import { Flex, Text, Heading, Button, useMediaQuery, Input, InputGroup, InputLeftElement, Checkbox } from "@chakra-ui/react";
+import { SidebarPaciente } from "@/components/sidebar/paciente";
+import Link from "next/link";
 
-import {
-  Flex,
-  Text,
-  Heading,
-  Button,
-  useMediaQuery,
-  Input,
-  Checkbox,
-  InputGroup,
-  InputLeftElement,
-} from "@chakra-ui/react";
-
+import { FiChevronLeft } from "react-icons/fi";
 import { Icon } from "@chakra-ui/react";
 import { BsDropletHalf } from "react-icons/bs";
-
-import Link from "next/link";
-import { FiChevronLeft } from "react-icons/fi";
-import { toast } from "react-toastify";
-import { setupAPIClient } from "@/services/api";
 import { canSSRAuth } from "@/utils/canSSRAuth";
-import Router from "next/router";
-import moment from "moment-timezone";
 
-interface UrinaRequest {
-  data: string;
-}
+import { toast } from 'react-toastify'
+import moment from "moment-timezone";
+import { setupAPIClient } from "../../services/api";
+import PerfilPaciente from "../perfil/paciente";
+
 
 interface UrinaProps {
-  urina: UrinaRequest;
+  id: string;
+  data: Date;
+  quantidade: number;
+  perda_urina: boolean;
+  necessidade_urina: boolean;
+  paciente_id: string;
 }
 
-export default function Urina() {
+interface EditUrinaProps {
+  urina: UrinaProps;
+}
+
+export default function EditUrina({ urina }: EditUrinaProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
   const [data, setData] = useState(
-    moment().tz("America/Sao_Paulo").format("YYYY-MM-DDTHH:mm")
+    moment(urina?.data).tz("America/Sao_Paulo").format("YYYY-MM-DDTHH:mm")
   );
-  const [quantidade, setQuantidade] = useState("");
-  const [necessidade, setNecessidade] = useState<boolean>(false);
-  const [perda, setPerda] = useState<boolean>(false);
+  const dataFormatada = moment(data).toDate();
+  const [urinaId, setUrinaId] = useState(urina.id)
+  const [quantidade, setQuantidade] = useState(urina?.quantidade);
+  const [necessidade, setNecessidade] = useState<boolean>(urina?.necessidade_urina);
+  const [perda, setPerda] = useState<boolean>(urina?.perda_urina);
 
-  async function handleUrina() {
-    if (quantidade === "") {
-      toast.warning("Dados inválidos!");
-      return;
+   async function handleEditarUrina(){
+        if( data === '' || quantidade < 0){
+            toast.warning("Dados inválidos")
+            return;
+        }
+
+        
+        try{
+            console.log(urina?.paciente_id)
+            const apiClient = setupAPIClient();
+            await apiClient.put('/paciente/urina', {
+                quantidade: quantidade,
+                perda_urina: perda,
+                necessidade_urina: necessidade,
+                data: dataFormatada,
+                id: urinaId,
+                paciente_id: urina.paciente_id
+            })
+            toast.success("Registro atualizado com sucesso!")
+
+        } catch(err){
+            console.log(err)
+            toast.error("Erro ao editar urina.")
+        }
     }
-
-    try {
-      const apiClient = setupAPIClient();
-      await apiClient.post("/urina", {
-        quantidade: Number(quantidade),
-        data: new Date(data),
-        perda_urina: perda,
-        necessidade_urina: necessidade,
-      });
-
-      toast.success("Registrado com sucesso!");
-      Router.push("/dashboard/paciente")
-
-    } catch (err) {
-      toast.error("Erro ao registrar urina.");
-    }
-  }
 
   return (
     <>
       <Head>
-        <title>Registro de Urina | mic.day</title>
+        <title>Editar registro de urina | mic.day</title>
       </Head>
       <SidebarPaciente>
         <Flex
@@ -80,7 +80,8 @@ export default function Urina() {
           <Flex
             direction={isMobile ? "column" : "row"}
             w="100%"
-            align={isMobile ? "flex-start" : "center"}
+            alignItems={isMobile ? "flex-start" : "center"}
+            justifyContent="flex-start"
             mb={isMobile ? 4 : 0}
           >
             <Link href="/dashboard/paciente">
@@ -91,21 +92,22 @@ export default function Urina() {
                 justifyItems="center"
                 mr={4}
                 bg="pink.50"
-                borderColor="pink.700"
+                borderColor="pink.600"
                 _hover={{ bg: "pink.50" }}
               >
                 <FiChevronLeft size={24} color="#B83280" />
                 Voltar
               </Button>
             </Link>
+
             <Heading
               color="pink.700"
               mt={4}
               mr={4}
               mb={4}
-              fontSize={isMobile ? "28px" : "3xl"}
+              fontSize={isMobile ? "24px" : "3xl"}
             >
-              Registro de Urina
+              Editar Registro de Urina
             </Heading>
           </Flex>
 
@@ -167,7 +169,7 @@ export default function Urina() {
                   w="100%"
                   mb={6}
                   value={quantidade}
-                  onChange={(e) => setQuantidade(e.target.value)}
+                  onChange={(e) => setQuantidade(parseFloat(e.target.value))}
                 />
               </InputGroup>
             </Flex>
@@ -202,7 +204,7 @@ export default function Urina() {
               _hover={{ bg: "pink.500" }}
               color="#FFF"
               mb={2}
-              onClick={handleUrina}
+              onClick={handleEditarUrina}
             >
               Salvar
             </Button>
@@ -214,7 +216,29 @@ export default function Urina() {
 }
 
 export const getServerSideProps = canSSRAuth("Paciente", async (ctx) => {
-  return {
-    props: {},
-  };
+  const { id } = ctx.params;
+
+  try {
+    const apiClient = setupAPIClient(ctx);
+    const response = await apiClient.get("/urina/id", {
+      params: {
+        urina_id: id,
+      },
+    });
+
+    return {
+      props: {
+        urina: response.data,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+
+    return {
+      redirect: {
+        destination: "/dashboard/paciente",
+        permanent: false,
+      },
+    };
+  }
 });

@@ -3,17 +3,20 @@ import { AtualizarUrinaService } from "../../services/urina/AtualizarUrinaServic
 
 class AtualizarUrinaController {
     async handle(req: Request, res: Response){
-        const { quantidade, perda_urina } = req.body;
+        const { quantidade, perda_urina, necessidade_urina, data } = req.body;
         const urina_id = req.query.urina_id as string;
-        const paciente_id = req.query.paciente_id as string;
+        const paciente_id = req.params.paciente_id;
 
+        console.log(paciente_id)
         const atualizarUrinaService = new AtualizarUrinaService();
 
         const urina = await atualizarUrinaService.execute({
             urina_id,
             paciente_id,
             quantidade,
-            perda_urina
+            perda_urina,
+            necessidade_urina,
+            data
         })
 
         return res.json(urina);

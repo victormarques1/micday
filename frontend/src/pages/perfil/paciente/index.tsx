@@ -2,9 +2,22 @@ import { useContext, useState } from "react";
 
 import Head from "next/head";
 
-import { Flex, Text, Heading, Input, Button } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Heading,
+  Input,
+  Button,
+  InputGroup,
+  InputLeftElement,
+} from "@chakra-ui/react";
 
 import { SidebarPaciente } from "@/components/sidebar/paciente";
+
+import { Icon } from "@chakra-ui/react";
+import { HiUser, HiClipboardList, HiIdentification } from "react-icons/hi";
+import { GiBodyHeight } from "react-icons/gi";
+import { BiBody } from "react-icons/bi";
 
 import { canSSRAuth } from "@/utils/canSSRAuth";
 import { AuthContext } from "@/context/AuthContext";
@@ -56,23 +69,23 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
       return;
     }
 
-    if(cpf.length != 11){
-      toast.warning("CPF Inválido! Informe apenas os 11 números.")
+    if (cpf.length != 11) {
+      toast.warning("CPF Inválido! Informe apenas os 11 números.");
       return;
     }
 
-    if(+idade > 110 ){
-      toast.warning("Informe uma idade válida.")
+    if (+idade > 110) {
+      toast.warning("Informe uma idade válida.");
       return;
     }
 
-    if(+altura > 2.3){
-      toast.warning("Informe uma altura válida. Exemplo: 1.65")
+    if (+altura > 2.3) {
+      toast.warning("Informe uma altura válida. Exemplo: 1.65");
       return;
     }
 
-    if(+peso < 10 || +peso > 180){
-      toast.warning("Informe um peso válido em kg. Exemplo: 75.5")
+    if (+peso < 10 || +peso > 180) {
+      toast.warning("Informe um peso válido em kg. Exemplo: 75.5");
       return;
     }
 
@@ -127,7 +140,6 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
             bg="pink.50"
             borderWidth={"2px"}
             borderColor="pink.600"
-            borderRadius={4}
             w="100%"
             maxW="700px"
             direction={"column"}
@@ -138,82 +150,111 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
               <Text mb={2} fontSize="xl" fontWeight={"bold"}>
                 Nome do paciente:{" "}
               </Text>
-              <Input
-                w="100%"
-                placeholder="Nome do paciente"
-                focusBorderColor="pink.700"
-                borderColor={"pink.700"}
-                _hover={{ borderColor: "pink.600" }}
-                size="lg"
-                type="text"
-                mb={3}
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-              />
+              <InputGroup size="lg">
+                <InputLeftElement
+                  children={<Icon as={HiUser} color="pink.600" w={5} h={5} />}
+                />
+                <Input
+                  w="100%"
+                  placeholder="Nome do paciente"
+                  focusBorderColor="pink.700"
+                  borderColor={"pink.700"}
+                  _hover={{ borderColor: "pink.600" }}
+                  size="lg"
+                  type="text"
+                  mb={3}
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                />
+              </InputGroup>
 
               <Text mb={2} fontSize="xl" fontWeight={"bold"}>
                 CPF:{" "}
               </Text>
-              <Input
-                w="100%"
-                placeholder="CPF do paciente"
-                focusBorderColor="pink.700"
-                borderColor={"pink.700"}
-                _hover={{ borderColor: "pink.600" }}
-                size="lg"
-                type="number"
-                mb={3}
-                value={cpf}
-                onChange={(e) => setCpf(e.target.value)}
-              />
+              <InputGroup size="lg">
+                <InputLeftElement
+                  children={
+                    <Icon as={HiClipboardList} color="pink.600" w={5} h={5} />
+                  }
+                />
+                <Input
+                  w="100%"
+                  placeholder="CPF do paciente"
+                  focusBorderColor="pink.700"
+                  borderColor={"pink.700"}
+                  _hover={{ borderColor: "pink.600" }}
+                  size="lg"
+                  type="number"
+                  mb={3}
+                  value={cpf}
+                  onChange={(e) => setCpf(e.target.value)}
+                />
+              </InputGroup>
 
               <Text mb={2} fontSize="xl" fontWeight={"bold"}>
                 Idade:{" "}
               </Text>
-              <Input
-                w="100%"
-                placeholder="Idade do paciente"
-                focusBorderColor="pink.700"
-                borderColor={"pink.700"}
-                _hover={{ borderColor: "pink.600" }}
-                size="lg"
-                type="number"
-                mb={3}
-                value={idade}
-                onChange={(e) => setIdade(e.target.value)}
-              />
+              <InputGroup size="lg">
+                <InputLeftElement
+                  children={
+                    <Icon as={HiIdentification} color="pink.600" w={5} h={5} />
+                  }
+                />
+                <Input
+                  w="100%"
+                  placeholder="Idade do paciente"
+                  focusBorderColor="pink.700"
+                  borderColor={"pink.700"}
+                  _hover={{ borderColor: "pink.600" }}
+                  size="lg"
+                  type="number"
+                  mb={3}
+                  value={idade}
+                  onChange={(e) => setIdade(e.target.value)}
+                />
+              </InputGroup>
 
               <Text mb={2} fontSize="xl" fontWeight={"bold"}>
                 Altura (metros):{" "}
               </Text>
-              <Input
-                w="100%"
-                placeholder="Altura do paciente"
-                focusBorderColor="pink.700"
-                borderColor={"pink.700"}
-                _hover={{ borderColor: "pink.600" }}
-                size="lg"
-                type="number"
-                mb={3}
-                value={altura}
-                onChange={(e) => setAltura(e.target.value)}
-              />
+              <InputGroup size="lg">
+                <InputLeftElement
+                  children={<Icon as={GiBodyHeight} color="pink.600" />}
+                />
+                <Input
+                  w="100%"
+                  placeholder="Altura do paciente"
+                  focusBorderColor="pink.700"
+                  borderColor={"pink.700"}
+                  _hover={{ borderColor: "pink.600" }}
+                  size="lg"
+                  type="number"
+                  mb={3}
+                  value={altura}
+                  onChange={(e) => setAltura(e.target.value)}
+                />
+              </InputGroup>
 
               <Text mb={2} fontSize="xl" fontWeight={"bold"}>
                 Peso (kg):{" "}
               </Text>
-              <Input
-                w="100%"
-                placeholder="Peso do paciente"
-                focusBorderColor="pink.700"
-                borderColor={"pink.700"}
-                _hover={{ borderColor: "pink.600" }}
-                size="lg"
-                type="number"
-                mb={3}
-                value={peso}
-                onChange={(e) => setPeso(e.target.value)}
-              />
+              <InputGroup size="lg">
+                <InputLeftElement
+                  children={<Icon as={BiBody} color="pink.600" w={5} h={5} />}
+                />
+                <Input
+                  w="100%"
+                  placeholder="Peso do paciente"
+                  focusBorderColor="pink.700"
+                  borderColor={"pink.700"}
+                  _hover={{ borderColor: "pink.600" }}
+                  size="lg"
+                  type="number"
+                  mb={3}
+                  value={peso}
+                  onChange={(e) => setPeso(e.target.value)}
+                />
+              </InputGroup>
 
               <Text mb={2} fontSize="xl" fontWeight={"bold"}>
                 Etnia:{" "}

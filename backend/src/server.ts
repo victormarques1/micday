@@ -2,6 +2,7 @@ import express, {Request, Response, NextFunction} from 'express'
 import 'express-async-errors';
 import cors from 'cors';
 import { router } from './routes'
+import moment from "moment-timezone";
 
 const app = express();
 app.use(express.json());
@@ -22,4 +23,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     })
 })
 
+process.env.TZ = "America/Sao_Paulo";
+moment.tz.setDefault("America/Sao_Paulo");
 app.listen(3333, () => console.log('SERVIDOR ONLINE!!'))

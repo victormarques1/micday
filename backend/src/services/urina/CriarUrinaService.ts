@@ -5,10 +5,11 @@ interface UrinaRequest {
     perda_urina: boolean;
     necessidade_urina: boolean;
     usuario_id: string;
+    data: Date;
 }
 
 class CriarUrinaService {
-    async execute({ quantidade, perda_urina, necessidade_urina, usuario_id }: UrinaRequest) {
+    async execute({ quantidade, data, perda_urina, necessidade_urina, usuario_id }: UrinaRequest) {
       try {
         const paciente = await prismaClient.paciente.findFirst({
           where: {
@@ -23,6 +24,7 @@ class CriarUrinaService {
         const urina = await prismaClient.urina.create({
           data: {
             quantidade,
+            data,
             perda_urina,
             necessidade_urina,
             paciente: {
