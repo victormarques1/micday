@@ -25,14 +25,6 @@ import { canSSRAuth } from "@/utils/canSSRAuth";
 import Router from "next/router";
 import moment from "moment-timezone";
 
-interface UrinaRequest {
-  data: string;
-}
-
-interface UrinaProps {
-  urina: UrinaRequest;
-}
-
 export default function Bebida() {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
@@ -40,10 +32,10 @@ export default function Bebida() {
     moment().tz("America/Sao_Paulo").format("YYYY-MM-DDTHH:mm")
   );
   const [quantidade, setQuantidade] = useState("");
+  const [tipo, setTipo] = useState("");
   const [necessidade, setNecessidade] = useState<boolean>(false);
-  const [perda, setPerda] = useState<boolean>(false);
 
-  async function handleUrina() {
+  async function handleBebida() {
     if (quantidade === "") {
       toast.warning("Dados inválidos!");
       return;
@@ -51,17 +43,16 @@ export default function Bebida() {
 
     try {
       const apiClient = setupAPIClient();
-      await apiClient.post("/urina", {
-        quantidade: Number(quantidade),
+      await apiClient.post("/bebida", {
         data: new Date(data),
-        perda_urina: perda,
-        necessidade_urina: necessidade,
+        tipo: tipo,
+        quantidade: Number(quantidade),
       });
 
       toast.success("Registrado com sucesso!");
       Router.push("/dashboard/paciente");
     } catch (err) {
-      toast.error("Erro ao registrar urina.");
+      toast.error("Erro ao registrar bebida.");
     }
   }
 
@@ -151,8 +142,10 @@ export default function Bebida() {
                 _hover={{ borderColor: "pink.700" }}
                 placeholder="Selecione o tipo de bebida"
                 mb={4}
+                value={tipo}
+              onChange={(e) => setTipo(e.target.value)}
               >
-                <option value="Agua">Água</option>
+                <option value="Água">Água</option>
                 <option value="Café">Café</option>
                 <option value="Refrigerante">Refrigerante</option>
               </Select>
@@ -196,7 +189,7 @@ export default function Bebida() {
               _hover={{ bg: "pink.500" }}
               color="#FFF"
               mb={2}
-              onClick={handleUrina}
+              onClick={handleBebida}
             >
               Salvar
             </Button>

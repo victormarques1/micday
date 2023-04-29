@@ -3,14 +3,16 @@ import { CriarBebidaService } from '../../services/bebida/CriarBebidaService'
 
 class CriarBebidaController {
     async handle(req: Request, res: Response){
-        const { tipo, quantidade, paciente_id } = req.body;
+        const { quantidade, data, tipo } = req.body;
+        const usuario_id = req.usuario_id;
 
         const criarBebidaService = new CriarBebidaService();
 
         const bebida = await criarBebidaService.execute({
             tipo,
             quantidade,
-            paciente_id
+            data,
+            usuario_id
         })
 
         return res.json(bebida);

@@ -25,14 +25,6 @@ import { canSSRAuth } from "@/utils/canSSRAuth";
 import Router from "next/router";
 import moment from "moment-timezone";
 
-interface UrinaRequest {
-  data: string;
-}
-
-interface UrinaProps {
-  urina: UrinaRequest;
-}
-
 export default function Urina() {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 

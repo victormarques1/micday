@@ -1,24 +1,44 @@
 import prismaClient from "../../prisma";
 
 interface BebidaRequest {
-   tipo: string;
-   quantidade: number;
-   paciente_id: string; 
+  quantidade: number;
+  tipo: string;
+  data: Date;
+  usuario_id: string;
 }
 
 class CriarBebidaService {
-    async execute({ tipo, quantidade, paciente_id }: BebidaRequest){
-        
-        const bebida = await prismaClient.bebida.create({
-            data: {
-                tipo: tipo,
-                quantidade: quantidade,
-                paciente_id: paciente_id
-            }
-        })
+  async execute({ quantidade, data, tipo, usuario_id }: BebidaRequest) {
+    try {
+      const paciente = await prismaClient.paciente.findFirst({
+        where: {
+          usuario_id,
+        },
+      });
 
-        return bebida;
+      if (!paciente) {
+        throw new Error("Paciente não encontrado.");
+      }
+
+      const bebida = await prismaClient.bebida.create({
+        data: {
+          quantidade,
+          data,
+          tipo,
+          paciente: {
+            connect: {
+              id: paciente.id,
+            },
+          },
+        },
+      });
+
+      return bebida;
+
+    } catch (error) {
+      console.error(error);
+      throw new Error("Não foi possível criar o registro de bebida.");
     }
+  }
 }
-
-export { CriarBebidaService }
+export { CriarBebidaService };

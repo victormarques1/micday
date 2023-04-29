@@ -10,7 +10,7 @@ import { SidebarPaciente } from "../../../components/sidebar/paciente";
 import { MdOutlineWaterDrop } from "react-icons/md";
 import { setupAPIClient } from "@/services/api";
 
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 interface UrinasItem {
   id: string;
@@ -20,14 +20,23 @@ interface UrinasItem {
   necessidade_urina: boolean;
 }
 
-interface UrinasProps {
-  urinas: UrinasItem[];
+interface BebidasItem {
+  id: string;
+  data: Date;
+  tipo: string;
+  quantidade: number;
 }
 
-export default function DashboardPaciente({ urinas }: UrinasProps) {
+interface PacienteProps {
+  urinas: UrinasItem[];
+  bebidas: BebidasItem[];
+}
+
+export default function DashboardPaciente({ urinas, bebidas }: PacienteProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
   const [urinasList, setUrinasList] = useState<UrinasItem[]>(urinas || []);
+  const [bebidasList, setBebidasList] = useState<BebidasItem[]>(bebidas || []);
 
   return (
     <>
@@ -86,7 +95,42 @@ export default function DashboardPaciente({ urinas }: UrinasProps) {
                       Urina
                     </Text>
                   </Flex>
-                  <Text fontWeight="semibold">{format(new Date(urina.data), 'dd/MM/yyyy HH:mm')}</Text>
+                  <Text fontWeight="semibold">
+                    {format(new Date(urina.data), "dd/MM/yyyy HH:mm")}
+                  </Text>
+                </Flex>
+              </Link>
+            </Box>
+          ))}
+
+          {urinasList.map((bebida) => (
+            <Box w="full">
+              <Link key={bebida.id} href={`/bebida/${bebida.id}`}>
+                <Flex
+                  cursor="pointer"
+                  w="100%"
+                  paddingX={3}
+                  paddingY={6}
+                  mb={2}
+                  justifyContent="space-between"
+                  direction="row"
+                  bg="pink.50"
+                  borderBottomWidth={2}
+                  borderBottomColor="pink.700"
+                >
+                  <Flex
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <MdOutlineWaterDrop size={24} color="#97266D" />
+                    <Text ml={2} fontWeight="semibold">
+                      Bebida
+                    </Text>
+                  </Flex>
+                  <Text fontWeight="semibold">
+                    {format(new Date(bebida.data), "dd/MM/yyyy HH:mm")}
+                  </Text>
                 </Flex>
               </Link>
             </Box>
@@ -100,9 +144,10 @@ export default function DashboardPaciente({ urinas }: UrinasProps) {
 export const getServerSideProps = canSSRAuth("Paciente", async (ctx) => {
   try {
     const apiClient = setupAPIClient(ctx);
-    const response = await apiClient.get("/urinas");
+    const response = await apiClient.get("/urina/detalhes");
+    const bebidasResponse = await apiClient.get("/bebidas");
 
-    if (response.data === null) {
+    if (response.data === null || bebidasResponse.data === null) {
       return {
         redirect: {
           destination: "/dashboard/paciente",
@@ -114,6 +159,7 @@ export const getServerSideProps = canSSRAuth("Paciente", async (ctx) => {
     return {
       props: {
         urinas: response.data,
+        bebidas: bebidasResponse.data,
       },
     };
   } catch (err) {
