@@ -1,9 +1,9 @@
 import prismaClient from "../../prisma";
 
-class DetalhesUrinaService {
+class DetalhesBebidaService {
     async execute( usuario_id: string ){
 
-            const urina = await prismaClient.urina.findMany({
+            const bebida = await prismaClient.bebida.findMany({
             where: {
                 paciente: {
                     usuario_id: usuario_id
@@ -13,14 +13,13 @@ class DetalhesUrinaService {
                 id: true,
                 data: true,
                 quantidade: true,
-                perda_urina: true,
-                necessidade_urina: true,
+                tipo: true,
                 paciente_id: true
             }
         })
 
-        return urina;
+        return bebida;
     }
 }
 
-export { DetalhesUrinaService }
+export { DetalhesBebidaService }

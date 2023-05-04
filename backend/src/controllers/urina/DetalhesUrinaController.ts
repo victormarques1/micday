@@ -5,7 +5,6 @@ class DetalhesUrinaController {
     async handle(req: Request, response: Response) {
 
         const usuario_id = req.usuario_id;
-        // const paciente_id = req.paciente_id;
 
         const listarUrinaService = new DetalhesUrinaService();
 

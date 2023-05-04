@@ -23,14 +23,16 @@ import { AtualizarPacienteController } from "./controllers/paciente/AtualizarPac
 import { ListarUsuarioController } from "./controllers/usuario/DetalhesUsuarioController";
 import { CriarTipoIncotinenciaController } from "./controllers/incontinencia/CriarTipoIncontinenciaController";
 import { ListarTipoIncontinenciaController } from "./controllers/incontinencia/ListarTipoIncontinenciaController";
+import { AtualizarUsuarioController } from "./controllers/usuario/AtualizarUsuarioController";
+import { AtualizarFisioterapeutaController } from "./controllers/fisioterapeuta/AtualizarFisioterapeutaController";
+import { DetalhesUrinaController } from "./controllers/urina/DetalhesUrinaController";
+import { DetalhesBebidaController } from '../src/controllers/bebida/DetalhesBebidaController'
+import { BuscarUrinaController } from "./controllers/urina/BuscarUrinaController";
 
 import { authUsuario } from "./middlewares/authUsuario";
 import { protegeRotaFisioterapeuta } from "./middlewares/authUsuario";
 import { protegeRotaPaciente } from "./middlewares/authUsuario";
-import { AtualizarUsuarioController } from "./controllers/usuario/AtualizarUsuarioController";
-import { AtualizarFisioterapeutaController } from "./controllers/fisioterapeuta/AtualizarFisioterapeutaController";
-import { DetalhesUrinaController } from "./controllers/urina/DetalhesUrinaController";
-import { BuscarUrinaController } from "./controllers/urina/BuscarUrinaController";
+import { BuscarBebidaController } from "./controllers/bebida/BuscarBebidaController";
 
 const router = Router();
 
@@ -62,14 +64,14 @@ router.put('/paciente', authUsuario, protegeRotaPaciente, new AtualizarPacienteC
 router.post('/urina', authUsuario, protegeRotaPaciente, new CriarUrinaController().handle )
 router.post('/bebida', authUsuario, protegeRotaPaciente,new CriarBebidaController().handle)
 router.get('/urinas', authUsuario, protegeRotaPaciente, new ListarUrinaController().handle)
-router.get('/urina/detalhes', authUsuario, protegeRotaPaciente, new DetalhesUrinaController().handle)
 router.get('/urina/id', authUsuario, protegeRotaPaciente, new BuscarUrinaController().handle)
+router.get('/urina/detalhes', authUsuario, protegeRotaPaciente, new DetalhesUrinaController().handle)
 router.get('/bebidas', authUsuario, protegeRotaPaciente, new ListarBebidaController().handle)
+router.get('/bebida/detalhes', authUsuario, protegeRotaPaciente, new DetalhesBebidaController().handle)
+router.get('/bebida/id', authUsuario, protegeRotaPaciente, new BuscarBebidaController().handle);
 router.delete('/paciente/urinas', authUsuario, protegeRotaPaciente,new DeletarUrinaController().handle)
 router.delete('/paciente/bebidas', authUsuario, protegeRotaPaciente, new DeletarBebidaController().handle)
 router.put('/paciente/bebidas', authUsuario, protegeRotaPaciente, new AtualizarBebidaController().handle)
 router.put('/paciente/urina', authUsuario, protegeRotaPaciente, new AtualizarUrinaController().handle)
-
-
 
 export { router };

@@ -1,6 +1,16 @@
 import { useState } from "react";
 import Head from "next/head";
-import { Flex, Text, Heading, Button, useMediaQuery, Input, InputGroup, InputLeftElement, Checkbox } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Heading,
+  Button,
+  useMediaQuery,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Select,
+} from "@chakra-ui/react";
 import { SidebarPaciente } from "@/components/sidebar/paciente";
 import Link from "next/link";
 
@@ -9,65 +19,59 @@ import { Icon } from "@chakra-ui/react";
 import { BsDropletHalf } from "react-icons/bs";
 import { canSSRAuth } from "@/utils/canSSRAuth";
 
-import { toast } from 'react-toastify'
+import { toast } from "react-toastify";
 import moment from "moment-timezone";
 import { setupAPIClient } from "../../services/api";
 
-interface UrinaProps {
+interface BebidasProps {
   id: string;
   data: Date;
+  tipo: string;
   quantidade: number;
-  perda_urina: boolean;
-  necessidade_urina: boolean;
   paciente_id: string;
 }
 
-interface EditUrinaProps {
-  urina: UrinaProps;
+interface EditBebidaProps {
+  bebida: BebidasProps;
 }
 
-export default function EditUrina({ urina }: EditUrinaProps) {
+export default function EditBebida({ bebida }: EditBebidaProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
   const [data, setData] = useState(
-    moment(urina?.data).tz("America/Sao_Paulo").format("YYYY-MM-DDTHH:mm")
+    moment(bebida?.data).tz("America/Sao_Paulo").format("YYYY-MM-DDTHH:mm")
   );
   const dataFormatada = moment(data).toDate();
-  const [urinaId, setUrinaId] = useState(urina.id)
-  const [quantidade, setQuantidade] = useState(urina?.quantidade);
-  const [necessidade, setNecessidade] = useState<boolean>(urina?.necessidade_urina);
-  const [perda, setPerda] = useState<boolean>(urina?.perda_urina);
+  const [bebidaId, setBebidaId] = useState(bebida.id);
+  const [quantidade, setQuantidade] = useState(bebida?.quantidade);
+  const [tipo, setTipo] = useState(bebida.tipo);
 
-   async function handleEditarUrina(){
-        if( data === '' || quantidade < 0){
-            toast.warning("Dados inválidos")
-            return;
-        }
-
-        
-        try{
-            console.log(urina?.paciente_id)
-            const apiClient = setupAPIClient();
-            await apiClient.put('/paciente/urina', {
-                quantidade: quantidade,
-                perda_urina: perda,
-                necessidade_urina: necessidade,
-                data: dataFormatada,
-                id: urinaId,
-                paciente_id: urina.paciente_id
-            })
-            toast.success("Registro atualizado com sucesso!")
-
-        } catch(err){
-            console.log(err)
-            toast.error("Erro ao editar urina.")
-        }
+  async function handleEditarBebida() {
+    if (data === "" || quantidade < 0 || tipo === "") {
+      toast.warning("Dados inválidos");
+      return;
     }
+
+    try {
+      const apiClient = setupAPIClient();
+      await apiClient.put("/paciente/bebida", {
+        id: bebidaId,
+        data: dataFormatada,
+        tipo: tipo,
+        quantidade: quantidade,
+        paciente_id: bebida.paciente_id,
+      });
+      toast.success("Registro atualizado com sucesso!");
+    } catch (err) {
+      console.log(err);
+      toast.error("Erro ao editar Bebida.");
+    }
+  }
 
   return (
     <>
       <Head>
-        <title>Editar registro de urina | mic.day</title>
+        <title>Editar registro de bebida | mic.day</title>
       </Head>
       <SidebarPaciente>
         <Flex
@@ -105,7 +109,7 @@ export default function EditUrina({ urina }: EditUrinaProps) {
               mb={4}
               fontSize={isMobile ? "24px" : "3xl"}
             >
-              Editar Registro de Urina
+              Editar Registro de Bebida
             </Heading>
           </Flex>
 
@@ -141,6 +145,26 @@ export default function EditUrina({ urina }: EditUrinaProps) {
               onChange={(e) => setData(e.target.value)}
             />
 
+            <Flex justifyContent="flex-start" w="85%" direction="column">
+              <Text fontSize="lg" mb={1}>
+                Tipo de bebida
+              </Text>
+              <Select
+                size="lg"
+                focusBorderColor="pink.700"
+                borderColor={"pink.700"}
+                _hover={{ borderColor: "pink.700" }}
+                placeholder="Selecione o tipo de bebida"
+                mb={4}
+                value={tipo}
+              onChange={(e) => setTipo(e.target.value)}
+              >
+                <option value="Água">Água</option>
+                <option value="Café">Café</option>
+                <option value="Refrigerante">Refrigerante</option>
+              </Select>
+            </Flex>
+
             <Flex justifyContent="flex-start" w="85%">
               <Text fontSize="lg" mb={1}>
                 Quantidade (ml)
@@ -172,29 +196,6 @@ export default function EditUrina({ urina }: EditUrinaProps) {
               </InputGroup>
             </Flex>
 
-            <Flex flexDirection="column" alignItems="flex-start">
-              <Checkbox
-                colorScheme="pink"
-                size="lg"
-                mb={4}
-                borderColor="pink.700"
-                isChecked={necessidade}
-                onChange={(e) => setNecessidade(e.target.checked)}
-              >
-                Necessidade urgente de urinar?
-              </Checkbox>
-              <Checkbox
-                colorScheme="pink"
-                size="lg"
-                borderColor="pink.700"
-                mb={6}
-                isChecked={perda}
-                onChange={(e) => setPerda(e.target.checked)}
-              >
-                Houve perda de urina?
-              </Checkbox>
-            </Flex>
-
             <Button
               w="85%"
               size="lg"
@@ -202,7 +203,7 @@ export default function EditUrina({ urina }: EditUrinaProps) {
               _hover={{ bg: "pink.500" }}
               color="#FFF"
               mb={2}
-              onClick={handleEditarUrina}
+              onClick={handleEditarBebida}
             >
               Salvar
             </Button>
@@ -218,15 +219,15 @@ export const getServerSideProps = canSSRAuth("Paciente", async (ctx) => {
 
   try {
     const apiClient = setupAPIClient(ctx);
-    const response = await apiClient.get("/urina/id", {
+    const response = await apiClient.get("/bebida/id", {
       params: {
-        urina_id: id,
+        bebida_id: id,
       },
     });
 
     return {
       props: {
-        urina: response.data,
+        bebida: response.data,
       },
     };
   } catch (err) {
