@@ -129,7 +129,7 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
             alignItems="flex-start"
             justifyContent={"flex-start"}
           >
-            <Heading fontSize={"3xl"} mt={4} mb={5} mr={4} color="pink.600">
+            <Heading fontSize={"3xl"} mt={4} mb={5} mr={4} color="pink.700">
               Minha Conta
             </Heading>
           </Flex>

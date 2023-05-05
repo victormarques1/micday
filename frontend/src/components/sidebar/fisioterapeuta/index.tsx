@@ -59,7 +59,7 @@ export function SidebarFisioterapeuta({ children }: { children: ReactNode }) {
           placement="left"
           returnFocusOnClose={false}
           onOverlayClick={onClose}
-          size="full"
+          size="xs"
           onClose={onClose}
         >
           <DrawerContent>

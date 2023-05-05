@@ -18,6 +18,7 @@ import { FiChevronLeft } from "react-icons/fi";
 import { Icon } from "@chakra-ui/react";
 import { BsDropletHalf } from "react-icons/bs";
 import { canSSRAuth } from "@/utils/canSSRAuth";
+import Router from "next/router";
 
 import { toast } from "react-toastify";
 import moment from "moment-timezone";
@@ -41,8 +42,6 @@ export default function EditBebida({ bebida }: EditBebidaProps) {
   const [data, setData] = useState(
     moment(bebida?.data).tz("America/Sao_Paulo").format("YYYY-MM-DDTHH:mm")
   );
-  const dataFormatada = moment(data).toDate();
-  const [bebidaId, setBebidaId] = useState(bebida.id);
   const [quantidade, setQuantidade] = useState(bebida?.quantidade);
   const [tipo, setTipo] = useState(bebida.tipo);
 
@@ -54,13 +53,13 @@ export default function EditBebida({ bebida }: EditBebidaProps) {
 
     try {
       const apiClient = setupAPIClient();
-      await apiClient.put("/paciente/bebida", {
-        id: bebidaId,
-        data: dataFormatada,
+      await apiClient.put(`/paciente/bebida/${bebida.id}`, {
+        data: data,
         tipo: tipo,
         quantidade: quantidade,
-        paciente_id: bebida.paciente_id,
       });
+
+      Router.push("/dashboard/paciente");
       toast.success("Registro atualizado com sucesso!");
     } catch (err) {
       console.log(err);
@@ -114,7 +113,7 @@ export default function EditBebida({ bebida }: EditBebidaProps) {
           </Flex>
 
           <Flex
-            maxW="700px"
+            maxW="900px"
             w="100%"
             align="center"
             justifyContent="center"
@@ -157,7 +156,7 @@ export default function EditBebida({ bebida }: EditBebidaProps) {
                 placeholder="Selecione o tipo de bebida"
                 mb={4}
                 value={tipo}
-              onChange={(e) => setTipo(e.target.value)}
+                onChange={(e) => setTipo(e.target.value)}
               >
                 <option value="Água">Água</option>
                 <option value="Café">Café</option>

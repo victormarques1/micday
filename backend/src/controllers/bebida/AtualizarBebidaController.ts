@@ -3,9 +3,9 @@ import { AtualizarBebidaService } from "../../services/bebida/AtualizarBebidaSer
 
 class AtualizarBebidaController {
     async handle(req: Request, res: Response){
-        const { tipo, quantidade} = req.body;
-        const bebida_id = req.query.bebida_id as string;
-        const paciente_id = req.query.paciente_id as string;
+        const { tipo, quantidade, data} = req.body;
+        const bebida_id = req.params.bebida_id;
+        const paciente_id = req.paciente_id;
 
         const atualizarBebidaService = new AtualizarBebidaService();
 
@@ -13,7 +13,8 @@ class AtualizarBebidaController {
             bebida_id,
             paciente_id,
             tipo,
-            quantidade
+            quantidade,
+            data
         })
 
         return res.json(bebida);

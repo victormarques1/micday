@@ -1,6 +1,16 @@
 import { useState } from "react";
 import Head from "next/head";
-import { Flex, Text, Heading, Button, useMediaQuery, Input, InputGroup, InputLeftElement, Checkbox } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Heading,
+  Button,
+  useMediaQuery,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Checkbox,
+} from "@chakra-ui/react";
 import { SidebarPaciente } from "@/components/sidebar/paciente";
 import Link from "next/link";
 
@@ -8,8 +18,9 @@ import { FiChevronLeft } from "react-icons/fi";
 import { Icon } from "@chakra-ui/react";
 import { BsDropletHalf } from "react-icons/bs";
 import { canSSRAuth } from "@/utils/canSSRAuth";
+import Router from "next/router";
 
-import { toast } from 'react-toastify'
+import { toast } from "react-toastify";
 import moment from "moment-timezone";
 import { setupAPIClient } from "../../services/api";
 
@@ -32,37 +43,34 @@ export default function EditUrina({ urina }: EditUrinaProps) {
   const [data, setData] = useState(
     moment(urina?.data).tz("America/Sao_Paulo").format("YYYY-MM-DDTHH:mm")
   );
-  const dataFormatada = moment(data).toDate();
-  const [urinaId, setUrinaId] = useState(urina.id)
   const [quantidade, setQuantidade] = useState(urina?.quantidade);
-  const [necessidade, setNecessidade] = useState<boolean>(urina?.necessidade_urina);
+  const [necessidade, setNecessidade] = useState<boolean>(
+    urina?.necessidade_urina
+  );
   const [perda, setPerda] = useState<boolean>(urina?.perda_urina);
 
-   async function handleEditarUrina(){
-        if( data === '' || quantidade < 0){
-            toast.warning("Dados inválidos")
-            return;
-        }
-
-        
-        try{
-            console.log(urina?.paciente_id)
-            const apiClient = setupAPIClient();
-            await apiClient.put('/paciente/urina', {
-                quantidade: quantidade,
-                perda_urina: perda,
-                necessidade_urina: necessidade,
-                data: dataFormatada,
-                id: urinaId,
-                paciente_id: urina.paciente_id
-            })
-            toast.success("Registro atualizado com sucesso!")
-
-        } catch(err){
-            console.log(err)
-            toast.error("Erro ao editar urina.")
-        }
+  async function handleEditarUrina() {
+    if (data === "" || quantidade < 0) {
+      toast.warning("Dados inválidos");
+      return;
     }
+
+    try {
+      const apiClient = setupAPIClient();
+      await apiClient.put(`/paciente/urina/${urina.id}`, {
+        quantidade: quantidade,
+        perda_urina: perda,
+        necessidade_urina: necessidade,
+        data,
+      });
+
+      Router.push("/dashboard/paciente");
+      toast.success("Registro atualizado com sucesso!");
+    } catch (err) {
+      console.log(err);
+      toast.error("Erro ao editar urina.");
+    }
+  }
 
   return (
     <>
@@ -110,7 +118,7 @@ export default function EditUrina({ urina }: EditUrinaProps) {
           </Flex>
 
           <Flex
-            maxW="700px"
+            maxW="900px"
             w="100%"
             align="center"
             justifyContent="center"

@@ -100,7 +100,7 @@ export default function Bebida() {
           </Flex>
 
           <Flex
-            maxW="700px"
+            maxW="900px"
             w="100%"
             align="center"
             justifyContent="center"

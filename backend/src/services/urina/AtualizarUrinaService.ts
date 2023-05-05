@@ -10,9 +10,17 @@ interface AtualizaUrinaRequest {
 }
 
 class AtualizarUrinaService {
-    async execute({urina_id, quantidade, perda_urina, necessidade_urina,data, paciente_id}: AtualizaUrinaRequest){
+    async execute({urina_id, quantidade, perda_urina, necessidade_urina, data, paciente_id}: AtualizaUrinaRequest){
 
-        // console.log(paciente_id)
+        const urina = await prismaClient.urina.findUnique({
+            where:{
+                id: urina_id, 
+            }
+        })
+        if (!urina) {
+            throw new Error("Registro de urina não encontrado");
+        }
+
         const atualizaUrina = await prismaClient.urina.update({
             where:{
                 id: urina_id, 
@@ -21,7 +29,7 @@ class AtualizarUrinaService {
                 quantidade,
                 perda_urina,
                 necessidade_urina,
-                data,
+                data: new Date(data),
                 paciente_id
             }
         })

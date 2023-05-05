@@ -71,7 +71,7 @@ router.get('/bebida/detalhes', authUsuario, protegeRotaPaciente, new DetalhesBeb
 router.get('/bebida/id', authUsuario, protegeRotaPaciente, new BuscarBebidaController().handle);
 router.delete('/paciente/urinas', authUsuario, protegeRotaPaciente,new DeletarUrinaController().handle)
 router.delete('/paciente/bebidas', authUsuario, protegeRotaPaciente, new DeletarBebidaController().handle)
-router.put('/paciente/bebidas', authUsuario, protegeRotaPaciente, new AtualizarBebidaController().handle)
-router.put('/paciente/urina', authUsuario, protegeRotaPaciente, new AtualizarUrinaController().handle)
+router.put('/paciente/bebida/:bebida_id', authUsuario, protegeRotaPaciente, new AtualizarBebidaController().handle)
+router.put('/paciente/urina/:urina_id', authUsuario, protegeRotaPaciente, new AtualizarUrinaController().handle)
 
 export { router };
