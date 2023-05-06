@@ -37,7 +37,7 @@ const LinkItems: Array<LinkItemProps> = [
   { nome: "Registrar Urina", icon: FaToilet, rota: "/urina" },
   { nome: "Registrar Bebida", icon: MdLocalDrink, rota: "/bebida" },
   { nome: "Orientações", icon: FaBell, rota: "/" },
-  { nome: "Minha Conta", icon: FiSettings, rota: "/perfil/paciente"},
+  { nome: "Minha Conta", icon: FiSettings, rota: "/perfil/paciente" },
 ];
 
 export function SidebarPaciente({ children }: { children: ReactNode }) {
@@ -45,7 +45,6 @@ export function SidebarPaciente({ children }: { children: ReactNode }) {
 
   return (
     <>
-      
       <Box minH="100vh">
         <SidebarContent
           onClose={() => onClose}
@@ -58,7 +57,7 @@ export function SidebarPaciente({ children }: { children: ReactNode }) {
           placement="left"
           returnFocusOnClose={false}
           onOverlayClick={onClose}
-          size="full"
+          size="xs"
           onClose={onClose}
         >
           <DrawerContent>
@@ -68,7 +67,9 @@ export function SidebarPaciente({ children }: { children: ReactNode }) {
 
         <MobileNav display={{ base: "flex", md: "none" }} onOpen={onOpen} />
 
-        <Box ml={{base: 0, md: 60}} p={4}>{children}</Box>
+        <Box ml={{ base: 0, md: 60 }} p={4}>
+          {children}
+        </Box>
       </Box>
     </>
   );
@@ -101,7 +102,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             <Image src={Logo} quality={100} width={110} alt="Logo mic.day" />
           </Flex>
         </Link>
-        <CloseButton color="white" display={{ base: "flex", md: "none" }} onClick={onClose} />
+        <CloseButton
+          color="white"
+          display={{ base: "flex", md: "none" }}
+          onClick={onClose}
+        />
       </Flex>
 
       {LinkItems.map((link) => (
@@ -173,7 +178,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     >
       <IconButton
         bg="transparent"
-        _hover={{bg: 'pink.800'}}
+        _hover={{ bg: "pink.800" }}
         color="white"
         variant={"outline"}
         onClick={onOpen}

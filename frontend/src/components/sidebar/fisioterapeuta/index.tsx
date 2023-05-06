@@ -1,6 +1,4 @@
-import { Children, ReactNode } from "react";
-
-import Head from "next/head";
+import { ReactNode } from "react";
 
 import {
   IconButton,
@@ -22,8 +20,9 @@ import Logo from "../../../../public/images/logo-sidebar.svg";
 import { IconType } from "react-icons";
 import { FiSettings, FiMenu } from "react-icons/fi";
 import { HiHome } from "react-icons/hi";
-import { FaToilet, FaBell } from "react-icons/fa";
-import { MdLocalDrink } from "react-icons/md";
+import { FaBell } from "react-icons/fa";
+import { MdPersonSearch } from "react-icons/md";
+import { AiFillFileAdd } from "react-icons/ai";
 
 import Link from "next/link";
 
@@ -34,11 +33,15 @@ interface LinkItemProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { nome: "Página Inicial", icon: HiHome, rota: "/dashboard/paciente" },
-  { nome: "Registrar Urina", icon: FaToilet, rota: "/" },
-  { nome: "Registrar Bebida", icon: MdLocalDrink, rota: "/" },
-  { nome: "Orientações", icon: FaBell, rota: "/" },
-  { nome: "Minha Conta", icon: FiSettings, rota: "/perfil/fisioterapeuta"}
+  { nome: "Página Inicial", icon: HiHome, rota: "/dashboard/fisioterapeuta" },
+  {
+    nome: "Meus Pacientes",
+    icon: MdPersonSearch,
+    rota: "/dashboard/fisioterapeuta/pacientes",
+  },
+  { nome: "Criar Orientações", icon: FaBell, rota: "/" },
+  { nome: "Criar Relatórios", icon: AiFillFileAdd, rota: "/" },
+  { nome: "Minha Conta", icon: FiSettings, rota: "/perfil/fisioterapeuta" },
 ];
 
 export function SidebarFisioterapeuta({ children }: { children: ReactNode }) {
@@ -46,7 +49,6 @@ export function SidebarFisioterapeuta({ children }: { children: ReactNode }) {
 
   return (
     <>
-      
       <Box minH="100vh">
         <SidebarContent
           onClose={() => onClose}
@@ -69,7 +71,9 @@ export function SidebarFisioterapeuta({ children }: { children: ReactNode }) {
 
         <MobileNav display={{ base: "flex", md: "none" }} onOpen={onOpen} />
 
-        <Box ml={{base: 0, md: 60}} p={4}>{children}</Box>
+        <Box ml={{ base: 0, md: 60 }} p={4}>
+          {children}
+        </Box>
       </Box>
     </>
   );
@@ -102,7 +106,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             <Image src={Logo} quality={100} width={110} alt="Logo mic.day" />
           </Flex>
         </Link>
-        <CloseButton color="white" display={{ base: "flex", md: "none" }} onClick={onClose} />
+        <CloseButton
+          color="white"
+          display={{ base: "flex", md: "none" }}
+          onClick={onClose}
+        />
       </Flex>
 
       {LinkItems.map((link) => (
@@ -174,7 +182,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     >
       <IconButton
         bg="transparent"
-        _hover={{bg: 'pink.800'}}
+        _hover={{ bg: "pink.800" }}
         color="white"
         variant={"outline"}
         onClick={onOpen}
