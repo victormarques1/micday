@@ -15,7 +15,6 @@ import { SidebarFisioterapeuta } from "../../../components/sidebar/fisioterapeut
 import { BsPerson } from "react-icons/bs";
 import { AiOutlineFileSearch } from "react-icons/ai";
 import Link from "next/link";
-import { ModalPaciente } from "@/components/modal/paciente";
 
 interface PacienteItem {
   id: string;
@@ -48,7 +47,6 @@ export default function DashboardFisioterapeuta({
   fisioterapeuta,
 }: UsuarioProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [nome, setNome] = useState("");
   const [nomes, setNomes] = useState([]);
@@ -56,31 +54,25 @@ export default function DashboardFisioterapeuta({
   const [fisioterapeutaNome, setFisioterapeutaNome] = useState(
     fisioterapeuta?.usuario.nome
   );
+  const [pacienteId, setPacienteId] = useState(pacientes[0]?.id);
 
   const [idade, setIdade] = useState(pacientes[0]?.idade);
   console.log(nome);
 
-//   useEffect(() => {
-//     const nomes = pacientes.map((paciente) => paciente.usuario.nome);
-//     setNomes(nomes);
-//   }, [pacientes]);
-const [pacienteSelecionado, setPacienteSelecionado] = useState(null);
+  useEffect(() => {
+    const nomes = pacientes.map((paciente) => paciente.usuario.nome);
+    setNomes(nomes);
+  }, [pacientes]);
 
-const handleSelectChange = (event) => {
-  const nomePacienteSelecionado = event.target.value;
-  const paciente = pacientes.find((paciente) => paciente.usuario.nome === nomePacienteSelecionado);
-  setPacienteSelecionado(paciente);
-};
+  useEffect(() => {
+    const pacienteSelecionado = pacientes.find(
+      (paciente) => paciente.usuario.nome === nome
+    );
+    if (pacienteSelecionado) {
+      setPacienteId(pacienteSelecionado.id);
+    }
+  }, [nome, pacientes]);
 
-  const handleOpenModal = () => {
-    // Aqui você pode adicionar lógica para carregar as informações do paciente que você quer exibir no modal
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-  
   return (
     <>
       <Head>
@@ -131,8 +123,12 @@ const handleSelectChange = (event) => {
               mb={4}
               value={nome}
               onChange={(e) => {
+                const pacienteSelecionado = pacientes.find(
+                  (paciente) => paciente.usuario.nome === e.target.value
+                );
                 setNome(e.target.value);
                 setNomeSelecionado(Boolean(e.target.value));
+                setPacienteId(pacienteSelecionado?.id);
               }}
             >
               {nomes.map((nome) => (
@@ -141,37 +137,23 @@ const handleSelectChange = (event) => {
                 </option>
               ))}
             </Select>
-
-            
             <Flex justifyContent="flex-start" w="85%" direction="row">
-            {pacientes.map((paciente) => (
+              <Link href={`/perfil/paciente/${pacienteId}`}>
+                <Button
+                  leftIcon={<BsPerson size={20} />}
+                  mt={3}
+                  mr={4}
+                  bg="pink.600"
+                  color="white"
+                  size="lg"
+                  _hover={{ bg: "pink.500" }}
+                  isDisabled={!nomeSelecionado}
+                >
+                  Perfil
+                </Button>
+              </Link>
+
               <Button
-              key={paciente.id} onClick={() => handleOpenModal()}
-                leftIcon={<BsPerson size={20} />}
-                mt={3}
-                mr={4}
-                bg="pink.600"
-                color="white"
-                size="lg"
-                _hover={{ bg: "pink.500" }}
-                isDisabled={!nomeSelecionado}
-              >
-                Perfil
-              </Button>
-              ))}
-              {pacienteSelecionado && (
-        <ModalPaciente
-          nome={pacienteSelecionado.nome}
-          cpf={pacienteSelecionado.cpf}
-          idade={pacienteSelecionado.idade}
-          altura={pacienteSelecionado.altura}
-          peso={pacienteSelecionado.peso}
-          etnia={pacienteSelecionado.etnia}
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-        />
-      )}
-              {/* <Button
                 leftIcon={<AiOutlineFileSearch size={20} />}
                 mt={3}
                 mr={4}
@@ -183,14 +165,6 @@ const handleSelectChange = (event) => {
               >
                 Registros
               </Button>
-              <ModalPaciente
-                nome={nome}
-                cpf="123.456.789-10"
-                idade={25}
-                altura={1.75}
-                peso={75}
-                etnia="Branco"
-              /> */}
             </Flex>
           </Flex>
         </Flex>
