@@ -153,18 +153,20 @@ export default function DashboardFisioterapeuta({
                 </Button>
               </Link>
 
-              <Button
-                leftIcon={<AiOutlineFileSearch size={20} />}
-                mt={3}
-                mr={4}
-                bg="pink.600"
-                color="white"
-                size="lg"
-                _hover={{ bg: "pink.500" }}
-                isDisabled={!nomeSelecionado}
-              >
-                Registros
-              </Button>
+              <Link href={`/registros/paciente/${pacienteId}`}>
+                <Button
+                  leftIcon={<AiOutlineFileSearch size={20} />}
+                  mt={3}
+                  mr={4}
+                  bg="pink.600"
+                  color="white"
+                  size="lg"
+                  _hover={{ bg: "pink.500" }}
+                  isDisabled={!nomeSelecionado}
+                >
+                  Registros
+                </Button>
+              </Link>
             </Flex>
           </Flex>
         </Flex>

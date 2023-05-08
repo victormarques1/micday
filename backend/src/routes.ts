@@ -35,6 +35,7 @@ import { protegeRotaPaciente } from "./middlewares/authUsuario";
 import { BuscarBebidaController } from "./controllers/bebida/BuscarBebidaController";
 import { MeusPacientesController } from "./controllers/fisioterapeuta/MeusPacientesController";
 import { BuscarPacienteController } from "./controllers/fisioterapeuta/BuscarPacienteController";
+import { BuscarRegistrosController } from "./controllers/fisioterapeuta/BuscarRegistrosController";
 
 const router = Router();
 
@@ -53,7 +54,7 @@ router.get('/fisioterapeuta/detalhes', authUsuario, protegeRotaFisioterapeuta,  
 router.put('/fisioterapeuta', authUsuario, protegeRotaFisioterapeuta, new AtualizarFisioterapeutaController().handle)
 router.get('/fisioterapeuta/pacientes', authUsuario, protegeRotaFisioterapeuta, new MeusPacientesController().handle)
 router.get('/paciente/id', authUsuario, protegeRotaFisioterapeuta, new BuscarPacienteController().handle)
-
+router.get('/registros/paciente', authUsuario, protegeRotaFisioterapeuta, new BuscarRegistrosController().handle)
 
 //ROTAS NEUTRAS
 router.get('/orientacoes', authUsuario, new ListarOrientacaoController().handle)

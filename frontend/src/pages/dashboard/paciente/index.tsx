@@ -120,10 +120,6 @@ export default function DashboardPaciente({ urinas, bebidas }: PacienteProps) {
                 mb={3}
                 p={4}
               >
-                {/* <Link
-                  key={registro.id}
-                  href={`/${registro.tipoList}/${registro.id}`}
-                > */}
                   <Flex alignItems="center" mb={2}>
                     {registro.tipoList === "urina" ? (
                       <Box
