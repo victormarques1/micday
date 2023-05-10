@@ -102,6 +102,7 @@ export default function Cadastro() {
                 focusBorderColor="pink.500"
                 type="text"
                 mb={3}
+                isRequired
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
               />

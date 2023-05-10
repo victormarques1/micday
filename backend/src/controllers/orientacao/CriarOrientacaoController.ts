@@ -3,14 +3,16 @@ import { CriarOrientacaoService } from "../../services/orientacao/CriarOrientaca
 
 class CriarOrientacaoController {
     async handle(req: Request, res: Response){
-        const { descricao, fisioterapeuta_id, paciente_id } = req.body
+        const { descricao, data, paciente_id } = req.body
+        const usuario_id = req.usuario_id;
 
         const criarOrientacaoService = new CriarOrientacaoService();
 
         const orientacao = await criarOrientacaoService.execute({
             descricao, 
-            fisioterapeuta_id,
-            paciente_id
+            usuario_id,
+            paciente_id, 
+            data
         });
         
         return res.json(orientacao);

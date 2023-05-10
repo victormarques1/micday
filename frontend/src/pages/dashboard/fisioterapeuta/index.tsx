@@ -56,9 +56,6 @@ export default function DashboardFisioterapeuta({
   );
   const [pacienteId, setPacienteId] = useState(pacientes[0]?.id);
 
-  const [idade, setIdade] = useState(pacientes[0]?.idade);
-  console.log(nome);
-
   useEffect(() => {
     const nomes = pacientes.map((paciente) => paciente.usuario.nome);
     setNomes(nomes);

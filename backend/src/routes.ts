@@ -55,9 +55,9 @@ router.put('/fisioterapeuta', authUsuario, protegeRotaFisioterapeuta, new Atuali
 router.get('/fisioterapeuta/pacientes', authUsuario, protegeRotaFisioterapeuta, new MeusPacientesController().handle)
 router.get('/paciente/id', authUsuario, protegeRotaFisioterapeuta, new BuscarPacienteController().handle)
 router.get('/registros/paciente', authUsuario, protegeRotaFisioterapeuta, new BuscarRegistrosController().handle)
+router.get('/orientacoes', authUsuario, protegeRotaFisioterapeuta, new ListarOrientacaoController().handle)
 
 //ROTAS NEUTRAS
-router.get('/orientacoes', authUsuario, new ListarOrientacaoController().handle)
 router.get('/detalhes', authUsuario, new ListarUsuarioController().handle)
 router.post('/tipo', new CriarTipoIncotinenciaController().handle);
 router.get('/tipos', new ListarTipoIncontinenciaController().handle)

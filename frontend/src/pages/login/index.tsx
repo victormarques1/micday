@@ -14,6 +14,7 @@ import {
   InputLeftElement,
   InputRightElement,
   Button,
+  useMediaQuery
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon, EmailIcon, LockIcon } from "@chakra-ui/icons";
 
@@ -24,6 +25,8 @@ import { AuthContext } from "../../context/AuthContext";
 import { canSSRGuest } from "@/utils/canSSRGuest";
 
 export default function Login() {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+
   const { logarUsuario } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
@@ -55,13 +58,12 @@ export default function Login() {
       </Head>
       <Flex
         height="100vh"
-        alignItems={{ base: "flex-start", md: "center" }}
-        justifyContent={{ base: "flex-start", md: "center" }}
+        alignItems="center"
+        justifyContent={"center"}
         flexDirection={{ base: "column", md: "row" }}
       >
         <Flex
-          minW={500}
-          maxW={{ base: "100%", md: "640px" }}
+          maxW={isMobile ? '500px' : '85%'}
           direction="column"
           p={14}
           rounded={8}
@@ -162,8 +164,8 @@ export default function Login() {
           </Center>
         </Flex>
 
-        <Flex>
-          <Center p={4} mb={5} minW={350}>
+        <Flex display={isMobile ? 'none' : 'block'}>
+          <Center p={4} mb={5} minW={400}>
             <Image src={Entrar} quality={100} width={500} alt="Image login" />
           </Center>
         </Flex>

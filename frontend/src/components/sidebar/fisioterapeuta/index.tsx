@@ -22,6 +22,7 @@ import { FiSettings, FiMenu } from "react-icons/fi";
 import { HiHome } from "react-icons/hi";
 import { FaBell } from "react-icons/fa";
 import { MdPersonSearch } from "react-icons/md";
+import { RiFileSearchFill } from "react-icons/ri";
 import { AiFillFileAdd } from "react-icons/ai";
 
 import Link from "next/link";
@@ -34,12 +35,25 @@ interface LinkItemProps {
 
 const LinkItems: Array<LinkItemProps> = [
   { nome: "Página Inicial", icon: HiHome, rota: "/dashboard/fisioterapeuta" },
+
   {
     nome: "Meus Pacientes",
     icon: MdPersonSearch,
     rota: "/dashboard/fisioterapeuta/pacientes",
   },
-  { nome: "Criar Orientações", icon: FaBell, rota: "/" },
+
+  {
+    nome: "Minhas Orientações",
+    icon: RiFileSearchFill,
+    rota: "/orientacao/fisioterapeuta/lista",
+  },
+
+  {
+    nome: "Criar Orientações",
+    icon: FaBell,
+    rota: "/orientacao/fisioterapeuta/criar",
+  },
+  
   { nome: "Criar Relatórios", icon: AiFillFileAdd, rota: "/" },
   { nome: "Minha Conta", icon: FiSettings, rota: "/perfil/fisioterapeuta" },
 ];
