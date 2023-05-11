@@ -10,6 +10,15 @@ interface AtualizaOrientacaoRequest {
 class AtualizarOrientacaoService {
     async execute({orientacao_id,  descricao, paciente_id, data}: AtualizaOrientacaoRequest){
 
+        const orientacao = await prismaClient.orientacao.findFirst({
+            where:{
+                id: orientacao_id, 
+            }
+        })
+        if (!orientacao) {
+            throw new Error("Registro de urina não encontrado");
+        }
+
         const atualizarOrientacao = await prismaClient.orientacao.update({
             where:{
                 id: orientacao_id
@@ -17,7 +26,7 @@ class AtualizarOrientacaoService {
             data:{
                 descricao,
                 paciente_id,
-                data
+                data: new Date(data)
             }
         })
 

@@ -14,6 +14,7 @@ import { setupAPIClient } from "@/services/api";
 import { SidebarFisioterapeuta } from "../../../components/sidebar/fisioterapeuta";
 import { BsPerson } from "react-icons/bs";
 import { AiOutlineFileSearch } from "react-icons/ai";
+import { FaRegBell } from "react-icons/fa";
 import Link from "next/link";
 
 interface PacienteItem {
@@ -93,7 +94,6 @@ export default function DashboardFisioterapeuta({
             </Heading>
           </Flex>
           <Flex
-            maxW="900px"
             w="100%"
             align="center"
             justifyContent="center"
@@ -106,7 +106,7 @@ export default function DashboardFisioterapeuta({
             borderBottomColor="pink.600"
           >
             <Flex justifyContent="flex-start" w="85%" direction="column">
-              <Text fontSize="lg" mb={2}>
+              <Text fontSize="lg" mb={2} fontWeight="medium">
                 Buscar Paciente
               </Text>
             </Flex>
@@ -162,6 +162,20 @@ export default function DashboardFisioterapeuta({
                   isDisabled={!nomeSelecionado}
                 >
                   Registros
+                </Button>
+              </Link>
+              <Link href={`/orientacao/fisioterapeuta/paciente/${pacienteId}`}>
+                <Button
+                  leftIcon={<FaRegBell size={20} />}
+                  mt={3}
+                  mr={4}
+                  bg="pink.600"
+                  color="white"
+                  size="lg"
+                  _hover={{ bg: "pink.500" }}
+                  isDisabled={!nomeSelecionado}
+                >
+                  Orientações
                 </Button>
               </Link>
             </Flex>

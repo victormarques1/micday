@@ -7,7 +7,8 @@ import {
   useMediaQuery,
   Button,
   Input,
-  Select,
+  Box,
+  VStack,
 } from "@chakra-ui/react";
 
 import { canSSRAuth } from "@/utils/canSSRAuth";
@@ -16,22 +17,28 @@ import { SidebarFisioterapeuta } from "../../../../components/sidebar/fisioterap
 
 import Link from "next/link";
 import { FiChevronLeft } from "react-icons/fi";
+import { BsPerson } from "react-icons/bs";
+import { AiOutlineFileSearch } from "react-icons/ai";
+import { FaRegBell } from "react-icons/fa";
+import { format } from "date-fns";
 
 interface PacienteItem {
   id: string;
   idade: number;
-  altura: number;
-  peso: number;
-  etnia: string;
+  created_at: string;
   usuario_id: string;
   fisioterapeuta_id: string;
-  tipo_id: string;
   usuario: UsuarioProps;
+  tipo: TipoProps;
 }
 
 interface UsuarioProps {
   nome: string;
   cpf: string;
+}
+
+interface TipoProps {
+  nome: string;
 }
 
 interface PacienteProps {
@@ -40,17 +47,7 @@ interface PacienteProps {
 
 export default function MeusPacientes({ pacientes }: PacienteProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
-
   const [nome, setNome] = useState("");
-  const [nomes, setNomes] = useState([]);
-
-  const [idade, setIdade] = useState(pacientes[0]?.idade);
-  console.log(nome);
-
-  useEffect(() => {
-    const nomes = pacientes.map((paciente) => paciente.usuario.nome);
-    setNomes(nomes);
-  }, [pacientes]);
 
   return (
     <>
@@ -95,43 +92,80 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
             </Heading>
           </Flex>
 
-          <Flex
-            maxW="900px"
-            w="100%"
-            align="center"
-            justifyContent="center"
-            mt={4}
-            pt={8}
-            pb={8}
-            direction="column"
-            bg="pink.50"
-            borderColor="transparent"
-            borderBottomWidth={2}
-            borderBottomColor="pink.600"
-          >
-            <Flex justifyContent="flex-start" w="85%" direction="column">
-              <Text fontSize="lg" mb={2}>
-                Buscar Paciente
-              </Text>
-            </Flex>
-            <Select
-              size="lg"
-              w="85%"
-              focusBorderColor="pink.700"
-              borderColor={"pink.700"}
-              _hover={{ borderColor: "pink.700" }}
-              placeholder="Selecione o paciente"
-              mb={4}
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-            >
-              {nomes.map((nome) => (
-                <option key={nome} value={nome}>
-                  {nome}
-                </option>
-              ))}
-            </Select>
-          </Flex>
+          <VStack align="stretch" spacing={4} w="100%">
+            {pacientes.map((paciente) => (
+              <Box
+                key={paciente.id}
+                mt={isMobile ? 0 : 4}
+                p={4}
+                shadow="md"
+                bg="pink.50"
+                borderBottomColor="pink.700"
+                borderBottomWidth={2}
+                fontSize="lg"
+              >
+                <Text fontSize="lg" mb={2}>
+                  <strong>Nome:</strong> {paciente.usuario.nome}
+                </Text>
+                <Text fontSize="lg" mb={2}>
+                  <strong>Idade:</strong> {paciente.idade}
+                </Text>
+                <Text fontSize="lg" mb={2}>
+                  <strong>Tipo de IU:</strong> {paciente.tipo?.nome}
+                </Text>
+                <Text fontSize="lg" mb={2}>
+                  <strong>Usuário desde:</strong>{" "}
+                  {format(new Date(paciente.created_at), "dd/MM/yyyy")}
+                </Text>
+                <Flex direction={isMobile ? 'column' : 'row'}>
+                <Link href={`/perfil/paciente/${paciente.id}`}>
+                  <Button
+                    leftIcon={<BsPerson size={16} />}
+                    mt={3}
+                    mr={4}
+                    bg="pink.600"
+                    color="white"
+                    size="md"
+                    _hover={{ bg: "pink.500" }}
+                  >
+                    Perfil
+                  </Button>
+                </Link>
+
+                <Link href={`/registros/paciente/${paciente.id}`}>
+                  <Button
+                    leftIcon={<AiOutlineFileSearch size={16} />}
+                    mt={3}
+                    mr={4}
+                    bg="pink.600"
+                    color="white"
+                    size="md"
+
+                    _hover={{ bg: "pink.500" }}
+                  >
+                    Registros
+                  </Button>
+                </Link>
+                <Link
+                  href={`/orientacao/fisioterapeuta/paciente/${paciente.id}`}
+                >
+                  <Button
+                    leftIcon={<FaRegBell size={16} />}
+                    mt={3}
+                    mr={4}
+                    bg="pink.600"
+                    color="white"
+                    size="md"
+
+                    _hover={{ bg: "pink.500" }}
+                  >
+                    Orientações
+                  </Button>
+                </Link>
+                </Flex>
+              </Box>
+            ))}
+          </VStack>
         </Flex>
       </SidebarFisioterapeuta>
     </>

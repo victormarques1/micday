@@ -3,7 +3,7 @@ import { AtualizarOrientacaoService } from '../../services/orientacao/AtualizarO
 
 class AtualizarOrientacaoController {
     async handle(req: Request, res: Response){
-        const orientacao_id = req.query.orientacao_id as string;
+        const orientacao_id = req.params.orientacao_id;
         const { descricao, paciente_id, data} = req.body;
 
         const atualizarOrientacaoService = new AtualizarOrientacaoService();

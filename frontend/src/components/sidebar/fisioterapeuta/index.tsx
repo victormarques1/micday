@@ -54,7 +54,7 @@ const LinkItems: Array<LinkItemProps> = [
     rota: "/orientacao/fisioterapeuta/criar",
   },
   
-  { nome: "Criar Relatórios", icon: AiFillFileAdd, rota: "/" },
+  
   { nome: "Minha Conta", icon: FiSettings, rota: "/perfil/fisioterapeuta" },
 ];
 

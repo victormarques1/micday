@@ -14,6 +14,11 @@ class MeusPacientesService {
                         nome: true,
                         cpf: true
                     }
+                },
+                tipo:{
+                    select:{
+                        nome: true
+                    }
                 }
             }
         })

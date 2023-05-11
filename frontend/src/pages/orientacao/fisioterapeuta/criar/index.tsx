@@ -128,7 +128,6 @@ export default function CriarOrientacoes({
             </Heading>
           </Flex>
           <Flex
-            maxW="900px"
             w="100%"
             align="center"
             justifyContent="center"
@@ -141,7 +140,7 @@ export default function CriarOrientacoes({
             borderBottomColor="pink.600"
           >
             <Flex justifyContent="flex-start" w="85%" direction="column">
-              <Text fontSize={isMobile ? "md" : "lg"} mb={2}>
+              <Text fontSize={isMobile ? "md" : "lg"} mb={2} fontWeight="medium">
                 Paciente
               </Text>
             </Flex>
@@ -172,7 +171,7 @@ export default function CriarOrientacoes({
             </Select>
 
             <Flex justifyContent="flex-start" w="85%">
-              <Text fontSize={isMobile ? "md" : "lg"} mb={1}>
+              <Text fontSize={isMobile ? "md" : "lg"} mb={1} fontWeight="medium">
                 Data / Hora
               </Text>
             </Flex>
@@ -191,7 +190,7 @@ export default function CriarOrientacoes({
             />
 
             <Flex justifyContent="flex-start" w="85%">
-              <Text fontSize={isMobile ? "md" : "lg"} mb={1}>
+              <Text fontSize={isMobile ? "md" : "lg"} mb={1} fontWeight="medium">
                 Descrição:{" "}
               </Text>
             </Flex>

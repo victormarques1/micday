@@ -96,15 +96,16 @@ export default function OrientacoesFisioterapeuta({
   async function handleEdit() {
     try {
       const { id, descricao, data, paciente } = orientacaoSelecionada;
+      const dataFormatada = moment(data).tz("America/Sao_Paulo").format("YYYY-MM-DDTHH:mm")
+      // console.log(`paciente_id: ${paciente.id}, descricao: ${descricao}, data: ${data}`);
       const apiClient = setupAPIClient();
-      const dataFormatada = moment(data).tz("America/Sao_Paulo").format("YYYY-MM-DDTHH:mm");
-      console.log(`paciente_id: ${paciente.id}, descricao: ${descricao}, data: ${data}`);
       await apiClient.put(`/orientacoes/${id}`, {
-        descricao,
+        descricao: descricao,
         data: dataFormatada,
         paciente_id: paciente.id,
       });
       toast.success("Orientação atualizada com sucesso!");
+      onClose();
       Router.push("/orientacao/fisioterapeuta/lista");
     } catch(err) {
       console.log(err);
@@ -154,7 +155,7 @@ export default function OrientacoesFisioterapeuta({
             </Heading>
           </Flex>
 
-          <VStack align="stretch" spacing={4} w="100%" maxW="900px">
+          <VStack align="stretch" spacing={4} w="100%" >
             {orientacoesOrdenadas.map((orientacao) => (
               <Box
                 key={orientacao.id}
@@ -165,7 +166,6 @@ export default function OrientacoesFisioterapeuta({
                 borderBottomWidth={2}
                 fontSize="lg"
               >
-                <Text>id: {orientacao.id}</Text>
                 <Text mb={1}>
                   <strong>Paciente:</strong> {orientacao.paciente.usuario.nome}
                 </Text>
