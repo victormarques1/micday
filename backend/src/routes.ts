@@ -48,8 +48,8 @@ router.get('/fisioterapeutas',  new ListarFisioterapeutaController().handle)
 
 // ROTAS FISIOTERAPEUTA
 router.post('/orientacoes', authUsuario, protegeRotaFisioterapeuta, new CriarOrientacaoController().handle);
-router.delete('/orientacoes', authUsuario, protegeRotaFisioterapeuta, new DeletarOrientacaoController().handle)
-router.put('/orientacoes', authUsuario, protegeRotaFisioterapeuta, new AtualizarOrientacaoController().handle)
+router.delete('/orientacoes/:orientacao_id', authUsuario, protegeRotaFisioterapeuta, new DeletarOrientacaoController().handle)
+router.put('/orientacoes/:orientacao_id', authUsuario, protegeRotaFisioterapeuta, new AtualizarOrientacaoController().handle)
 router.get('/fisioterapeuta/detalhes', authUsuario, protegeRotaFisioterapeuta,  new DetalhesFisioterapeutaController().handle)
 router.put('/fisioterapeuta', authUsuario, protegeRotaFisioterapeuta, new AtualizarFisioterapeutaController().handle)
 router.get('/fisioterapeuta/pacientes', authUsuario, protegeRotaFisioterapeuta, new MeusPacientesController().handle)

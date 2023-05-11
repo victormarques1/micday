@@ -18,6 +18,7 @@ import moment from "moment-timezone";
 import Link from "next/link";
 import { FiChevronLeft } from "react-icons/fi";
 import { toast } from "react-toastify";
+import Router from "next/router";
 
 interface PacienteItem {
   id: string;
@@ -75,6 +76,7 @@ export default function CriarOrientacoes({
       });
 
       toast.success("Registrado com sucesso!");
+      Router.push('/orientacao/fisioterapeuta/lista')
 
     } catch (err) {
       console.log(err);
