@@ -36,7 +36,7 @@ const LinkItems: Array<LinkItemProps> = [
   { nome: "Página Inicial", icon: HiHome, rota: "/dashboard/paciente" },
   { nome: "Registrar Urina", icon: FaToilet, rota: "/urina" },
   { nome: "Registrar Bebida", icon: MdLocalDrink, rota: "/bebida" },
-  { nome: "Orientações", icon: FaBell, rota: "/" },
+  { nome: "Orientações", icon: FaBell, rota: "/orientacao/paciente" },
   { nome: "Minha Conta", icon: FiSettings, rota: "/perfil/paciente" },
 ];
 

@@ -1,24 +1,25 @@
 import prismaClient from "../../prisma";
 
-interface ListaOrientacaoRequest {
-  fisioterapeuta_id: string;
-}
-
 class ListarOrientacaoService {
-  async execute({ fisioterapeuta_id}: ListaOrientacaoRequest) {
+  async execute({ usuario_id }) {
     const listaOrientacoes = await prismaClient.orientacao.findMany({
-        include:{
-           paciente:{
-               include:{
-                    usuario:{
-                        select:{ 
-                            nome: true
-                        }
-                    }
-               }
-            },
+      where: {
+        fisioterapeuta: {
+          usuario_id: usuario_id,
         },
-    })
+      },
+      include: {
+        paciente: {
+          include: {
+            usuario: {
+              select: {
+                nome: true,
+              },
+            },
+          },
+        },
+      },
+    });
 
     return listaOrientacoes;
   }

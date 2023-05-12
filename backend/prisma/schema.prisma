@@ -54,7 +54,6 @@ model Paciente {
   fisioterapeuta Fisioterapeuta @relation(fields: [fisioterapeuta_id], references: [id])
   tipo TipoIncontinencia @relation(fields:[tipo_id], references: [id] )
    
-
   @@map("pacientes")
   usuario_id String
   fisioterapeuta_id String

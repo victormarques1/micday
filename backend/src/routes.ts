@@ -37,6 +37,7 @@ import { MeusPacientesController } from "./controllers/fisioterapeuta/MeusPacien
 import { BuscarPacienteController } from "./controllers/fisioterapeuta/BuscarPacienteController";
 import { BuscarRegistrosController } from "./controllers/fisioterapeuta/BuscarRegistrosController";
 import { BuscarOrientacoesController } from "./controllers/fisioterapeuta/BuscarOrientacoesController";
+import { DetalhesOrientacaoController } from "./controllers/orientacao/DetalhesOrientacaoController";
 
 const router = Router();
 
@@ -80,5 +81,6 @@ router.delete('/paciente/urinas', authUsuario, protegeRotaPaciente,new DeletarUr
 router.delete('/paciente/bebidas', authUsuario, protegeRotaPaciente, new DeletarBebidaController().handle)
 router.put('/paciente/bebida/:bebida_id', authUsuario, protegeRotaPaciente, new AtualizarBebidaController().handle)
 router.put('/paciente/urina/:urina_id', authUsuario, protegeRotaPaciente, new AtualizarUrinaController().handle)
+router.get('/orientacoes/detalhes', authUsuario, protegeRotaPaciente, new DetalhesOrientacaoController().handle)
 
 export { router };

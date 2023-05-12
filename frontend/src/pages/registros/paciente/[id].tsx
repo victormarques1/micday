@@ -65,29 +65,6 @@ interface PacienteRegistrosProps {
 export default function Registros({ registros }: PacienteRegistrosProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
-  // const [urinasList, setUrinasList] = useState<UrinasProps[]>([]);
-  // const [bebidasList, setBebidasList] = useState<BebidasProps[]>([]);
-
-  // const registrosPaciente = [
-  //   ...urinasList.map((urina) => ({ ...urina, tipoList: "urina" })),
-  //   ...bebidasList.map((bebida) => ({ ...bebida, tipoList: "bebida" })),
-  // ];
-  // registrosPaciente.sort(
-  //   (a, b) =>
-  //     (new Date(b.data).getTime() || 0) - (new Date(a.data).getTime() || 0)
-  // );
-
-  // const [filtro, setFiltro] = useState("todos");
-
-  // const filtrarRegistros = (tipoList) => {
-  //   setFiltro(tipoList);
-  // };
-
-  // const registrosFiltrados =
-  //   filtro === "todos"
-  //     ? registrosPaciente
-  //     : registrosPaciente.filter((registro) => registro.tipoList === filtro);
-
   return (
     <>
       <Head>
@@ -143,9 +120,8 @@ export default function Registros({ registros }: PacienteRegistrosProps) {
               <Table
                 variant="unstyled"
                 mb={2}
+                shadow="md"
                 bg="pink.50"
-                borderColor="pink.700"
-                maxW="900px"
                 borderBottomColor="pink.700"
                 borderBottomWidth={2}
               >
@@ -187,9 +163,8 @@ export default function Registros({ registros }: PacienteRegistrosProps) {
               <Table
                 variant="unstyled"
                 mb={2}
+                shadow="md"
                 bg="pink.50"
-                borderColor="pink.700"
-                maxW="900px"
                 borderBottomColor="pink.700"
                 borderBottomWidth={2}
               >

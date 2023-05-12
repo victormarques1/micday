@@ -51,8 +51,7 @@ export default function Urina() {
       });
 
       toast.success("Registrado com sucesso!");
-      Router.push("/dashboard/paciente")
-
+      Router.push("/dashboard/paciente");
     } catch (err) {
       toast.error("Erro ao registrar urina.");
     }
@@ -110,13 +109,13 @@ export default function Urina() {
             pt={8}
             pb={8}
             direction="column"
+            shadow="md"
             bg="pink.50"
-            borderColor="transparent"
+            borderBottomColor="pink.700"
             borderBottomWidth={2}
-            borderBottomColor="pink.600"
           >
             <Flex justifyContent="flex-start" w="85%">
-              <Text fontSize="lg" mb={1}>
+              <Text fontSize="lg" mb={1} fontWeight="medium">
                 Data / Hora
               </Text>
             </Flex>
@@ -134,7 +133,7 @@ export default function Urina() {
             />
 
             <Flex justifyContent="flex-start" w="85%">
-              <Text fontSize="lg" mb={1}>
+              <Text fontSize="lg" fontWeight="medium" mb={1}>
                 Quantidade (ml)
               </Text>
             </Flex>

@@ -2,13 +2,15 @@ import { useContext, useState } from "react";
 
 import Head from "next/head";
 
-import { Flex, Text, Heading, Input, Button } from "@chakra-ui/react";
+import { Flex, Text, Heading, Input, Button, useMediaQuery } from "@chakra-ui/react";
 
-import { SidebarPaciente } from "@/components/sidebar/paciente";
+import { SidebarFisioterapeuta } from "@/components/sidebar/fisioterapeuta";
 
 import { canSSRAuth } from "@/utils/canSSRAuth";
 import { AuthContext } from "@/context/AuthContext";
 import { setupAPIClient } from "@/services/api";
+import { CgLogOut } from "react-icons/cg";
+import { AiOutlineEdit } from "react-icons/ai";
 
 import { toast } from "react-toastify";
 
@@ -34,6 +36,7 @@ export default function PerfilFisioterapeuta({
   fisioterapeuta,
 }: PerfilProps) {
   const { deslogarUsuario } = useContext(AuthContext);
+  const [isMobile] = useMediaQuery("(max-width: 500px)");
 
   const [nome, setNome] = useState(usuario && usuario?.nome);
   const [cpf, setCpf] = useState(usuario && usuario?.cpf);
@@ -49,23 +52,18 @@ export default function PerfilFisioterapeuta({
   }
 
   async function handleEditarUsuario() {
-    if (
-      nome === "" ||
-      cpf === "" ||
-      crefito === "" ||
-      atuacao === "" 
-    ) {
+    if (nome === "" || cpf === "" || crefito === "" || atuacao === "") {
       toast.error("Dados incompletos.");
       return;
     }
 
-    if(cpf.length != 11){
-      toast.warning("CPF Inválido! Informe apenas os 11 números.")
+    if (cpf.length != 11) {
+      toast.warning("CPF Inválido! Informe apenas os 11 números.");
       return;
     }
 
-    if(crefito.length < 5){
-      toast.warning("Informe um código CREFITO válido!")
+    if (crefito.length < 5) {
+      toast.warning("Informe um código CREFITO válido!");
       return;
     }
 
@@ -78,13 +76,13 @@ export default function PerfilFisioterapeuta({
       });
 
       await apiClient.put("/fisioterapeuta", {
-        crefito: crefito, 
-        atuacao: atuacao
+        crefito: crefito,
+        atuacao: atuacao,
       });
 
       toast.success("Perfil atualizado sucesso!");
     } catch (err) {
-      console.log(err)
+      console.log(err);
       toast.error("Erro ao editar perfil");
     }
   }
@@ -94,7 +92,7 @@ export default function PerfilFisioterapeuta({
       <Head>
         <title>Minha Conta | mic.day</title>
       </Head>
-      <SidebarPaciente>
+      <SidebarFisioterapeuta>
         <Flex
           direction="column"
           alignItems="flex-start"
@@ -115,18 +113,23 @@ export default function PerfilFisioterapeuta({
           <Flex
             pt={8}
             pb={8}
+            shadow="md"
             bg="pink.50"
-            borderWidth={"2px"}
-            borderColor="pink.600"
-            borderRadius={4}
+            borderBottomColor="pink.700"
+            borderBottomWidth={2}
+            fontSize="lg"
             w="100%"
-            maxW="700px"
+            maxW="1100px"
             direction={"column"}
             alignItems="center"
             justifyContent={"center"}
           >
             <Flex direction={"column"} w={"85%"}>
-              <Text mb={2} fontSize="xl" fontWeight={"bold"}>
+              <Text
+                mb={2}
+                fontSize={isMobile ? "lg" : "xl"}
+                fontWeight="medium"
+              >
                 Nome do Fisioterapeuta:{" "}
               </Text>
               <Input
@@ -142,7 +145,11 @@ export default function PerfilFisioterapeuta({
                 onChange={(e) => setNome(e.target.value)}
               />
 
-              <Text mb={2} fontSize="xl" fontWeight={"bold"}>
+              <Text
+                mb={2}
+                fontSize={isMobile ? "lg" : "xl"}
+                fontWeight="medium"
+              >
                 CPF:{" "}
               </Text>
               <Input
@@ -158,7 +165,11 @@ export default function PerfilFisioterapeuta({
                 onChange={(e) => setCpf(e.target.value)}
               />
 
-              <Text mb={2} fontSize="xl" fontWeight={"bold"}>
+              <Text
+                mb={2}
+                fontSize={isMobile ? "lg" : "xl"}
+                fontWeight="medium"
+              >
                 Crefito:{" "}
               </Text>
               <Input
@@ -174,7 +185,11 @@ export default function PerfilFisioterapeuta({
                 onChange={(e) => setCrefito(e.target.value)}
               />
 
-              <Text mb={2} fontSize="xl" fontWeight={"bold"}>
+              <Text
+                mb={2}
+                fontSize={isMobile ? "lg" : "xl"}
+                fontWeight="medium"
+              >
                 Local de atuação:{" "}
               </Text>
               <Input
@@ -197,21 +212,23 @@ export default function PerfilFisioterapeuta({
                 bg="pink.600"
                 color="white"
                 size="lg"
+                leftIcon={<AiOutlineEdit size={22} />}
                 _hover={{ bg: "pink.500" }}
                 onClick={handleEditarUsuario}
               >
-                Salvar
+                Salvar dados
               </Button>
 
               <Button
                 w="100%"
                 mb={4}
-                bg="blackAlpha.400"
+                bg="gray.50"
                 borderColor={"pink.600"}
                 borderWidth={1}
-                color="pink.600"
+                color="pink.500"
+                leftIcon={<CgLogOut size={22} />}
                 size="lg"
-                _hover={{ bg: "blackAlpha.300" }}
+                _hover={{ bg: "white" }}
                 onClick={handleLogout}
               >
                 Sair da conta
@@ -219,7 +236,7 @@ export default function PerfilFisioterapeuta({
             </Flex>
           </Flex>
         </Flex>
-      </SidebarPaciente>
+      </SidebarFisioterapeuta>
     </>
   );
 }

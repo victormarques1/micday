@@ -95,11 +95,11 @@ export default function PerfilPacienteId({ paciente }: PacienteIdProps) {
             justifyContent="flex-start"
             p={4}
             mt={isMobile? 0:4}
-            direction="column"
+            shadow="md"
             bg="pink.50"
-            borderColor="transparent"
+            borderBottomColor="pink.700"
             borderBottomWidth={2}
-            borderBottomColor="pink.600"
+            direction="column"
           >
             <Text mb={2} fontSize={isMobile ? "md" : "lg"}>
               <strong>Nome: </strong>

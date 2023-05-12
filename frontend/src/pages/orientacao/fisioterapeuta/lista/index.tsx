@@ -53,10 +53,8 @@ export default function OrientacoesFisioterapeuta({
   orientacoes,
 }: OrientacaoListProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
-  const [isEditing, setIsEditing] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [orientacao, setOrientacao] = useState(orientacoes);
   const [orientacaoSelecionada, setOrientacaoSelecionada] = useState(null);
 
   const orientacoesOrdenadas = orientacoes.sort((a, b) => {
@@ -96,7 +94,9 @@ export default function OrientacoesFisioterapeuta({
   async function handleEdit() {
     try {
       const { id, descricao, data, paciente } = orientacaoSelecionada;
-      const dataFormatada = moment(data).tz("America/Sao_Paulo").format("YYYY-MM-DDTHH:mm")
+      const dataFormatada = moment(data)
+        .tz("America/Sao_Paulo")
+        .format("YYYY-MM-DDTHH:mm");
       // console.log(`paciente_id: ${paciente.id}, descricao: ${descricao}, data: ${data}`);
       const apiClient = setupAPIClient();
       await apiClient.put(`/orientacoes/${id}`, {
@@ -107,7 +107,7 @@ export default function OrientacoesFisioterapeuta({
       toast.success("Orientação atualizada com sucesso!");
       onClose();
       Router.push("/orientacao/fisioterapeuta/lista");
-    } catch(err) {
+    } catch (err) {
       console.log(err);
       toast.error("Erro ao atualizar orientação.");
     }
@@ -155,7 +155,7 @@ export default function OrientacoesFisioterapeuta({
             </Heading>
           </Flex>
 
-          <VStack align="stretch" spacing={4} w="100%" >
+          <VStack align="stretch" spacing={4} w="100%">
             {orientacoesOrdenadas.map((orientacao) => (
               <Box
                 key={orientacao.id}
@@ -234,21 +234,24 @@ export default function OrientacoesFisioterapeuta({
                 <FormControl id="dataHora" mb={3}>
                   <FormLabel>Data / Hora</FormLabel>
                   {orientacaoSelecionada && (
-                   <Input
-                   value={format(new Date(orientacaoSelecionada.data), "yyyy-MM-dd'T'HH:mm")}
-                   placeholder="Data e Hora"
-                   size="lg"
-                   type="datetime-local"
-                   focusBorderColor="pink.700"
-                   borderColor={"pink.700"}
-                   _hover={{ borderColor: "pink.700" }}
-                   onChange={(e) =>
-                     setOrientacaoSelecionada({
-                       ...orientacaoSelecionada,
-                       data: e.target.value,
-                     })
-                   }
-                 />
+                    <Input
+                      value={format(
+                        new Date(orientacaoSelecionada.data),
+                        "yyyy-MM-dd'T'HH:mm"
+                      )}
+                      placeholder="Data e Hora"
+                      size="lg"
+                      type="datetime-local"
+                      focusBorderColor="pink.700"
+                      borderColor={"pink.700"}
+                      _hover={{ borderColor: "pink.700" }}
+                      onChange={(e) =>
+                        setOrientacaoSelecionada({
+                          ...orientacaoSelecionada,
+                          data: e.target.value,
+                        })
+                      }
+                    />
                   )}
                 </FormControl>
                 <FormControl id="descricao">
@@ -259,7 +262,7 @@ export default function OrientacoesFisioterapeuta({
                     placeholder="Informe a orientação que deseja enviar ao paciente.."
                     size="lg"
                     borderColor={"pink.700"}
-                    value={orientacaoSelecionada?.descricao ?? ''}
+                    value={orientacaoSelecionada?.descricao ?? ""}
                     onChange={(e) =>
                       setOrientacaoSelecionada({
                         ...orientacaoSelecionada,

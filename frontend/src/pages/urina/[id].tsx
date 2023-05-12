@@ -108,9 +108,9 @@ export default function EditUrina({ urina }: EditUrinaProps) {
 
             <Heading
               color="pink.700"
-              mt={4}
-              mr={4}
-              mb={4}
+              mt={isMobile ? 2 : 4}
+              mr={isMobile ? 0 : 4}
+              mb={isMobile ? 0 : 4}
               fontSize={isMobile ? "24px" : "3xl"}
             >
               Editar Registro de Urina
@@ -122,17 +122,17 @@ export default function EditUrina({ urina }: EditUrinaProps) {
             w="100%"
             align="center"
             justifyContent="center"
-            mt={4}
-            pt={8}
-            pb={8}
+            mt={isMobile ? 2 : 4}
+            pt={isMobile ? 4 : 8}
+            pb={isMobile ? 4 : 8}
             direction="column"
+            shadow="md"
             bg="pink.50"
-            borderColor="transparent"
+            borderBottomColor="pink.700"
             borderBottomWidth={2}
-            borderBottomColor="pink.600"
           >
             <Flex justifyContent="flex-start" w="85%">
-              <Text fontSize="lg" mb={1}>
+              <Text fontSize="lg" fontWeight="medium" mb={1}>
                 Data / Hora
               </Text>
             </Flex>
@@ -150,7 +150,7 @@ export default function EditUrina({ urina }: EditUrinaProps) {
             />
 
             <Flex justifyContent="flex-start" w="85%">
-              <Text fontSize="lg" mb={1}>
+              <Text fontSize="lg" fontWeight="medium" mb={1}>
                 Quantidade (ml)
               </Text>
             </Flex>

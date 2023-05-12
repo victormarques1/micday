@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { useContext } from "react";
 
 import {
   IconButton,
@@ -23,7 +24,7 @@ import { HiHome } from "react-icons/hi";
 import { FaBell } from "react-icons/fa";
 import { MdPersonSearch } from "react-icons/md";
 import { RiFileSearchFill } from "react-icons/ri";
-import { AiFillFileAdd } from "react-icons/ai";
+import { AuthContext } from "@/context/AuthContext";
 
 import Link from "next/link";
 
@@ -53,13 +54,13 @@ const LinkItems: Array<LinkItemProps> = [
     icon: FaBell,
     rota: "/orientacao/fisioterapeuta/criar",
   },
-  
-  
+
   { nome: "Minha Conta", icon: FiSettings, rota: "/perfil/fisioterapeuta" },
 ];
 
 export function SidebarFisioterapeuta({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { deslogarUsuario } = useContext(AuthContext);
 
   return (
     <>

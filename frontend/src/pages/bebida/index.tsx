@@ -108,13 +108,13 @@ export default function Bebida() {
             pt={8}
             pb={8}
             direction="column"
+            shadow="md"
             bg="pink.50"
-            borderColor="transparent"
+            borderBottomColor="pink.700"
             borderBottomWidth={2}
-            borderBottomColor="pink.600"
           >
             <Flex justifyContent="flex-start" w="85%">
-              <Text fontSize="lg" mb={1}>
+              <Text fontSize="lg" fontWeight="medium" mb={1}>
                 Data / Hora
               </Text>
             </Flex>
@@ -132,7 +132,7 @@ export default function Bebida() {
             />
 
             <Flex justifyContent="flex-start" w="85%" direction="column">
-              <Text fontSize="lg" mb={1}>
+              <Text fontSize="lg" mb={1} fontWeight="medium">
                 Tipo de bebida
               </Text>
               <Select
@@ -143,7 +143,7 @@ export default function Bebida() {
                 placeholder="Selecione o tipo de bebida"
                 mb={4}
                 value={tipo}
-              onChange={(e) => setTipo(e.target.value)}
+                onChange={(e) => setTipo(e.target.value)}
               >
                 <option value="Água">Água</option>
                 <option value="Café">Café</option>
@@ -152,7 +152,7 @@ export default function Bebida() {
             </Flex>
 
             <Flex justifyContent="flex-start" w="85%">
-              <Text fontSize="lg" mb={1}>
+              <Text fontSize="lg" mb={1} fontWeight="medium">
                 Quantidade (ml)
               </Text>
             </Flex>

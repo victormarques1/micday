@@ -3,12 +3,12 @@ import { ListarOrientacaoService } from "../../services/orientacao/ListarOrienta
 
 class ListarOrientacaoController {
     async handle(req: Request, res: Response){
-        const fisioterapeuta_id = req.fisioterapeuta_id;
+        const usuario_id = req.usuario_id;
 
         const listarOrientacaoService = new ListarOrientacaoService();
 
         const listaOrientacoes = await listarOrientacaoService.execute({
-            fisioterapeuta_id,
+            usuario_id,
         });
 
         return res.json(listaOrientacoes);

@@ -100,10 +100,10 @@ export default function DashboardFisioterapeuta({
             pt={8}
             pb={8}
             direction="column"
+            shadow="md"
             bg="pink.50"
-            borderColor="transparent"
+            borderBottomColor="pink.700"
             borderBottomWidth={2}
-            borderBottomColor="pink.600"
           >
             <Flex justifyContent="flex-start" w="85%" direction="column">
               <Text fontSize="lg" mb={2} fontWeight="medium">

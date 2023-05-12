@@ -11,13 +11,13 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-import { canSSRAuth } from "@/utils/canSSRAuth";
 import { SidebarPaciente } from "../../../components/sidebar/paciente";
+import { canSSRAuth } from "@/utils/canSSRAuth";
+import { setupAPIClient } from "@/services/api";
 
 import { MdOutlineWaterDrop, MdWaterDrop } from "react-icons/md";
 import { TbBottle } from "react-icons/tb";
-import { AiOutlineEdit } from 'react-icons/ai'
-import { setupAPIClient } from "@/services/api";
+import { AiOutlineEdit } from "react-icons/ai";
 
 import { format } from "date-fns";
 
@@ -114,41 +114,51 @@ export default function DashboardPaciente({ urinas, bebidas }: PacienteProps) {
             registrosFiltrados.map((registro) => (
               <Box
                 key={registro.id}
+                shadow="md"
                 bg="pink.50"
-                borderBottomWidth={2}
                 borderBottomColor="pink.700"
-                mb={3}
+                borderBottomWidth={2}
+                mb={4}
                 p={4}
               >
-                  <Flex alignItems="center" mb={2}>
-                    {registro.tipoList === "urina" ? (
-                      <Box
-                        as={MdOutlineWaterDrop}
-                        size={24}
-                        color="#97266D"
-                        mr={2}
-                      />
-                    ) : (
-                      <Box as={TbBottle} size={24} color="#97266D" mr={2} />
-                    )}
-                    <Text fontWeight="semibold">
-                      {registro.tipoList === "urina" ? "Urina" : "Bebida"}
-                    </Text>
-                  </Flex>
-                  <Text display="flex" justifyContent="space-between">
-                    Quantidade: {registro.quantidade} ml | Data:{" "}
-                    {format(new Date(registro.data), "dd/MM/yyyy HH:mm")}
-                    <Link href={`/${registro.tipoList}/${registro.id}`}>
-                    <Button bg="pink.600" color="white" size="sm" ml="auto" _hover={{bg:"pink.500"}}>
-                      <AiOutlineEdit size={16}/>
+                <Flex alignItems="center" mb={2}>
+                  {registro.tipoList === "urina" ? (
+                    <Box
+                      as={MdOutlineWaterDrop}
+                      size={24}
+                      color="#97266D"
+                      mr={2}
+                    />
+                  ) : (
+                    <Box as={TbBottle} size={24} color="#97266D" mr={2} />
+                  )}
+                  <Text fontWeight="semibold" fontSize={isMobile ? "md" : "lg"}>
+                    {registro.tipoList === "urina" ? "Urina" : "Bebida"}
+                  </Text>
+                </Flex>
+                <Text
+                  display="flex"
+                  justifyContent="space-between"
+                  fontSize={isMobile ? "md" : "lg"}
+                >
+                  Quantidade: {registro.quantidade} ml | Data:{" "}
+                  {format(new Date(registro.data), "dd/MM/yyyy HH:mm")}
+                  <Link href={`/${registro.tipoList}/${registro.id}`}>
+                    <Button
+                      bg="pink.600"
+                      color="white"
+                      size="sm"
+                      ml="auto"
+                      _hover={{ bg: "pink.500" }}
+                    >
+                      <AiOutlineEdit size={16} />
                     </Button>
                   </Link>
-                  </Text>
-                {/* </Link> */}
+                </Text>
               </Box>
             ))
           ) : (
-            <Text>Nenhum registro encontrado.</Text>
+            <Text fontSize="lg">Nenhum registro encontrado.</Text>
           )}
         </Box>
       </SidebarPaciente>

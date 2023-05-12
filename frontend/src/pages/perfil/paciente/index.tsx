@@ -10,6 +10,7 @@ import {
   Button,
   InputGroup,
   InputLeftElement,
+  useMediaQuery,
 } from "@chakra-ui/react";
 
 import { SidebarPaciente } from "@/components/sidebar/paciente";
@@ -18,6 +19,8 @@ import { Icon } from "@chakra-ui/react";
 import { HiUser, HiClipboardList, HiIdentification } from "react-icons/hi";
 import { GiBodyHeight } from "react-icons/gi";
 import { BiBody } from "react-icons/bi";
+import { CgLogOut } from "react-icons/cg";
+import { AiOutlineEdit } from "react-icons/ai";
 
 import { canSSRAuth } from "@/utils/canSSRAuth";
 import { AuthContext } from "@/context/AuthContext";
@@ -45,6 +48,7 @@ interface PerfilProps {
 
 export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
   const { deslogarUsuario } = useContext(AuthContext);
+  const [isMobile] = useMediaQuery("(max-width: 500px)");
 
   const [nome, setNome] = useState(usuario && usuario?.nome);
   const [cpf, setCpf] = useState(usuario && usuario?.cpf);
@@ -137,17 +141,23 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
           <Flex
             pt={8}
             pb={8}
+            shadow="md"
             bg="pink.50"
-            borderWidth={"2px"}
-            borderColor="pink.600"
+            borderBottomColor="pink.700"
+            borderBottomWidth={2}
+            fontSize="lg"
             w="100%"
-            maxW="700px"
+            maxW="1100px"
             direction={"column"}
             alignItems="center"
             justifyContent={"center"}
           >
             <Flex direction={"column"} w={"85%"}>
-              <Text mb={2} fontSize="xl" fontWeight={"bold"}>
+              <Text
+                mb={2}
+                fontSize={isMobile ? "lg" : "xl"}
+                fontWeight="medium"
+              >
                 Nome do paciente:{" "}
               </Text>
               <InputGroup size="lg">
@@ -168,7 +178,11 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
                 />
               </InputGroup>
 
-              <Text mb={2} fontSize="xl" fontWeight={"bold"}>
+              <Text
+                mb={2}
+                fontSize={isMobile ? "lg" : "xl"}
+                fontWeight="medium"
+              >
                 CPF:{" "}
               </Text>
               <InputGroup size="lg">
@@ -191,7 +205,11 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
                 />
               </InputGroup>
 
-              <Text mb={2} fontSize="xl" fontWeight={"bold"}>
+              <Text
+                mb={2}
+                fontSize={isMobile ? "lg" : "xl"}
+                fontWeight="medium"
+              >
                 Idade:{" "}
               </Text>
               <InputGroup size="lg">
@@ -214,7 +232,11 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
                 />
               </InputGroup>
 
-              <Text mb={2} fontSize="xl" fontWeight={"bold"}>
+              <Text
+                mb={2}
+                fontSize={isMobile ? "lg" : "xl"}
+                fontWeight="medium"
+              >
                 Altura (metros):{" "}
               </Text>
               <InputGroup size="lg">
@@ -235,7 +257,11 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
                 />
               </InputGroup>
 
-              <Text mb={2} fontSize="xl" fontWeight={"bold"}>
+              <Text
+                mb={2}
+                fontSize={isMobile ? "lg" : "xl"}
+                fontWeight="medium"
+              >
                 Peso (kg):{" "}
               </Text>
               <InputGroup size="lg">
@@ -256,7 +282,11 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
                 />
               </InputGroup>
 
-              <Text mb={2} fontSize="xl" fontWeight={"bold"}>
+              <Text
+                mb={2}
+                fontSize={isMobile ? "lg" : "xl"}
+                fontWeight="medium"
+              >
                 Etnia:{" "}
               </Text>
               <Input
@@ -280,21 +310,23 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
                 bg="pink.600"
                 color="white"
                 size="lg"
+                leftIcon={<AiOutlineEdit size={22} />}
                 _hover={{ bg: "pink.500" }}
                 onClick={handleEditarUsuario}
               >
-                Salvar
+                Salvar dados
               </Button>
 
               <Button
                 w="100%"
                 mb={4}
-                bg="transparent"
+                bg="gray.50"
                 borderColor={"pink.600"}
                 borderWidth={1}
-                color="black"
+                color="pink.500"
+                leftIcon={<CgLogOut size={22} />}
                 size="lg"
-                _hover={{ bg: "transparent" }}
+                _hover={{ bg: "white" }}
                 onClick={handleLogout}
               >
                 Sair da conta
