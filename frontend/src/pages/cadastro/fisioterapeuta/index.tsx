@@ -3,6 +3,8 @@ import { useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Logo from "../../../../public/images/Logo.svg";
+import Bg from "../../../../public/images/bg.svg";
+
 import {
   Flex,
   Center,
@@ -11,6 +13,7 @@ import {
   Input,
   InputLeftElement,
   Button,
+  useMediaQuery,
 } from "@chakra-ui/react";
 
 import { Icon } from "@chakra-ui/react";
@@ -25,6 +28,8 @@ import { canSSRGuest } from "@/utils/canSSRGuest";
 import { setupAPIClient } from "@/services/api";
 
 export default function CadastroFisioterapeuta() {
+  const [isMobile] = useMediaQuery("(max-width: 500px)");
+
   const router = useRouter();
   const usuario_id = router.query.id;
 
@@ -37,8 +42,8 @@ export default function CadastroFisioterapeuta() {
       return;
     }
 
-    if(crefito.length < 5){
-      toast.warning("Informe um código CREFITO válido!")
+    if (crefito.length < 5) {
+      toast.warning("Informe um código CREFITO válido!");
       return;
     }
 
@@ -117,13 +122,16 @@ export default function CadastroFisioterapeuta() {
 
             <Center justifyContent="center">
               <Text mb={6} fontSize={16}>
-                Ao se registrar, você aceita nossos 
+                Ao se registrar, você aceita nossos
                 <Link href="/cadastro/fisioterapeuta" color="blue.500">
-                  <strong style={{ color: '#B83280' }}> termos de uso </strong>
+                  <strong style={{ color: "#B83280" }}> termos de uso </strong>
                 </Link>
                 e a
                 <Link href="/cadastro/fisioterapeuta" color="blue.500">
-                  <strong style={{ color: '#B83280' }}> nossa política de privacidade</strong>
+                  <strong style={{ color: "#B83280" }}>
+                    {" "}
+                    nossa política de privacidade
+                  </strong>
                 </Link>
                 .
               </Text>
@@ -142,9 +150,23 @@ export default function CadastroFisioterapeuta() {
             </Button>
           </Flex>
         </Flex>
-
-        <Flex bg="pink.700" width={["100%", "35%"]} flexShrink="0">
-          
+        <Flex
+          bg="pink.700"
+          style={{ filter: "saturate(180%)" }}
+          width={["100%", "35%"]}
+          height="100%"
+          flexShrink="0"
+          position="relative"
+          display={isMobile ? "none" : "block"}
+        >
+          <Image
+            src={Bg}
+            quality={100}
+            layout="fill"
+            objectFit="cover"
+            objectPosition="center"
+            alt="Background image"
+          />
         </Flex>
       </Flex>
     </>

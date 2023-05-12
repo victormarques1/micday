@@ -18,6 +18,7 @@ import { setupAPIClient } from "@/services/api";
 import { MdOutlineWaterDrop, MdWaterDrop } from "react-icons/md";
 import { TbBottle } from "react-icons/tb";
 import { AiOutlineEdit } from "react-icons/ai";
+import { MdReport } from "react-icons/md";
 
 import { format } from "date-fns";
 
@@ -158,7 +159,10 @@ export default function DashboardPaciente({ urinas, bebidas }: PacienteProps) {
               </Box>
             ))
           ) : (
-            <Text fontSize="lg">Nenhum registro encontrado.</Text>
+            <Flex direction="column" align="center" justify="center" mt={10}>
+            <MdReport size={isMobile ? 120:200} color="RGBA(0, 0, 0, 0.24)"/>
+            <Text fontSize={isMobile ? 'md':'lg'} color="blackAlpha.600">Não há dados para serem exibidos.</Text>
+            </Flex>
           )}
         </Box>
       </SidebarPaciente>

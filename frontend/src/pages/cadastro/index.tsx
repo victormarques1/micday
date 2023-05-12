@@ -3,6 +3,7 @@ import { useState, useContext } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Logo from "../../../public/images/Logo.svg";
+import Bg from "../../../public/images/bg.svg";
 import {
   Flex,
   Stack,
@@ -15,6 +16,7 @@ import {
   Button,
   Radio,
   RadioGroup,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon, EmailIcon, LockIcon } from "@chakra-ui/icons";
 
@@ -22,6 +24,7 @@ import { Icon } from "@chakra-ui/react";
 import { HiUser, HiClipboardList } from "react-icons/hi";
 
 import Link from "next/link";
+import { canSSRGuest } from "@/utils/canSSRGuest";
 
 import { AuthContext } from "../../context/AuthContext";
 
@@ -29,6 +32,7 @@ import { toast } from "react-toastify";
 
 export default function Cadastro() {
   const { cadastrarUsuario } = useContext(AuthContext);
+  const [isMobile] = useMediaQuery("(max-width: 500px)");
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -51,13 +55,13 @@ export default function Cadastro() {
       return;
     }
 
-    if(senha.length < 6){
-      toast.warning("Sua senha precisar ter no mínimo 6 dígitos!")
+    if (senha.length < 6) {
+      toast.warning("Sua senha precisar ter no mínimo 6 dígitos!");
       return;
     }
 
-    if(cpf.length != 11){
-      toast.warning("CPF Inválido! Informe apenas os 11 números.")
+    if (cpf.length != 11) {
+      toast.warning("CPF Inválido! Informe apenas os 11 números.");
       return;
     }
 
@@ -220,16 +224,31 @@ export default function Cadastro() {
           </Flex>
         </Flex>
 
-        <Flex bg="pink.700" width={["100%", "35%"]} flexShrink="0">
-          
+        <Flex
+          bg="pink.700"
+          style={{ filter: "saturate(180%)" }}
+          width={["100%", "35%"]}
+          height="100%" 
+          flexShrink="0"
+          position="relative"
+          display={isMobile ? "none" : "block"}
+        >
+          <Image
+            src={Bg}
+            quality={100}
+            layout="fill"
+            objectFit="cover"
+            objectPosition="center"
+            alt="Background image"
+          />
         </Flex>
       </Flex>
     </>
   );
 }
 
-// export const getServerSideProps = canSSRGuest(async (ctx) => {
-//   return{
-//     props:{}
-//   }
-// })
+export const getServerSideProps = canSSRGuest(async (ctx) => {
+  return {
+    props: {},
+  };
+});

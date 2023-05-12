@@ -49,6 +49,12 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
   const [nome, setNome] = useState("");
 
+  const pacientesOrdenados = pacientes.sort((a, b) => {
+    const dataA = new Date(a.created_at).getTime();
+    const dataB = new Date(b.created_at).getTime();
+    return dataB - dataA;
+  });
+
   return (
     <>
       <Head>
@@ -93,7 +99,7 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
           </Flex>
 
           <VStack align="stretch" spacing={4} w="100%">
-            {pacientes.map((paciente) => (
+            {pacientesOrdenados.map((paciente) => (
               <Box
                 key={paciente.id}
                 mt={isMobile ? 0 : 4}
