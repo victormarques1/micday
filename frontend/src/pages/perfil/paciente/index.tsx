@@ -52,6 +52,8 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
 
   const [nome, setNome] = useState(usuario && usuario?.nome);
   const [cpf, setCpf] = useState(usuario && usuario?.cpf);
+  const cpfFormatado = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+  
   const [idade, setIdade] = useState(paciente && paciente?.idade);
   const [altura, setAltura] = useState(paciente && paciente?.altura);
   const [peso, setPeso] = useState(paciente && paciente?.peso);
@@ -121,20 +123,17 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
         <title>Minha Conta | mic.day</title>
       </Head>
       <SidebarPaciente>
-        <Flex
-          direction="column"
-          alignItems="flex-start"
-          justifyContent={"flex-start"}
-          px={4}
-        >
+      <Flex direction="column" alignItems="center" justifyContent="center">
+
           <Flex
+          maxW="1100"
             w="100%"
             direction={"row"}
-            alignItems="flex-start"
+            alignItems="center"
             justifyContent={"flex-start"}
           >
             <Heading fontSize={"3xl"} mt={4} mb={5} mr={4} color="pink.700">
-              Minha Conta
+              Configurações do Perfil
             </Heading>
           </Flex>
 
@@ -147,7 +146,7 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
             borderBottomWidth={2}
             fontSize="lg"
             w="100%"
-            maxW="1100px"
+            maxW="1100"
             direction={"column"}
             alignItems="center"
             justifyContent={"center"}

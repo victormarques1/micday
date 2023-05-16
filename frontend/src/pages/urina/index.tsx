@@ -12,6 +12,8 @@ import {
   Checkbox,
   InputGroup,
   InputLeftElement,
+  OrderedList,
+  ListItem,
 } from "@chakra-ui/react";
 
 import { Icon } from "@chakra-ui/react";
@@ -63,12 +65,9 @@ export default function Urina() {
         <title>Registro de Urina | mic.day</title>
       </Head>
       <SidebarPaciente>
-        <Flex
-          direction="column"
-          alignItems="flex-start"
-          justifyContent="flex-start"
-        >
+        <Flex direction="column" alignItems="center" justifyContent="center">
           <Flex
+            maxW="930px"
             direction={isMobile ? "column" : "row"}
             w="100%"
             align={isMobile ? "flex-start" : "center"}
@@ -93,7 +92,7 @@ export default function Urina() {
               color="pink.700"
               mt={4}
               mr={4}
-              mb={4}
+              mb={isMobile ? 0 : 4}
               fontSize={isMobile ? "28px" : "3xl"}
             >
               Registro de Urina
@@ -101,11 +100,11 @@ export default function Urina() {
           </Flex>
 
           <Flex
-            maxW="900px"
+            maxW="930px"
             w="100%"
             align="center"
             justifyContent="center"
-            mt={4}
+            mt={isMobile ? 0 : 4}
             pt={8}
             pb={8}
             direction="column"
@@ -195,8 +194,54 @@ export default function Urina() {
               mb={2}
               onClick={handleUrina}
             >
-              Salvar
+              Registrar
             </Button>
+          </Flex>
+          <Flex
+            maxW="930px"
+            w="100%"
+            align="center"
+            pl={isMobile ? 4 : 4}
+            mt={5}
+            justifyContent="center"
+            direction="column"
+          >
+            <Text
+              fontSize="lg"
+              mb={3}
+              fontWeight="medium"
+              alignSelf="flex-start"
+            >
+              Dicas
+            </Text>
+            <OrderedList>
+              <ListItem mb={2}>
+                Beba água com moderação antes de dormir. Isso pode ajudar a
+                reduzir a necessidade de urinar durante a noite.
+              </ListItem>
+              <ListItem mb={2}>
+                Mantenha um diário alimentar. Alguns alimentos, como bebidas com
+                cafeína ou alimentos ricos em açúcar, podem aumentar a
+                probabilidade de incontinência urinária.
+              </ListItem>
+              <ListItem mb={2}>
+                Realize exercícios de fortalecimento do assoalho pélvico. Esses
+                exercícios podem ajudar a melhorar o controle da bexiga e
+                reduzir a incontinência urinária.
+              </ListItem>
+              <ListItem mb={2}>
+                Considere o uso de produtos de higiene pessoal adequados. Usar
+                produtos adequados para a higiene pessoal pode ajudar a evitar
+                irritações e infecções que podem contribuir para a incontinência
+                urinária.
+              </ListItem>
+              <ListItem mb={2}>
+                Evite roupas apertadas e calcinhas que não sejam de algodão.
+                Roupas apertadas e calcinhas que não são de algodão podem
+                aumentar a umidade na área genital, o que pode contribuir para a
+                incontinência urinária.
+              </ListItem>
+            </OrderedList>
           </Flex>
         </Flex>
       </SidebarPaciente>

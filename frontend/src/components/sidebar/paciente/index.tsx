@@ -1,6 +1,5 @@
-import { useContext } from "react";
+import { useState, useEffect } from "react";
 import { Children, ReactNode } from "react";
-
 import {
   IconButton,
   Box,
@@ -17,6 +16,8 @@ import {
 
 import Image from "next/image";
 import Logo from "../../../../public/images/logo-sidebar.svg";
+import { setupAPIClient } from "@/services/api";
+import { canSSRAuth } from "@/utils/canSSRAuth";
 
 import { IconType } from "react-icons";
 import { FiSettings, FiMenu, FiLogOut } from "react-icons/fi";
@@ -79,7 +80,41 @@ interface SidebarProps extends BoxProps {
   onClose: () => void;
 }
 
+interface PacienteData {
+  usuario: {
+    cpf: string;
+    email: string;
+    id: string;
+    nome: string;
+    tipo: string;
+  };
+}
+
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  const [pacienteData, setPacienteData] = useState<PacienteData | null>(null);
+
+  async function buscarNomes() {
+    try {
+      const apiClient = setupAPIClient();
+      const { data } = await apiClient.get<PacienteData>("/detalhes");
+      console.log(data);
+      setPacienteData({ usuario: data.usuario });
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  }
+  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await buscarNomes();
+      setPacienteData(data.usuario);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Box
       bg="pink.700"
@@ -114,6 +149,18 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           {link.nome}
         </NavItem>
       ))}
+      <Box
+        pos="absolute"
+        bottom={4}
+        left={0}
+        right={0}
+        p={4}
+        bg={useColorModeValue("pink.600", "gray.800")}
+        color="white"
+        textAlign="center"
+      >
+        {pacienteData?.usuario?.nome}
+      </Box>
     </Box>
   );
 };
