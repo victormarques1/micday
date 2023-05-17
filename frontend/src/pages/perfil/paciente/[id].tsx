@@ -40,9 +40,11 @@ interface PacienteIdProps {
 export default function PerfilPacienteId({ paciente }: PacienteIdProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
-  const [cpf, setCpf] = useState(paciente?.usuario.cpf)
-  const cpfFormatado = cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
-  
+  const [cpf, setCpf] = useState(paciente?.usuario.cpf);
+  const cpfFormatado = cpf.replace(
+    /^(\d{3})(\d{3})(\d{3})(\d{2})$/,
+    "$1.$2.$3-$4"
+  );
 
   return (
     <>
@@ -50,19 +52,15 @@ export default function PerfilPacienteId({ paciente }: PacienteIdProps) {
         <title>Perfil de Paciente | mic.day</title>
       </Head>
       <SidebarFisioterapeuta>
-        <Flex
-          direction="column"
-          alignItems="flex-start"
-          justifyContent="flex-start"
-        >
+        <Flex direction="column" alignItems="center" justifyContent="center">
           <Flex
+            maxW="1100px"
             direction={isMobile ? "column" : "row"}
             w="100%"
-            alignItems={isMobile ? "flex-start" : "center"}
-            justifyContent="flex-start"
+            align={isMobile ? "flex-start" : "center"}
             mb={isMobile ? 4 : 0}
           >
-            <Link href="/dashboard/fisioterapeuta">
+            <Link href="/dashboard/paciente">
               <Button
                 p={4}
                 display="flex"
@@ -70,31 +68,31 @@ export default function PerfilPacienteId({ paciente }: PacienteIdProps) {
                 justifyItems="center"
                 mr={4}
                 bg="pink.50"
-                borderColor="pink.600"
+                borderColor="pink.700"
                 _hover={{ bg: "pink.50" }}
               >
                 <FiChevronLeft size={24} color="#B83280" />
                 Voltar
               </Button>
             </Link>
-
             <Heading
               color="pink.700"
               mt={4}
               mr={4}
-              mb={isMobile? 0:4}
-              fontSize={isMobile ? "24px" : "3xl"}
+              mb={isMobile ? 0 : 4}
+              fontSize={isMobile ? "28px" : "3xl"}
             >
-              Perfil do Paciente
+              Perfil do paciente
             </Heading>
           </Flex>
 
           <Flex
             w="100%"
+            maxW="1100px"
             align="flex-start"
             justifyContent="flex-start"
             p={4}
-            mt={isMobile? 0:4}
+            mt={isMobile ? 0 : 4}
             shadow="md"
             bg="pink.50"
             borderBottomColor="pink.700"

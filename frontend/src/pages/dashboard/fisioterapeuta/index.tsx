@@ -77,24 +77,23 @@ export default function DashboardFisioterapeuta({
         <title>Página Inicial | mic.day</title>
       </Head>
       <SidebarFisioterapeuta>
-        <Flex
-          direction="column"
-          alignItems="flex-start"
-          justifyContent="flex-start"
-          p={2}
-        >
+        <Flex direction="column" alignItems="center" justifyContent="center">
           <Flex
+            mt={2}
+            maxW="1100px"
             direction={isMobile ? "column" : "row"}
             w="100%"
+            justifyContent="flex-start"
             align={isMobile ? "flex-start" : "center"}
             mb={isMobile ? 4 : 6}
           >
             <Heading color="pink.700" fontSize={isMobile ? "28px" : "3xl"}>
-              Bem vindo, {fisioterapeutaNome}!
+              Bem vindo(a), {fisioterapeutaNome}
             </Heading>
           </Flex>
           <Flex
             w="100%"
+            maxW="1100px"
             align="center"
             justifyContent="center"
             pt={8}

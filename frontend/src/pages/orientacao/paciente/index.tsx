@@ -8,6 +8,7 @@ import {
   useMediaQuery,
   VStack,
   Box,
+  Checkbox
 } from "@chakra-ui/react";
 import Head from "next/head";
 
@@ -50,63 +51,69 @@ export default function OrientacoesPaciente({
         <title>Minhas Orientações | mic.day</title>
       </Head>
       <SidebarPaciente>
-        <Flex
-          direction={isMobile ? "column" : "row"}
-          w="100%"
-          align={isMobile ? "flex-start" : "center"}
-          mb={isMobile ? 0 : 4}
-        >
-          <Link href="/dashboard/paciente">
-            <Button
-              p={4}
-              display="flex"
-              alignItems="center"
-              justifyItems="center"
-              mr={4}
-              bg="pink.50"
-              borderColor="pink.700"
-              _hover={{ bg: "pink.50" }}
-            >
-              <FiChevronLeft size={24} color="#B83280" />
-              Voltar
-            </Button>
-          </Link>
-          <Heading
-            color="pink.700"
-            mt={4}
-            mr={4}
-            mb={4}
-            fontSize={isMobile ? "28px" : "3xl"}
+        <Flex direction="column" alignItems="center" justifyContent="center">
+          <Flex
+            maxW="1100px"
+            direction={isMobile ? "column" : "row"}
+            w="100%"
+            align={isMobile ? "flex-start" : "center"}
+            mb={isMobile ? 4 : 0}
           >
-            Minhas Orientações
-          </Heading>
-        </Flex>
-
-        <VStack align="stretch" spacing={4} w="100%">
-          {orientacoesOrdenadas.map((orientacao) => (
-            <Box
-              key={orientacao.id}
-              p={4}
-              shadow="md"
-              bg="pink.50"
-              borderBottomColor="pink.700"
-              borderBottomWidth={2}
-              fontSize="lg"
+            <Link href="/dashboard/paciente">
+              <Button
+                p={4}
+                display="flex"
+                alignItems="center"
+                justifyItems="center"
+                mr={4}
+                bg="pink.50"
+                borderColor="pink.700"
+                _hover={{ bg: "pink.50" }}
+              >
+                <FiChevronLeft size={24} color="#B83280" />
+                Voltar
+              </Button>
+            </Link>
+            <Heading
+              color="pink.700"
+              mt={4}
+              mr={4}
+              mb={isMobile ? 0 : 4}
+              fontSize={isMobile ? "28px" : "3xl"}
             >
-              <Text mb={1}>
-                <strong>Fisioterapeuta:</strong>{" "}
-                {orientacao.fisioterapeuta.usuario.nome}
-              </Text>
-              <Text mb={1}>
-                <strong>Data / Hora:</strong>{" "}
-                {format(new Date(orientacao.data), "dd/MM/yyyy HH:mm")}
-              </Text>
-              <Text mb={1}>
-                <strong>Descrição:</strong> {orientacao.descricao}
-              </Text>
-            </Box>
-          ))}
-        </VStack>
+              Meus pacientes
+            </Heading>
+          </Flex>
+
+          <VStack align="stretch" spacing={4} w="100%" maxW="930px" mt={isMobile ? 0:2}>
+            {orientacoesOrdenadas.map((orientacao) => (
+              <Box
+                key={orientacao.id}
+                borderBottomWidth={2}
+                fontSize="lg"
+              >
+                <Text borderTopWidth={2} borderBottomWidth={2} p={2}>
+                {format(new Date(orientacao.data), "dd/MM/yyyy HH:mm")} | 
+                  <strong> {orientacao.fisioterapeuta.usuario.nome} </strong>
+                </Text>
+                <Text p={2}>
+                  <strong>Descrição</strong> 
+                </Text>
+                <Text p={2}>
+                {orientacao.descricao}
+                </Text>
+                <Checkbox
+                colorScheme="pink"
+                size="md"
+                borderColor="pink.600"
+                p={2}
+              >
+                Marcar como lido
+              </Checkbox>
+              </Box>
+            ))}
+          </VStack>
+        </Flex>
       </SidebarPaciente>
     </>
   );

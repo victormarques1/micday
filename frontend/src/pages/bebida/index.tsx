@@ -94,7 +94,7 @@ export default function Bebida() {
               mb={isMobile ? 0 : 4}
               fontSize={isMobile ? "28px" : "3xl"}
             >
-              Registro de Bebida
+              Registrar bebida
             </Heading>
           </Flex>
 

@@ -33,9 +33,7 @@ interface PacienteProps {
   pacientes: PacienteItem[];
 }
 
-export default function CriarOrientacoes({
-  pacientes,
-}: PacienteProps) {
+export default function CriarOrientacoes({ pacientes }: PacienteProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
   const [nome, setNome] = useState("");
@@ -72,12 +70,11 @@ export default function CriarOrientacoes({
       await apiClient.post("/orientacoes", {
         paciente_id: pacienteId,
         data: new Date(data),
-        descricao: descricao
+        descricao: descricao,
       });
 
       toast.success("Registrado com sucesso!");
-      Router.push('/orientacao/fisioterapeuta/lista')
-
+      Router.push("/orientacao/fisioterapeuta/lista");
     } catch (err) {
       console.log(err);
       toast.error("Erro ao salvar orientação.");
@@ -90,19 +87,15 @@ export default function CriarOrientacoes({
         <title>Criar Orientações | mic.day</title>
       </Head>
       <SidebarFisioterapeuta>
-        <Flex
-          direction="column"
-          alignItems="flex-start"
-          justifyContent="flex-start"
-          p={2}
-        >
+        <Flex direction="column" alignItems="center" justifyContent="center">
           <Flex
+            maxW="1100px"
             direction={isMobile ? "column" : "row"}
             w="100%"
             align={isMobile ? "flex-start" : "center"}
-            mb={isMobile ? 0 : 4}
+            mb={isMobile ? 4 : 0}
           >
-            <Link href="/dashboard/fisioterapeuta">
+            <Link href="/dashboard/paciente">
               <Button
                 p={4}
                 display="flex"
@@ -121,26 +114,33 @@ export default function CriarOrientacoes({
               color="pink.700"
               mt={4}
               mr={4}
-              mb={4}
+              mb={isMobile ? 0 : 4}
               fontSize={isMobile ? "28px" : "3xl"}
             >
-              Criar Orientações
+              Criar orientação
             </Heading>
           </Flex>
+
           <Flex
+            maxW="1100px"
             w="100%"
             align="center"
             justifyContent="center"
+            mt={isMobile ? 0 : 4}
             pt={8}
             pb={8}
             direction="column"
+            shadow="md"
             bg="pink.50"
-            borderColor="transparent"
+            borderBottomColor="pink.700"
             borderBottomWidth={2}
-            borderBottomColor="pink.600"
           >
             <Flex justifyContent="flex-start" w="85%" direction="column">
-              <Text fontSize={isMobile ? "md" : "lg"} mb={2} fontWeight="medium">
+              <Text
+                fontSize={isMobile ? "md" : "lg"}
+                mb={2}
+                fontWeight="medium"
+              >
                 Paciente
               </Text>
             </Flex>
@@ -171,7 +171,11 @@ export default function CriarOrientacoes({
             </Select>
 
             <Flex justifyContent="flex-start" w="85%">
-              <Text fontSize={isMobile ? "md" : "lg"} mb={1} fontWeight="medium">
+              <Text
+                fontSize={isMobile ? "md" : "lg"}
+                mb={1}
+                fontWeight="medium"
+              >
                 Data / Hora
               </Text>
             </Flex>
@@ -190,7 +194,11 @@ export default function CriarOrientacoes({
             />
 
             <Flex justifyContent="flex-start" w="85%">
-              <Text fontSize={isMobile ? "md" : "lg"} mb={1} fontWeight="medium">
+              <Text
+                fontSize={isMobile ? "md" : "lg"}
+                mb={1}
+                fontWeight="medium"
+              >
                 Descrição:{" "}
               </Text>
             </Flex>

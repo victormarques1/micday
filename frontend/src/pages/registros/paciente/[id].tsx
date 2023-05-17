@@ -71,19 +71,15 @@ export default function Registros({ registros }: PacienteRegistrosProps) {
         <title>Registros de Paciente | mic.day</title>
       </Head>
       <SidebarFisioterapeuta>
-        <Flex
-          direction="column"
-          alignItems="flex-start"
-          justifyContent="flex-start"
-        >
+      <Flex direction="column" alignItems="center" justifyContent="center">
           <Flex
+            maxW="1100px"
             direction={isMobile ? "column" : "row"}
             w="100%"
-            alignItems={isMobile ? "flex-start" : "center"}
-            justifyContent="flex-start"
-            mb={isMobile ? 4 : 2}
+            align={isMobile ? "flex-start" : "center"}
+            mb={isMobile ? 4 : 0}
           >
-            <Link href="/dashboard/fisioterapeuta">
+            <Link href="/dashboard/paciente">
               <Button
                 p={4}
                 display="flex"
@@ -91,28 +87,27 @@ export default function Registros({ registros }: PacienteRegistrosProps) {
                 justifyItems="center"
                 mr={4}
                 bg="pink.50"
-                borderColor="pink.600"
+                borderColor="pink.700"
                 _hover={{ bg: "pink.50" }}
               >
                 <FiChevronLeft size={24} color="#B83280" />
                 Voltar
               </Button>
             </Link>
-
             <Heading
               color="pink.700"
               mt={4}
               mr={4}
-              mb={isMobile ? 0 : 6}
-              fontSize={isMobile ? "24px" : "3xl"}
+              mb={isMobile ? 0 : 4}
+              fontSize={isMobile ? "28px" : "3xl"}
             >
-              Registros de {registros.usuario.nome}
+              Perfil do paciente
             </Heading>
           </Flex>
-        </Flex>
+          </Flex>
 
-        <Flex flexDirection="column" align="flex-start" p={2}>
-          <Box textAlign="left" w="100%" maxW="900px">
+        <Flex flexDirection="column" align="center" p={2} >
+          <Box textAlign="left" w="100%" maxW="1100">
             <Text fontWeight="semibold" fontSize="xl" mb={2} pl={1}>
               Registros de Urina
             </Text>
@@ -155,7 +150,7 @@ export default function Registros({ registros }: PacienteRegistrosProps) {
             </Box>
           </Box>
 
-          <Box textAlign="left" w="100%" maxW="900px">
+          <Box textAlign="left" w="100%" maxW="1100">
             <Text fontWeight="semibold" fontSize="xl" mb={2} pl={1}>
               Registros de Bebida
             </Text>

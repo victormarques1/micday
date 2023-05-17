@@ -95,7 +95,7 @@ export default function Urina() {
               mb={isMobile ? 0 : 4}
               fontSize={isMobile ? "28px" : "3xl"}
             >
-              Registro de Urina
+              Registrar urina
             </Heading>
           </Flex>
 

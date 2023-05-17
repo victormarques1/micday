@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 
 import {
   IconButton,
@@ -13,17 +13,24 @@ import {
   useDisclosure,
   BoxProps,
   FlexProps,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Text,
+  Button,
 } from "@chakra-ui/react";
 
 import Image from "next/image";
 import Logo from "../../../../public/images/logo-sidebar.svg";
 
 import { IconType } from "react-icons";
-import { FiSettings, FiMenu } from "react-icons/fi";
+import { FiSettings, FiMenu, FiLogOut } from "react-icons/fi";
 import { HiHome } from "react-icons/hi";
 import { FaBell } from "react-icons/fa";
 import { MdPersonSearch } from "react-icons/md";
 import { RiFileSearchFill } from "react-icons/ri";
+import { setupAPIClient } from "@/services/api";
 import { AuthContext } from "@/context/AuthContext";
 
 import Link from "next/link";
@@ -40,7 +47,7 @@ const LinkItems: Array<LinkItemProps> = [
   {
     nome: "Meus Pacientes",
     icon: MdPersonSearch,
-    rota: "/dashboard/fisioterapeuta/pacientes",
+    rota: "/fisioterapeuta/pacientes",
   },
 
   {
@@ -98,7 +105,46 @@ interface SidebarProps extends BoxProps {
   onClose: () => void;
 }
 
+interface FisioterapeutaData {
+  usuario: {
+    cpf: string;
+    email: string;
+    id: string;
+    nome: string;
+    tipo: string;
+  };
+}
+
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  const { deslogarUsuario } = useContext(AuthContext);
+  const [fisioterapeutaData, setFisioterapeutaData] =
+    useState<FisioterapeutaData | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleMenuToggle = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  async function handleLogout() {
+    await deslogarUsuario();
+  }
+
+  useEffect(() => {
+    buscarNomes();
+  }, []);
+
+  async function buscarNomes() {
+    try {
+      const apiClient = setupAPIClient();
+      const { data } = await apiClient.get<FisioterapeutaData>("/detalhes");
+      console.log(data);
+      setFisioterapeutaData({ usuario: data.usuario });
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  }
+
   return (
     <Box
       bg="pink.700"
@@ -133,6 +179,50 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           {link.nome}
         </NavItem>
       ))}
+      <Box
+        pos="absolute"
+        bottom={0}
+        left={0}
+        right={0}
+        p={4}
+        bg="pink.900"
+        color="pink.300"
+        display="flex"
+        justifyContent="space-around"
+        alignItems="center"
+      >
+        <Text fontWeight="semibold">{fisioterapeutaData?.usuario.nome}</Text>
+        <Menu>
+          <MenuButton
+            as={Button}
+            pt="1"
+            size="md"
+            onClick={handleMenuToggle}
+            style={{
+              background: isMenuOpen ? "transparent" : "transparent",
+              transition: "background-color 0.2s",
+            }}
+            _hover={{
+              background: isMenuOpen ? "transparent" : "transparent",
+              color: "pink.200",
+            }}
+            _active={{ background: "transparent" }}
+            _focus={{ outline: "none" }}
+          >
+            <FiLogOut size="20" />
+          </MenuButton>
+          <MenuList bg="pink.50" borderColor="pink.100">
+            <MenuItem
+              bg="pink.50"
+              color="pink.900"
+              fontWeight="semibold"
+              onClick={handleLogout}
+            >
+              Sair da conta
+            </MenuItem>
+          </MenuList>
+        </Menu>
+      </Box>
     </Box>
   );
 };

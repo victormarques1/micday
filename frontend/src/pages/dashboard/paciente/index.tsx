@@ -77,94 +77,104 @@ export default function DashboardPaciente({ urinas, bebidas }: PacienteProps) {
         <title>Página Inicial | mic.day </title>
       </Head>
       <SidebarPaciente>
-        <Box p={4}>
-          <Heading fontSize={"3xl"} mb={4} color="pink.700">
-            Meus Registros
-          </Heading>
+        <Flex direction="column" alignItems="center" justifyContent="center">
+          <Box p={4} w="100%" maxW="930px">
+            <Heading fontSize={"3xl"} mb={4} color="pink.700">
+              Meus Registros
+            </Heading>
 
-          <Flex mb={5}>
-            <Button
-              mr={2}
-              bg={filtro === "todos" ? "pink.400" : "pink.600"}
-              color="white"
-              _hover={{ bg: filtro === "todos" ? "pink.500" : "pink.500" }}
-              onClick={() => filtrarRegistros("todos")}
-            >
-              Todos
-            </Button>
-            <Button
-              mr={2}
-              bg={filtro === "urina" ? "pink.400" : "pink.600"}
-              color="white"
-              _hover={{ bg: filtro === "urina" ? "pink.500" : "pink.500" }}
-              onClick={() => filtrarRegistros("urina")}
-            >
-              Urina
-            </Button>
-            <Button
-              bg={filtro === "bebida" ? "pink.400" : "pink.600"}
-              color="white"
-              _hover={{ bg: filtro === "bebida" ? "pink.500" : "pink.500" }}
-              onClick={() => filtrarRegistros("bebida")}
-            >
-              Bebida
-            </Button>
-          </Flex>
-
-          {registrosFiltrados.length > 0 ? (
-            registrosFiltrados.map((registro) => (
-              <Box
-                key={registro.id}
-                shadow="md"
-                bg="pink.50"
-                borderBottomColor="pink.700"
-                borderBottomWidth={2}
-                mb={4}
-                p={4}
+            <Flex mb={5}>
+              <Button
+                mr={2}
+                bg={filtro === "todos" ? "pink.400" : "pink.600"}
+                color="white"
+                _hover={{ bg: filtro === "todos" ? "pink.500" : "pink.500" }}
+                onClick={() => filtrarRegistros("todos")}
               >
-                <Flex alignItems="center" mb={2}>
-                  {registro.tipoList === "urina" ? (
-                    <Box
-                      as={MdOutlineWaterDrop}
-                      size={24}
-                      color="#97266D"
-                      mr={2}
-                    />
-                  ) : (
-                    <Box as={TbBottle} size={24} color="#97266D" mr={2} />
-                  )}
-                  <Text fontWeight="semibold" fontSize={isMobile ? "md" : "lg"}>
-                    {registro.tipoList === "urina" ? "Urina" : "Bebida"}
-                  </Text>
-                </Flex>
-                <Text
-                  display="flex"
-                  justifyContent="space-between"
-                  fontSize={isMobile ? "md" : "lg"}
-                >
-                  Quantidade: {registro.quantidade} ml | Data:{" "}
-                  {format(new Date(registro.data), "dd/MM/yyyy HH:mm")}
-                  <Link href={`/${registro.tipoList}/${registro.id}`}>
-                    <Button
-                      bg="pink.600"
-                      color="white"
-                      size="sm"
-                      ml="auto"
-                      _hover={{ bg: "pink.500" }}
-                    >
-                      <AiOutlineEdit size={16} />
-                    </Button>
-                  </Link>
-                </Text>
-              </Box>
-            ))
-          ) : (
-            <Flex direction="column" align="center" justify="center" mt={10}>
-            <MdReport size={isMobile ? 120:200} color="RGBA(0, 0, 0, 0.24)"/>
-            <Text fontSize={isMobile ? 'md':'lg'} color="blackAlpha.600">Não há dados para serem exibidos.</Text>
+                Todos
+              </Button>
+              <Button
+                mr={2}
+                bg={filtro === "urina" ? "pink.400" : "pink.600"}
+                color="white"
+                _hover={{ bg: filtro === "urina" ? "pink.500" : "pink.500" }}
+                onClick={() => filtrarRegistros("urina")}
+              >
+                Urina
+              </Button>
+              <Button
+                bg={filtro === "bebida" ? "pink.400" : "pink.600"}
+                color="white"
+                _hover={{ bg: filtro === "bebida" ? "pink.500" : "pink.500" }}
+                onClick={() => filtrarRegistros("bebida")}
+              >
+                Bebida
+              </Button>
             </Flex>
-          )}
-        </Box>
+
+            {registrosFiltrados.length > 0 ? (
+              registrosFiltrados.map((registro) => (
+                <Box
+                  key={registro.id}
+                  shadow="md"
+                  bg="pink.50"
+                  borderBottomColor="pink.700"
+                  borderBottomWidth={2}
+                  mb={4}
+                  p={4}
+                >
+                  <Flex alignItems="center" mb={2}>
+                    {registro.tipoList === "urina" ? (
+                      <Box
+                        as={MdOutlineWaterDrop}
+                        size={24}
+                        color="#97266D"
+                        mr={2}
+                      />
+                    ) : (
+                      <Box as={TbBottle} size={24} color="#97266D" mr={2} />
+                    )}
+                    <Text
+                      fontWeight="semibold"
+                      fontSize={isMobile ? "md" : "lg"}
+                    >
+                      {registro.tipoList === "urina" ? "Urina" : "Bebida"}
+                    </Text>
+                  </Flex>
+                  <Text
+                    display="flex"
+                    justifyContent="space-between"
+                    fontSize={isMobile ? "md" : "lg"}
+                  >
+                    Quantidade: {registro.quantidade} ml | Data:{" "}
+                    {format(new Date(registro.data), "dd/MM/yyyy HH:mm")}
+                    <Link href={`/${registro.tipoList}/${registro.id}`}>
+                      <Button
+                        bg="pink.600"
+                        color="white"
+                        size="sm"
+                        ml="auto"
+                        _hover={{ bg: "pink.500" }}
+                      >
+                        <AiOutlineEdit size={16} />
+                      </Button>
+                    </Link>
+                  </Text>
+                </Box>
+              ))
+            ) : (
+              <Flex direction="column" align="center" justify="center" mt={10}>
+                <MdReport
+                  size={isMobile ? 120 : 200}
+                  color="RGBA(0, 0, 0, 0.24)"
+                />
+                <Text fontSize={isMobile ? "md" : "lg"} color="blackAlpha.600">
+                  Não há dados para serem exibidos.
+                </Text>
+              </Flex>
+            )}
+          </Box>
+        </Flex>
       </SidebarPaciente>
     </>
   );

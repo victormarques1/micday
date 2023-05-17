@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Children, ReactNode } from "react";
 import {
   IconButton,
@@ -6,18 +6,24 @@ import {
   CloseButton,
   Flex,
   Icon,
+  Text,
+  Button,
   Drawer,
   DrawerContent,
   useColorModeValue,
   useDisclosure,
   BoxProps,
   FlexProps,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
 } from "@chakra-ui/react";
 
 import Image from "next/image";
 import Logo from "../../../../public/images/logo-sidebar.svg";
 import { setupAPIClient } from "@/services/api";
-import { canSSRAuth } from "@/utils/canSSRAuth";
+import { AuthContext } from "@/context/AuthContext";
 
 import { IconType } from "react-icons";
 import { FiSettings, FiMenu, FiLogOut } from "react-icons/fi";
@@ -91,7 +97,21 @@ interface PacienteData {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  const { deslogarUsuario } = useContext(AuthContext);
   const [pacienteData, setPacienteData] = useState<PacienteData | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleMenuToggle = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  async function handleLogout() {
+    await deslogarUsuario();
+  }
+
+  useEffect(() => {
+    buscarNomes();
+  }, []);
 
   async function buscarNomes() {
     try {
@@ -104,16 +124,6 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       return null;
     }
   }
-  
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await buscarNomes();
-      setPacienteData(data.usuario);
-    };
-
-    fetchData();
-  }, []);
 
   return (
     <Box
@@ -151,15 +161,47 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       ))}
       <Box
         pos="absolute"
-        bottom={4}
+        bottom={0}
         left={0}
         right={0}
         p={4}
-        bg={useColorModeValue("pink.600", "gray.800")}
-        color="white"
-        textAlign="center"
+        bg="pink.900"
+        color="pink.300"
+        display="flex"
+        justifyContent="space-around"
+        alignItems="center"
       >
-        {pacienteData?.usuario?.nome}
+        <Text fontWeight="semibold">{pacienteData?.usuario.nome}</Text>
+        <Menu>
+          <MenuButton
+            as={Button}
+            pt="1"
+            size="md"
+            onClick={handleMenuToggle}
+            style={{
+              background: isMenuOpen ? "transparent" : "transparent",
+              transition: "background-color 0.2s",
+            }}
+            _hover={{
+              background: isMenuOpen ? "transparent" : "transparent",
+              color: "pink.200",
+            }}
+            _active={{ background: "transparent" }}
+            _focus={{ outline: "none" }}
+          >
+            <FiLogOut size="20" />
+          </MenuButton>
+          <MenuList bg="pink.50" borderColor="pink.100">
+            <MenuItem
+              bg="pink.50"
+              color="pink.900"
+              fontWeight="semibold"
+              onClick={handleLogout}
+            >
+              Sair da conta
+            </MenuItem>
+          </MenuList>
+        </Menu>
       </Box>
     </Box>
   );

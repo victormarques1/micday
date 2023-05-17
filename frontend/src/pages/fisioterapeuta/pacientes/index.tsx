@@ -13,7 +13,7 @@ import {
 
 import { canSSRAuth } from "@/utils/canSSRAuth";
 import { setupAPIClient } from "@/services/api";
-import { SidebarFisioterapeuta } from "../../../../components/sidebar/fisioterapeuta";
+import { SidebarFisioterapeuta } from "../../../components/sidebar/fisioterapeuta";
 
 import Link from "next/link";
 import { FiChevronLeft } from "react-icons/fi";
@@ -61,12 +61,9 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
         <title>Meus Pacientes | mic.day</title>
       </Head>
       <SidebarFisioterapeuta>
-        <Flex
-          direction="column"
-          alignItems="flex-start"
-          justifyContent="flex-start"
-        >
+        <Flex direction="column" alignItems="center" justifyContent="center">
           <Flex
+            maxW="1100px"
             direction={isMobile ? "column" : "row"}
             w="100%"
             align={isMobile ? "flex-start" : "center"}
@@ -91,14 +88,14 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
               color="pink.700"
               mt={4}
               mr={4}
-              mb={4}
+              mb={isMobile ? 0 : 4}
               fontSize={isMobile ? "28px" : "3xl"}
             >
-              Meus Pacientes
+              Meus pacientes
             </Heading>
           </Flex>
 
-          <VStack align="stretch" spacing={4} w="100%">
+          <VStack align="stretch" spacing={4} w="100%" maxW="1100px">
             {pacientesOrdenados.map((paciente) => (
               <Box
                 key={paciente.id}
@@ -123,51 +120,49 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
                   <strong>Usuário desde:</strong>{" "}
                   {format(new Date(paciente.created_at), "dd/MM/yyyy")}
                 </Text>
-                <Flex direction={isMobile ? 'column' : 'row'}>
-                <Link href={`/perfil/paciente/${paciente.id}`}>
-                  <Button
-                    leftIcon={<BsPerson size={16} />}
-                    mt={3}
-                    mr={4}
-                    bg="pink.600"
-                    color="white"
-                    size="md"
-                    _hover={{ bg: "pink.500" }}
-                  >
-                    Perfil
-                  </Button>
-                </Link>
+                <Flex direction={isMobile ? "column" : "row"}>
+                  <Link href={`/perfil/paciente/${paciente.id}`}>
+                    <Button
+                      leftIcon={<BsPerson size={16} />}
+                      mt={3}
+                      mr={4}
+                      bg="pink.600"
+                      color="white"
+                      size="md"
+                      _hover={{ bg: "pink.500" }}
+                    >
+                      Perfil
+                    </Button>
+                  </Link>
 
-                <Link href={`/registros/paciente/${paciente.id}`}>
-                  <Button
-                    leftIcon={<AiOutlineFileSearch size={16} />}
-                    mt={3}
-                    mr={4}
-                    bg="pink.600"
-                    color="white"
-                    size="md"
-
-                    _hover={{ bg: "pink.500" }}
+                  <Link href={`/registros/paciente/${paciente.id}`}>
+                    <Button
+                      leftIcon={<AiOutlineFileSearch size={16} />}
+                      mt={3}
+                      mr={4}
+                      bg="pink.600"
+                      color="white"
+                      size="md"
+                      _hover={{ bg: "pink.500" }}
+                    >
+                      Registros
+                    </Button>
+                  </Link>
+                  <Link
+                    href={`/orientacao/fisioterapeuta/paciente/${paciente.id}`}
                   >
-                    Registros
-                  </Button>
-                </Link>
-                <Link
-                  href={`/orientacao/fisioterapeuta/paciente/${paciente.id}`}
-                >
-                  <Button
-                    leftIcon={<FaRegBell size={16} />}
-                    mt={3}
-                    mr={4}
-                    bg="pink.600"
-                    color="white"
-                    size="md"
-
-                    _hover={{ bg: "pink.500" }}
-                  >
-                    Orientações
-                  </Button>
-                </Link>
+                    <Button
+                      leftIcon={<FaRegBell size={16} />}
+                      mt={3}
+                      mr={4}
+                      bg="pink.600"
+                      color="white"
+                      size="md"
+                      _hover={{ bg: "pink.500" }}
+                    >
+                      Orientações
+                    </Button>
+                  </Link>
                 </Flex>
               </Box>
             ))}

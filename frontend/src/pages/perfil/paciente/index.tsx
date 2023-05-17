@@ -5,6 +5,7 @@ import Head from "next/head";
 import {
   Flex,
   Text,
+  Box,
   Heading,
   Input,
   Button,
@@ -19,14 +20,13 @@ import { Icon } from "@chakra-ui/react";
 import { HiUser, HiClipboardList, HiIdentification } from "react-icons/hi";
 import { GiBodyHeight } from "react-icons/gi";
 import { BiBody } from "react-icons/bi";
-import { CgLogOut } from "react-icons/cg";
-import { AiOutlineEdit } from "react-icons/ai";
+import { FiChevronLeft } from "react-icons/fi";
 
 import { canSSRAuth } from "@/utils/canSSRAuth";
-import { AuthContext } from "@/context/AuthContext";
 import { setupAPIClient } from "@/services/api";
 
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 interface UsuarioProps {
   id: string;
@@ -47,21 +47,19 @@ interface PerfilProps {
 }
 
 export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
-  const { deslogarUsuario } = useContext(AuthContext);
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
   const [nome, setNome] = useState(usuario && usuario?.nome);
   const [cpf, setCpf] = useState(usuario && usuario?.cpf);
-  const cpfFormatado = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
-  
+  const cpfFormatado = cpf.replace(
+    /(\d{3})(\d{3})(\d{3})(\d{2})/,
+    "$1.$2.$3-$4"
+  );
+
   const [idade, setIdade] = useState(paciente && paciente?.idade);
   const [altura, setAltura] = useState(paciente && paciente?.altura);
   const [peso, setPeso] = useState(paciente && paciente?.peso);
   const [etnia, setEtnia] = useState(paciente && paciente?.etnia);
-
-  async function handleLogout() {
-    await deslogarUsuario();
-  }
 
   async function handleEditarUsuario() {
     if (
@@ -123,27 +121,44 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
         <title>Minha Conta | mic.day</title>
       </Head>
       <SidebarPaciente>
-      <Flex direction="column" alignItems="center" justifyContent="center">
-
+        <Flex direction="column" alignItems="center" justifyContent="center">
           <Flex
-          maxW="1100"
             w="100%"
+            maxW="1100"
             direction={"row"}
             alignItems="center"
-            justifyContent={"flex-start"}
+            justifyContent="center"
           >
-            <Heading fontSize={"3xl"} mt={4} mb={5} mr={4} color="pink.700">
-              Configurações do Perfil
-            </Heading>
+            <Box
+              w="85%"
+              display="flex"
+              flexDirection={isMobile ? "column" : "row"}
+              mt={4}
+            >
+              <Link href="/dashboard/paciente">
+                <Button
+                  display="flex"
+                  alignItems="center"
+                  justifyItems="center"
+                  mr={4}
+                  mb={isMobile ? 4 : 0}
+                  bg="pink.50"
+                  borderColor="pink.700"
+                  _hover={{ bg: "pink.50" }}
+                >
+                  <FiChevronLeft size={24} color="#B83280" />
+                  Voltar
+                </Button>
+              </Link>
+              <Heading fontSize={"3xl"} color="pink.700">
+                Configurações do Perfil
+              </Heading>
+            </Box>
           </Flex>
 
           <Flex
-            pt={8}
+            pt={isMobile ? 6 : 8}
             pb={8}
-            shadow="md"
-            bg="pink.50"
-            borderBottomColor="pink.700"
-            borderBottomWidth={2}
             fontSize="lg"
             w="100%"
             maxW="1100"
@@ -157,18 +172,16 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
                 fontSize={isMobile ? "lg" : "xl"}
                 fontWeight="medium"
               >
-                Nome do paciente:{" "}
+                Nome completo
               </Text>
               <InputGroup size="lg">
                 <InputLeftElement
-                  children={<Icon as={HiUser} color="pink.600" w={5} h={5} />}
+                  children={<Icon as={HiUser} color="gray.400" w={5} h={5} />}
                 />
                 <Input
                   w="100%"
                   placeholder="Nome do paciente"
                   focusBorderColor="pink.700"
-                  borderColor={"pink.700"}
-                  _hover={{ borderColor: "pink.600" }}
                   size="lg"
                   type="text"
                   mb={3}
@@ -182,20 +195,18 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
                 fontSize={isMobile ? "lg" : "xl"}
                 fontWeight="medium"
               >
-                CPF:{" "}
+                CPF
               </Text>
               <InputGroup size="lg">
                 <InputLeftElement
                   children={
-                    <Icon as={HiClipboardList} color="pink.600" w={5} h={5} />
+                    <Icon as={HiClipboardList} color="gray.400" w={5} h={5} />
                   }
                 />
                 <Input
                   w="100%"
                   placeholder="CPF do paciente"
                   focusBorderColor="pink.700"
-                  borderColor={"pink.700"}
-                  _hover={{ borderColor: "pink.600" }}
                   size="lg"
                   type="number"
                   mb={3}
@@ -209,20 +220,18 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
                 fontSize={isMobile ? "lg" : "xl"}
                 fontWeight="medium"
               >
-                Idade:{" "}
+                Idade
               </Text>
               <InputGroup size="lg">
                 <InputLeftElement
                   children={
-                    <Icon as={HiIdentification} color="pink.600" w={5} h={5} />
+                    <Icon as={HiIdentification} color="gray.400" w={5} h={5} />
                   }
                 />
                 <Input
                   w="100%"
                   placeholder="Idade do paciente"
                   focusBorderColor="pink.700"
-                  borderColor={"pink.700"}
-                  _hover={{ borderColor: "pink.600" }}
                   size="lg"
                   type="number"
                   mb={3}
@@ -236,18 +245,16 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
                 fontSize={isMobile ? "lg" : "xl"}
                 fontWeight="medium"
               >
-                Altura (metros):{" "}
+                Altura (m)
               </Text>
               <InputGroup size="lg">
                 <InputLeftElement
-                  children={<Icon as={GiBodyHeight} color="pink.600" />}
+                  children={<Icon as={GiBodyHeight} color="gray.400" />}
                 />
                 <Input
                   w="100%"
                   placeholder="Altura do paciente"
                   focusBorderColor="pink.700"
-                  borderColor={"pink.700"}
-                  _hover={{ borderColor: "pink.600" }}
                   size="lg"
                   type="number"
                   mb={3}
@@ -265,14 +272,12 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
               </Text>
               <InputGroup size="lg">
                 <InputLeftElement
-                  children={<Icon as={BiBody} color="pink.600" w={5} h={5} />}
+                  children={<Icon as={BiBody} color="gray.400" w={5} h={5} />}
                 />
                 <Input
                   w="100%"
                   placeholder="Peso do paciente"
                   focusBorderColor="pink.700"
-                  borderColor={"pink.700"}
-                  _hover={{ borderColor: "pink.600" }}
                   size="lg"
                   type="number"
                   mb={3}
@@ -292,8 +297,6 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
                 w="100%"
                 placeholder="Etnia do paciente"
                 focusBorderColor="pink.700"
-                borderColor={"pink.700"}
-                _hover={{ borderColor: "pink.700" }}
                 size="lg"
                 type="text"
                 mb={3}
@@ -303,32 +306,17 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
               />
 
               <Button
-                w="100%"
-                mt={3}
+                w="25%"
+                mt={4}
                 mb={3}
                 bg="pink.600"
                 color="white"
                 size="lg"
-                leftIcon={<AiOutlineEdit size={22} />}
                 _hover={{ bg: "pink.500" }}
                 onClick={handleEditarUsuario}
+                mr={4}
               >
-                Salvar dados
-              </Button>
-
-              <Button
-                w="100%"
-                mb={4}
-                bg="gray.50"
-                borderColor={"pink.600"}
-                borderWidth={1}
-                color="pink.500"
-                leftIcon={<CgLogOut size={22} />}
-                size="lg"
-                _hover={{ bg: "white" }}
-                onClick={handleLogout}
-              >
-                Sair da conta
+                Salvar
               </Button>
             </Flex>
           </Flex>

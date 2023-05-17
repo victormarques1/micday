@@ -78,16 +78,12 @@ export default function EditUrina({ urina }: EditUrinaProps) {
         <title>Editar registro de urina | mic.day</title>
       </Head>
       <SidebarPaciente>
-        <Flex
-          direction="column"
-          alignItems="flex-start"
-          justifyContent="flex-start"
-        >
+        <Flex direction="column" alignItems="center" justifyContent="center">
           <Flex
+            maxW="930px"
             direction={isMobile ? "column" : "row"}
             w="100%"
-            alignItems={isMobile ? "flex-start" : "center"}
-            justifyContent="flex-start"
+            align={isMobile ? "flex-start" : "center"}
             mb={isMobile ? 4 : 0}
           >
             <Link href="/dashboard/paciente">
@@ -98,27 +94,26 @@ export default function EditUrina({ urina }: EditUrinaProps) {
                 justifyItems="center"
                 mr={4}
                 bg="pink.50"
-                borderColor="pink.600"
+                borderColor="pink.700"
                 _hover={{ bg: "pink.50" }}
               >
                 <FiChevronLeft size={24} color="#B83280" />
                 Voltar
               </Button>
             </Link>
-
             <Heading
               color="pink.700"
-              mt={isMobile ? 2 : 4}
-              mr={isMobile ? 0 : 4}
+              mt={4}
+              mr={4}
               mb={isMobile ? 0 : 4}
-              fontSize={isMobile ? "24px" : "3xl"}
+              fontSize={isMobile ? "28px" : "3xl"}
             >
-              Editar Registro de Urina
+              Registro de urina
             </Heading>
           </Flex>
 
           <Flex
-            maxW="900px"
+            maxW="930px"
             w="100%"
             align="center"
             justifyContent="center"

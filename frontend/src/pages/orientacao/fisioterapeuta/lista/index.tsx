@@ -22,6 +22,7 @@ import {
   Textarea,
   FormControl,
   FormLabel,
+  Checkbox,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { canSSRAuth } from "@/utils/canSSRAuth";
@@ -97,7 +98,6 @@ export default function OrientacoesFisioterapeuta({
       const dataFormatada = moment(data)
         .tz("America/Sao_Paulo")
         .format("YYYY-MM-DDTHH:mm");
-      // console.log(`paciente_id: ${paciente.id}, descricao: ${descricao}, data: ${data}`);
       const apiClient = setupAPIClient();
       await apiClient.put(`/orientacoes/${id}`, {
         descricao: descricao,
@@ -117,19 +117,15 @@ export default function OrientacoesFisioterapeuta({
     <>
       <Head>Minhas Orientações | mic.day</Head>
       <SidebarFisioterapeuta>
-        <Flex
-          direction="column"
-          alignItems="flex-start"
-          justifyContent="flex-start"
-          p={2}
-        >
+        <Flex direction="column" alignItems="center" justifyContent="center">
           <Flex
+            maxW="1100px"
             direction={isMobile ? "column" : "row"}
             w="100%"
             align={isMobile ? "flex-start" : "center"}
-            mb={isMobile ? 0 : 4}
+            mb={isMobile ? 4 : 0}
           >
-            <Link href="/dashboard/fisioterapeuta">
+            <Link href="/dashboard/paciente">
               <Button
                 p={4}
                 display="flex"
@@ -148,38 +144,41 @@ export default function OrientacoesFisioterapeuta({
               color="pink.700"
               mt={4}
               mr={4}
-              mb={4}
+              mb={isMobile ? 0 : 4}
               fontSize={isMobile ? "28px" : "3xl"}
             >
-              Minhas Orientações
+              Minhas orientações
             </Heading>
           </Flex>
 
-          <VStack align="stretch" spacing={4} w="100%">
+          <VStack align="stretch" spacing={4} w="100%" maxW="1100px">
             {orientacoesOrdenadas.map((orientacao) => (
               <Box
                 key={orientacao.id}
-                p={4}
-                shadow="md"
-                bg="pink.50"
-                borderBottomColor="pink.700"
+                mt={isMobile ? 0 : 4}
                 borderBottomWidth={2}
                 fontSize="lg"
               >
-                <Text mb={1}>
-                  <strong>Paciente:</strong> {orientacao.paciente.usuario.nome}
+                <Text borderTopWidth={2} borderBottomWidth={2} p={2}>
+                  {format(new Date(orientacao.data), "dd/MM/yyyy HH:mm")} |
+                  <strong> {orientacao.paciente.usuario.nome} </strong>
                 </Text>
-                <Text mb={1}>
-                  <strong>Data / Hora:</strong>{" "}
-                  {format(new Date(orientacao.data), "dd/MM/yyyy HH:mm")}
+                <Text p={2}>
+                  <strong>Descrição</strong>
                 </Text>
-                <Text mb={1}>
-                  <strong>Descrição:</strong> {orientacao.descricao}
-                </Text>
-                <Box mt={4} color="white">
+                <Text p={2}>{orientacao.descricao}</Text>
+                <Checkbox
+                  colorScheme="pink"
+                  size="md"
+                  borderColor="pink.600"
+                  p={2}
+                >
+                  Recebida
+                </Checkbox>
+                <Box mt={2} mb={2} color="white" pl={2}>
                   <Button
-                    bg="green.500"
-                    _hover={{ bg: "green.400" }}
+                    bg="pink.600"
+                    _hover={{ bg: "pink.500" }}
                     size="sm"
                     mr={3}
                     leftIcon={<FaRegEdit />}
@@ -189,8 +188,8 @@ export default function OrientacoesFisioterapeuta({
                     Editar
                   </Button>
                   <Button
-                    bg="red.500"
-                    _hover={{ bg: "red.400" }}
+                    bg="gray.400"
+                    _hover={{ bg: "gray.300" }}
                     size="sm"
                     leftIcon={<FaRegTrashAlt />}
                     onClick={() => handleDelete(orientacao)}
