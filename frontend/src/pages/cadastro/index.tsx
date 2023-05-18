@@ -7,6 +7,7 @@ import Bg from "../../../public/images/bg.svg";
 import {
   Flex,
   Stack,
+  Box,
   Text,
   Center,
   Input,
@@ -32,7 +33,7 @@ import { toast } from "react-toastify";
 
 export default function Cadastro() {
   const { cadastrarUsuario } = useContext(AuthContext);
-  const [isMobile] = useMediaQuery("(max-width: 500px)");
+  const [imageDisplay] = useMediaQuery("(max-width: 750px)");
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -177,9 +178,15 @@ export default function Cadastro() {
                 _placeholder={{ color: "gray.400" }}
                 focusBorderColor="pink.500"
                 type="number"
+                maxLength={11}
                 mb={3}
                 value={cpf}
-                onChange={(e) => setCpf(e.target.value)}
+                onChange={(e) => {
+                  const inputValue = e.target.value;
+                  if (inputValue.length <= 11) {
+                    setCpf(inputValue);
+                  }
+                }}
               />
             </InputGroup>
 
@@ -223,25 +230,22 @@ export default function Cadastro() {
             </Center>
           </Flex>
         </Flex>
-
-        <Flex
-          bg="pink.700"
-          style={{ filter: "saturate(180%)" }}
-          width={["100%", "35%"]}
-          height="100%" 
-          flexShrink="0"
+        <Box
+          bg="pink.600"
+          style={{ filter: "saturate(130%)" }}
+          display={imageDisplay ? "none" : "block"}
+          overflow="hidden"
           position="relative"
-          display={isMobile ? "none" : "block"}
+          maxW="550px"
+          width="100%"
         >
           <Image
             src={Bg}
-            quality={100}
+            alt="Black and white image"
             layout="fill"
             objectFit="cover"
-            objectPosition="center"
-            alt="Background image"
           />
-        </Flex>
+        </Box>
       </Flex>
     </>
   );

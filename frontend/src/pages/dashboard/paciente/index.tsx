@@ -78,7 +78,7 @@ export default function DashboardPaciente({ urinas, bebidas }: PacienteProps) {
       </Head>
       <SidebarPaciente>
         <Flex direction="column" alignItems="center" justifyContent="center">
-          <Box p={4} w="100%" maxW="930px">
+          <Box p={4} w="100%" maxW="1100px">
             <Heading fontSize={"3xl"} mb={4} color="pink.700">
               Meus Registros
             </Heading>

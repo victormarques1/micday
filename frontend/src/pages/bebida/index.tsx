@@ -66,7 +66,7 @@ export default function Bebida() {
       <SidebarPaciente>
         <Flex direction="column" alignItems="center" justifyContent="center">
           <Flex
-            maxW="930px"
+            maxW="1100px"
             direction={isMobile ? "column" : "row"}
             w="100%"
             align={isMobile ? "flex-start" : "center"}
@@ -99,7 +99,7 @@ export default function Bebida() {
           </Flex>
 
           <Flex
-            maxW="930px"
+            maxW="1100px"
             w="100%"
             align="center"
             justifyContent="center"
@@ -194,7 +194,7 @@ export default function Bebida() {
             </Button>
           </Flex>
           <Flex
-            maxW="930px"
+            maxW="1100px"
             w="100%"
             align="center"
             pl={isMobile ? 4 : 4}

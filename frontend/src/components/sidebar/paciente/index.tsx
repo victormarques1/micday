@@ -32,6 +32,8 @@ import { FaToilet, FaBell } from "react-icons/fa";
 import { MdLocalDrink } from "react-icons/md";
 
 import Link from "next/link";
+import TermosModal from "@/components/modal/TermosModal";
+import PoliticaModal from "@/components/modal/PoliticaModal";
 
 interface LinkItemProps {
   nome: string;
@@ -194,7 +196,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           <MenuList bg="pink.50" borderColor="pink.100">
             <MenuItem
               bg="pink.50"
-              color="pink.900"
+              color="pink.600"
               fontWeight="semibold"
               onClick={handleLogout}
             >
@@ -202,6 +204,10 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             </MenuItem>
           </MenuList>
         </Menu>
+      </Box>
+      <Box pos="absolute" bottom={24} left={0} right={0}>
+        <TermosModal />
+        <PoliticaModal />
       </Box>
     </Box>
   );

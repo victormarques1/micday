@@ -32,8 +32,10 @@ import { MdPersonSearch } from "react-icons/md";
 import { RiFileSearchFill } from "react-icons/ri";
 import { setupAPIClient } from "@/services/api";
 import { AuthContext } from "@/context/AuthContext";
+import TermsModal from "@/components/modal/TermosModal";
 
 import Link from "next/link";
+import PoliticaModal from "@/components/modal/PoliticaModal";
 
 interface LinkItemProps {
   nome: string;
@@ -179,6 +181,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           {link.nome}
         </NavItem>
       ))}
+
       <Box
         pos="absolute"
         bottom={0}
@@ -214,7 +217,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           <MenuList bg="pink.50" borderColor="pink.100">
             <MenuItem
               bg="pink.50"
-              color="pink.900"
+              color="pink.600"
               fontWeight="semibold"
               onClick={handleLogout}
             >
@@ -222,6 +225,10 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             </MenuItem>
           </MenuList>
         </Menu>
+      </Box>
+      <Box pos="absolute" bottom={24} left={0} right={0}>
+        <TermsModal />
+        <PoliticaModal />
       </Box>
     </Box>
   );

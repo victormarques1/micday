@@ -133,7 +133,7 @@ export default function DashboardFisioterapeuta({
                 </option>
               ))}
             </Select>
-            <Flex justifyContent="flex-start" w="85%" direction="row">
+            <Flex justifyContent="flex-start" w="85%" direction={isMobile ? "column" : "row"}>
               <Link href={`/perfil/paciente/${pacienteId}`}>
                 <Button
                   leftIcon={<BsPerson size={20} />}

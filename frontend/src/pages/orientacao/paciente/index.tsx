@@ -85,7 +85,7 @@ export default function OrientacoesPaciente({
             </Heading>
           </Flex>
 
-          <VStack align="stretch" spacing={4} w="100%" maxW="930px" mt={isMobile ? 0:2}>
+          <VStack align="stretch" spacing={4} w="100%" maxW="1100px" mt={isMobile ? 0:2}>
             {orientacoesOrdenadas.map((orientacao) => (
               <Box
                 key={orientacao.id}

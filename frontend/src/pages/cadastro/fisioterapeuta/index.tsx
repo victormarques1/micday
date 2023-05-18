@@ -7,6 +7,7 @@ import Bg from "../../../../public/images/bg.svg";
 
 import {
   Flex,
+  Box,
   Center,
   Text,
   InputGroup,
@@ -26,9 +27,11 @@ import { useRouter } from "next/router";
 
 import { canSSRGuest } from "@/utils/canSSRGuest";
 import { setupAPIClient } from "@/services/api";
+import { TextoComLinks } from "@/components/modal/LinkModal";
 
 export default function CadastroFisioterapeuta() {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
+  const [imageDisplay] = useMediaQuery("(max-width: 750px)");
 
   const router = useRouter();
   const usuario_id = router.query.id;
@@ -120,22 +123,7 @@ export default function CadastroFisioterapeuta() {
               />
             </InputGroup>
 
-            <Center justifyContent="center">
-              <Text mb={6} fontSize={16}>
-                Ao se registrar, você aceita nossos
-                <Link href="/cadastro/fisioterapeuta" color="blue.500">
-                  <strong style={{ color: "#B83280" }}> termos de uso </strong>
-                </Link>
-                e a
-                <Link href="/cadastro/fisioterapeuta" color="blue.500">
-                  <strong style={{ color: "#B83280" }}>
-                    {" "}
-                    nossa política de privacidade
-                  </strong>
-                </Link>
-                .
-              </Text>
-            </Center>
+            <TextoComLinks />
 
             <Button
               onClick={handleCadastro}
@@ -150,24 +138,22 @@ export default function CadastroFisioterapeuta() {
             </Button>
           </Flex>
         </Flex>
-        <Flex
-          bg="pink.700"
-          style={{ filter: "saturate(180%)" }}
-          width={["100%", "35%"]}
-          height="100%"
-          flexShrink="0"
+        <Box
+          bg="pink.600"
+          style={{ filter: "saturate(130%)" }}
+          display={imageDisplay ? "none" : "block"}
+          overflow="hidden"
           position="relative"
-          display={isMobile ? "none" : "block"}
+          maxW="550px"
+          width="100%"
         >
           <Image
             src={Bg}
-            quality={100}
+            alt="Black and white image"
             layout="fill"
             objectFit="cover"
-            objectPosition="center"
-            alt="Background image"
           />
-        </Flex>
+        </Box>
       </Flex>
     </>
   );

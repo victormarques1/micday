@@ -80,7 +80,7 @@ export default function EditUrina({ urina }: EditUrinaProps) {
       <SidebarPaciente>
         <Flex direction="column" alignItems="center" justifyContent="center">
           <Flex
-            maxW="930px"
+            maxW="1100px"
             direction={isMobile ? "column" : "row"}
             w="100%"
             align={isMobile ? "flex-start" : "center"}
@@ -113,7 +113,7 @@ export default function EditUrina({ urina }: EditUrinaProps) {
           </Flex>
 
           <Flex
-            maxW="930px"
+            maxW="1100px"
             w="100%"
             align="center"
             justifyContent="center"
