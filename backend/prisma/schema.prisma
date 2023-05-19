@@ -47,6 +47,7 @@ model Paciente {
   altura Float
   peso Float
   etnia String?
+  status Boolean @default(true)
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
 
@@ -107,6 +108,7 @@ model Orientacao {
   id String @id @default(uuid())
   descricao String
   data DateTime @default(now())
+  status Boolean @default(false)
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
 

@@ -15,6 +15,9 @@ import {
   InputGroup,
   InputLeftElement,
   useMediaQuery,
+  FormControl,
+  FormLabel,
+  FormHelperText,
 } from "@chakra-ui/react";
 
 import { Icon } from "@chakra-ui/react";
@@ -132,98 +135,118 @@ export default function CadastroPaciente() {
               Dados do Paciente
             </Text>
 
-            <InputGroup size="lg">
-              <InputLeftElement
-                children={
-                  <Icon as={HiIdentification} color="gray.400" w={5} h={5} />
-                }
-              />
-              <Input
+            <FormControl isRequired>
+              <FormLabel>Idade</FormLabel>
+              <InputGroup size="lg">
+                <InputLeftElement
+                  children={
+                    <Icon as={HiIdentification} color="gray.400" w={5} h={5} />
+                  }
+                />
+                <Input
+                  size="lg"
+                  placeholder="35 anos"
+                  _placeholder={{ color: "gray.400" }}
+                  focusBorderColor="pink.600"
+                  type="number"
+                  mb={3}
+                  value={idade}
+                  onChange={(e) => setIdade(e.target.value)}
+                />
+              </InputGroup>
+            </FormControl>
+
+            <FormControl isRequired>
+              <FormLabel>Altura (m)</FormLabel>
+              <InputGroup size="lg">
+                <InputLeftElement
+                  children={<Icon as={GiBodyHeight} color="gray.400" />}
+                />
+                <Input
+                  size="lg"
+                  placeholder="1.57 m"
+                  _placeholder={{ color: "gray.400" }}
+                  focusBorderColor="pink.600"
+                  type="number"
+                  mb={3}
+                  value={altura}
+                  onChange={(e) => setAltura(e.target.value)}
+                />
+              </InputGroup>
+            </FormControl>
+
+            <FormControl isRequired>
+              <FormLabel>Peso (kg)</FormLabel>
+              <InputGroup size="lg">
+                <InputLeftElement
+                  children={<Icon as={BiBody} color="gray.400" w={5} h={5} />}
+                />
+                <Input
+                  size="lg"
+                  placeholder="52.5 kg"
+                  _placeholder={{ color: "gray.400" }}
+                  focusBorderColor="pink.600"
+                  type="number"
+                  mb={3}
+                  value={peso}
+                  onChange={(e) => setPeso(e.target.value)}
+                />
+              </InputGroup>
+            </FormControl>
+
+            <FormControl isRequired>
+              <FormLabel>Cor / raça</FormLabel>
+              <Select
                 size="lg"
-                placeholder="Idade"
-                _placeholder={{ color: "gray.400" }}
                 focusBorderColor="pink.600"
-                type="number"
+                placeholder="Selecione"
                 mb={3}
-                value={idade}
-                onChange={(e) => setIdade(e.target.value)}
-              />
-            </InputGroup>
-
-            <InputGroup size="lg">
-              <InputLeftElement
-                children={<Icon as={GiBodyHeight} color="gray.400" />}
-              />
-              <Input
+                value={etnia}
+                onChange={(e) => setEtnia(e.target.value)}
+              >
+                <option value="Branca">Branca</option>
+                <option value="Preta">Preta</option>
+                <option value="Parda">Parda</option>
+              </Select>
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Tipo de incontinência urinária </FormLabel>
+              <Select
                 size="lg"
-                placeholder="Altura (m)"
-                _placeholder={{ color: "gray.400" }}
                 focusBorderColor="pink.600"
-                type="number"
+                placeholder="Selecione"
                 mb={3}
-                value={altura}
-                onChange={(e) => setAltura(e.target.value)}
-              />
-            </InputGroup>
+                value={tipoSelecionado}
+                onChange={(e) => setTipoSelecionado(e.target.value)}
+              >
+                {tiposIncontinencia.map((tipoIncontinencia) => (
+                  <option
+                    key={tipoIncontinencia.id}
+                    value={tipoIncontinencia.id}
+                  >
+                    {tipoIncontinencia.nome}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
 
-            <InputGroup size="lg">
-              <InputLeftElement
-                children={<Icon as={BiBody} color="gray.400" w={5} h={5} />}
-              />
-              <Input
+            <FormControl isRequired>
+              <FormLabel>Fisioterapeuta Responsável </FormLabel>
+              <Select
                 size="lg"
-                placeholder="Peso (kg)"
-                _placeholder={{ color: "gray.400" }}
                 focusBorderColor="pink.600"
-                type="number"
-                mb={3}
-                value={peso}
-                onChange={(e) => setPeso(e.target.value)}
-              />
-            </InputGroup>
-
-            <Select
-              size="lg"
-              focusBorderColor="pink.600"
-              placeholder="Etnia"
-              mb={3}
-              value={etnia}
-              onChange={(e) => setEtnia(e.target.value)}
-            >
-              <option value="Branca">Branca</option>
-              <option value="Preta">Preta</option>
-              <option value="Parda">Parda</option>
-            </Select>
-
-            <Select
-              size="lg"
-              focusBorderColor="pink.600"
-              placeholder="Tipo de incontinência urinária"
-              mb={3}
-              value={tipoSelecionado}
-              onChange={(e) => setTipoSelecionado(e.target.value)}
-            >
-              {tiposIncontinencia.map((tipoIncontinencia) => (
-                <option key={tipoIncontinencia.id} value={tipoIncontinencia.id}>
-                  {tipoIncontinencia.nome}
-                </option>
-              ))}
-            </Select>
-
-            <Select
-              size="lg"
-              focusBorderColor="pink.600"
-              placeholder="Fisioterapeuta Responsável"
-              mb={6}
-              value={fisioterapeutaSelecionado}
-              onChange={(e) => setFisioterapeutaSelecionado(e.target.value)}
-            >
-              {fisioterapeutas.map((fisioterapeuta) => (
-                <option key={fisioterapeuta.id} value={fisioterapeuta.id}>
-                  {fisioterapeuta.usuario.nome}
-                </option>
-              ))}
-            </Select>
+                placeholder="Selecione"
+                mb={4}
+                value={fisioterapeutaSelecionado}
+                onChange={(e) => setFisioterapeutaSelecionado(e.target.value)}
+              >
+                {fisioterapeutas.map((fisioterapeuta) => (
+                  <option key={fisioterapeuta.id} value={fisioterapeuta.id}>
+                    {fisioterapeuta.usuario.nome}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
 
             <TextoComLinks />
 
@@ -233,7 +256,6 @@ export default function CadastroPaciente() {
               color="#FFF"
               size="lg"
               borderRadius={24}
-              mb={7}
               _hover={{ bg: "pink.500" }}
             >
               Completar cadastro

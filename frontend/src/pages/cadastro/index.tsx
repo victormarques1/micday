@@ -18,6 +18,9 @@ import {
   Radio,
   RadioGroup,
   useMediaQuery,
+  FormControl,
+  FormLabel,
+  FormHelperText
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon, EmailIcon, LockIcon } from "@chakra-ui/icons";
 
@@ -96,6 +99,8 @@ export default function Cadastro() {
               Criar uma conta
             </Text>
 
+            <FormControl isRequired>
+            <FormLabel>Nome</FormLabel>
             <InputGroup size="lg">
               <InputLeftElement
                 children={<Icon as={HiUser} color="gray.400" w={5} h={5} />}
@@ -112,13 +117,16 @@ export default function Cadastro() {
                 onChange={(e) => setNome(e.target.value)}
               />
             </InputGroup>
+            </FormControl>
 
+            <FormControl isRequired>
+            <FormLabel>E-mail </FormLabel>
             <InputGroup size="lg">
               <InputLeftElement children={<EmailIcon color="gray.400" />} />
               <Input
                 variant={"outline"}
                 size="lg"
-                placeholder="E-mail"
+                placeholder="email@email.com"
                 _placeholder={{ color: "gray.400" }}
                 focusBorderColor="pink.500"
                 type="email"
@@ -127,14 +135,17 @@ export default function Cadastro() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </InputGroup>
+            </FormControl>
 
+            <FormControl isRequired>
+            <FormLabel>Senha </FormLabel>
             <InputGroup size="lg" mb={3}>
               <InputLeftElement children={<LockIcon color="gray.400" />} />
               <Input
                 pr="4.5rem"
                 type={show ? "text" : "password"}
                 variant={"outline"}
-                placeholder="Senha"
+                placeholder="*************"
                 _placeholder={{ color: "gray.400" }}
                 focusBorderColor="pink.500"
                 value={senha}
@@ -165,7 +176,11 @@ export default function Cadastro() {
                 </Button>
               </InputRightElement>
             </InputGroup>
+            
+            </FormControl>
 
+              <FormControl isRequired>
+              <FormLabel>CPF</FormLabel>
             <InputGroup size="lg">
               <InputLeftElement
                 children={
@@ -174,7 +189,7 @@ export default function Cadastro() {
               />
               <Input
                 size="lg"
-                placeholder="CPF (apenas números)"
+                placeholder="000.000.000-00"
                 _placeholder={{ color: "gray.400" }}
                 focusBorderColor="pink.500"
                 type="number"
@@ -189,7 +204,11 @@ export default function Cadastro() {
                 }}
               />
             </InputGroup>
+              <FormHelperText mt={0} mb={4}>Informe apenas números no CPF.</FormHelperText>
+              </FormControl>
 
+            <FormControl isRequired>
+              <FormLabel>Tipo de usuário</FormLabel>    
             <RadioGroup size="lg" p={1} mb={3} value={tipo} onChange={setTipo}>
               <Stack spacing={6} direction="row" mb={3}>
                 <Radio
@@ -208,6 +227,7 @@ export default function Cadastro() {
                 </Radio>
               </Stack>
             </RadioGroup>
+            </FormControl>
 
             <Button
               onClick={handleCadastro}

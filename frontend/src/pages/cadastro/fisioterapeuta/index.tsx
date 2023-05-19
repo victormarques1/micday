@@ -8,13 +8,14 @@ import Bg from "../../../../public/images/bg.svg";
 import {
   Flex,
   Box,
-  Center,
   Text,
   InputGroup,
   Input,
   InputLeftElement,
   Button,
   useMediaQuery,
+  FormControl,
+  FormLabel,
 } from "@chakra-ui/react";
 
 import { Icon } from "@chakra-ui/react";
@@ -87,41 +88,47 @@ export default function CadastroFisioterapeuta() {
               Dados do Fisioterapeuta
             </Text>
 
-            <InputGroup size="lg">
-              <InputLeftElement
-                children={
-                  <Icon as={HiIdentification} color="gray.400" w={5} h={5} />
-                }
-              />
-              <Input
-                size="lg"
-                placeholder="Código CREFITO"
-                _placeholder={{ color: "gray.400" }}
-                focusBorderColor="pink.600"
-                type="text"
-                mb={3}
-                value={crefito}
-                onChange={(e) => setCrefito(e.target.value)}
-              />
-            </InputGroup>
+            <FormControl isRequired>
+              <FormLabel>Código CREFITO</FormLabel>
+              <InputGroup size="lg">
+                <InputLeftElement
+                  children={
+                    <Icon as={HiIdentification} color="gray.400" w={5} h={5} />
+                  }
+                />
+                <Input
+                  size="lg"
+                  placeholder="00000-F"
+                  _placeholder={{ color: "gray.400" }}
+                  focusBorderColor="pink.600"
+                  type="text"
+                  mb={3}
+                  value={crefito}
+                  onChange={(e) => setCrefito(e.target.value)}
+                />
+              </InputGroup>
+            </FormControl>
 
-            <InputGroup size="lg">
-              <InputLeftElement
-                children={
-                  <Icon as={HiOfficeBuilding} color="gray.400" w={5} h={5} />
-                }
-              />
-              <Input
-                size="lg"
-                placeholder="Local de atuação"
-                _placeholder={{ color: "gray.400" }}
-                focusBorderColor="pink.600"
-                type="text"
-                mb={4}
-                value={atuacao}
-                onChange={(e) => setAtuacao(e.target.value)}
-              />
-            </InputGroup>
+            <FormControl isRequired>
+              <FormLabel>Local de atuação</FormLabel>
+              <InputGroup size="lg">
+                <InputLeftElement
+                  children={
+                    <Icon as={HiOfficeBuilding} color="gray.400" w={5} h={5} />
+                  }
+                />
+                <Input
+                  size="lg"
+                  placeholder="Seu local"
+                  _placeholder={{ color: "gray.400" }}
+                  focusBorderColor="pink.600"
+                  type="text"
+                  mb={4}
+                  value={atuacao}
+                  onChange={(e) => setAtuacao(e.target.value)}
+                />
+              </InputGroup>
+            </FormControl>
 
             <TextoComLinks />
 
