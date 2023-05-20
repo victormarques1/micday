@@ -6,7 +6,7 @@ import {
   Heading,
   useMediaQuery,
   Button,
-  Input,
+  Checkbox,
   Box,
   VStack,
 } from "@chakra-ui/react";
@@ -27,6 +27,7 @@ interface PacienteItem {
   idade: number;
   created_at: string;
   usuario_id: string;
+  status: boolean;
   fisioterapeuta_id: string;
   usuario: UsuarioProps;
   tipo: TipoProps;
@@ -47,9 +48,14 @@ interface PacienteProps {
 
 export default function MeusPacientes({ pacientes }: PacienteProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
-  const [nome, setNome] = useState("");
 
   const pacientesOrdenados = pacientes.sort((a, b) => {
+    if (a.status === false && b.status === true) {
+      return 1;
+    } else if (a.status === true && b.status === false) {
+      return -1;
+    }
+
     const dataA = new Date(a.created_at).getTime();
     const dataB = new Date(b.created_at).getTime();
     return dataB - dataA;
@@ -120,6 +126,11 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
                   <strong>Usuário desde:</strong>{" "}
                   {format(new Date(paciente.created_at), "dd/MM/yyyy")}
                 </Text>
+                <Text fontSize="lg" mb={2}>
+                  <strong>Status: </strong>
+                  {paciente.status === true ? "Ativo" : "Inativo"}
+                </Text>
+
                 <Flex direction={isMobile ? "column" : "row"}>
                   <Link href={`/perfil/paciente/${paciente.id}`}>
                     <Button
@@ -130,6 +141,7 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
                       color="white"
                       size="md"
                       _hover={{ bg: "pink.500" }}
+                      isDisabled={paciente.status === false}
                     >
                       Perfil
                     </Button>
@@ -144,6 +156,7 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
                       color="white"
                       size="md"
                       _hover={{ bg: "pink.500" }}
+                      isDisabled={paciente.status === false}
                     >
                       Registros
                     </Button>
@@ -159,6 +172,7 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
                       color="white"
                       size="md"
                       _hover={{ bg: "pink.500" }}
+                      isDisabled={paciente.status === false}
                     >
                       Orientações
                     </Button>

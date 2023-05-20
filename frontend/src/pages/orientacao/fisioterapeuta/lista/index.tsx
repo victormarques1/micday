@@ -38,6 +38,7 @@ interface OrientacaoItem {
   id: string;
   descricao: string;
   data: Date;
+  status: boolean;
   paciente: {
     id: string;
     usuario: {
@@ -160,20 +161,22 @@ export default function OrientacoesFisioterapeuta({
                 fontSize="lg"
               >
                 <Text borderTopWidth={2} borderBottomWidth={2} p={2}>
-                  {format(new Date(orientacao.data), "dd/MM/yyyy HH:mm")} |
+                  {format(new Date(orientacao.data), "dd/MM/yyyy HH:mm")} | Para:
                   <strong> {orientacao.paciente.usuario.nome} </strong>
                 </Text>
                 <Text p={2}>
                   <strong>Descrição</strong>
                 </Text>
-                <Text p={2}>{orientacao.descricao}</Text>
+                <Text pl={2}>{orientacao.descricao}</Text>
                 <Checkbox
+                  isReadOnly
                   colorScheme="pink"
                   size="md"
                   borderColor="pink.600"
                   p={2}
+                  defaultChecked={orientacao.status}
                 >
-                  Recebida
+                  Lida pelo paciente
                 </Checkbox>
                 <Box mt={2} mb={2} color="white" pl={2}>
                   <Button

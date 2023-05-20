@@ -8,7 +8,7 @@ import {
   useMediaQuery,
   VStack,
   Box,
-  Checkbox
+  Checkbox,
 } from "@chakra-ui/react";
 import Head from "next/head";
 
@@ -17,11 +17,14 @@ import { setupAPIClient } from "@/services/api";
 import Link from "next/link";
 import { FiChevronLeft } from "react-icons/fi";
 import { format } from "date-fns";
+import { TiInputChecked } from "react-icons/ti";
+import { toast } from "react-toastify";
 
 interface OrientacaoItem {
   id: string;
   descricao: string;
   data: Date;
+  status: boolean;
   fisioterapeuta: {
     id: string;
     usuario: {
@@ -44,6 +47,31 @@ export default function OrientacoesPaciente({
     const dataB = new Date(b.data).getTime();
     return dataB - dataA;
   });
+
+  const [listOrientacoes, setListOrientacoes] = useState(orientacoesOrdenadas);
+
+  async function marcarComoLido(orientacaoId) {
+    try {
+      const apiClient = setupAPIClient();
+      await apiClient.put(`/orientacoes/marcar/${orientacaoId}`, {
+        status: true,
+      });
+
+      toast.success("Orientação marcada como lida.");
+
+      setListOrientacoes((prevOrientacoes) =>
+        prevOrientacoes.map((orientacao) => {
+          if (orientacao.id === orientacaoId) {
+            return { ...orientacao, status: true };
+          }
+          return orientacao;
+        })
+      );
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -81,35 +109,40 @@ export default function OrientacoesPaciente({
               mb={isMobile ? 0 : 4}
               fontSize={isMobile ? "28px" : "3xl"}
             >
-              Meus pacientes
+              Minhas Orientações
             </Heading>
           </Flex>
 
-          <VStack align="stretch" spacing={4} w="100%" maxW="1100px" mt={isMobile ? 0:2}>
+          <VStack
+            align="stretch"
+            spacing={4}
+            w="100%"
+            maxW="1100px"
+            mt={isMobile ? 0 : 2}
+          >
             {orientacoesOrdenadas.map((orientacao) => (
-              <Box
-                key={orientacao.id}
-                borderBottomWidth={2}
-                fontSize="lg"
-              >
+              <Box key={orientacao.id} borderBottomWidth={2} fontSize="lg">
                 <Text borderTopWidth={2} borderBottomWidth={2} p={2}>
-                {format(new Date(orientacao.data), "dd/MM/yyyy HH:mm")} | 
+                  {format(new Date(orientacao.data), "dd/MM/yyyy HH:mm")} |
+                  Fisioterapeuta:
                   <strong> {orientacao.fisioterapeuta.usuario.nome} </strong>
                 </Text>
                 <Text p={2}>
-                  <strong>Descrição</strong> 
+                  <strong>Descrição</strong>
                 </Text>
-                <Text p={2}>
-                {orientacao.descricao}
-                </Text>
-                <Checkbox
-                colorScheme="pink"
-                size="md"
-                borderColor="pink.600"
-                p={2}
-              >
-                Marcar como lido
-              </Checkbox>
+                <Text p={2}>{orientacao.descricao}</Text>
+                <Button
+                  leftIcon={<TiInputChecked size="20" />}
+                  p={2}
+                  mb={2}
+                  bg="transparent"
+                  color="pink.700"
+                  _hover={{ bg: "transparent", color: "pink.500" }}
+                  onClick={() => marcarComoLido(orientacao.id)}
+                  isDisabled={orientacao.status}
+                >
+                  {orientacao.status ? "Lido" : "Marcar como lido"}
+                </Button>
               </Box>
             ))}
           </VStack>

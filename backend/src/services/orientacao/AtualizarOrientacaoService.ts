@@ -16,7 +16,7 @@ class AtualizarOrientacaoService {
             }
         })
         if (!orientacao) {
-            throw new Error("Registro de urina não encontrado");
+            throw new Error("Orientação não encontrada");
         }
 
         const atualizarOrientacao = await prismaClient.orientacao.update({

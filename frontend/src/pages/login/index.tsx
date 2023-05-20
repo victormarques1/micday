@@ -14,7 +14,7 @@ import {
   InputLeftElement,
   InputRightElement,
   Button,
-  useMediaQuery
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon, EmailIcon, LockIcon } from "@chakra-ui/icons";
 
@@ -63,7 +63,7 @@ export default function Login() {
         flexDirection={{ base: "column", md: "row" }}
       >
         <Flex
-          maxW={isMobile ? '500px' : '85%'}
+          maxW={isMobile ? "500px" : "85%"}
           direction="column"
           p={14}
           rounded={8}
@@ -158,13 +158,13 @@ export default function Login() {
           <Center>
             <Link href="/cadastro">
               <Text cursor="pointer">
-                Ainda não possui conta? <strong >Cadastre-se</strong>
+                Ainda não possui conta? <strong>Cadastre-se</strong>
               </Text>
             </Link>
           </Center>
         </Flex>
 
-        <Flex display={isMobile ? 'none' : 'block'}>
+        <Flex display={isMobile ? "none" : "block"}>
           <Center p={4} mb={5} minW={400}>
             <Image src={Entrar} quality={100} width={500} alt="Image login" />
           </Center>

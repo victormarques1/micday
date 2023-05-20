@@ -38,6 +38,8 @@ import { BuscarPacienteController } from "./controllers/fisioterapeuta/BuscarPac
 import { BuscarRegistrosController } from "./controllers/fisioterapeuta/BuscarRegistrosController";
 import { BuscarOrientacoesController } from "./controllers/fisioterapeuta/BuscarOrientacoesController";
 import { DetalhesOrientacaoController } from "./controllers/orientacao/DetalhesOrientacaoController";
+import { MarcarOrientacaoLidaService } from "./services/orientacao/MarcarOrientacaoLidaService";
+import { MarcarOrientacaoLidaController } from "./controllers/orientacao/MarcarOrientacaoLidaController";
 
 const router = Router();
 
@@ -82,5 +84,6 @@ router.delete('/paciente/bebidas', authUsuario, protegeRotaPaciente, new Deletar
 router.put('/paciente/bebida/:bebida_id', authUsuario, protegeRotaPaciente, new AtualizarBebidaController().handle)
 router.put('/paciente/urina/:urina_id', authUsuario, protegeRotaPaciente, new AtualizarUrinaController().handle)
 router.get('/orientacoes/detalhes', authUsuario, protegeRotaPaciente, new DetalhesOrientacaoController().handle)
+router.put('/orientacoes/marcar/:orientacao_id', authUsuario, protegeRotaPaciente, new MarcarOrientacaoLidaController().handle)
 
 export { router };
