@@ -27,7 +27,7 @@ interface AuthProviderProps {
 }
 
 interface LogarUsuarioProps {
-  email: string;
+  emailOuCpf: string;
   senha: string;
 }
 
@@ -77,14 +77,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, []);
 
-  async function logarUsuario({ email, senha }: LogarUsuarioProps) {
+  async function logarUsuario({ emailOuCpf, senha }: LogarUsuarioProps) {
     try {
       const response = await api.post("/login", {
-        email,
+        emailOuCpf,
         senha,
       });
 
-      const { id, nome, tipo, cpf, tokenUsuario } = response.data;
+      const { id, nome, tipo, email, cpf, tokenUsuario } = response.data;
       
       setCookie(undefined, "@fisio.token", tokenUsuario, {
         maxAge: 60 * 60 * 24 * 30,

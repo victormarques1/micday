@@ -14,6 +14,9 @@ import {
   InputLeftElement,
   InputRightElement,
   Button,
+  FormControl,
+  FormLabel,
+  FormHelperText,
   useMediaQuery,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon, EmailIcon, LockIcon } from "@chakra-ui/icons";
@@ -30,20 +33,20 @@ export default function Login() {
 
   const { logarUsuario } = useContext(AuthContext);
 
-  const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [emailOuCpf, setEmailOuCpf] = useState("");
 
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
 
   async function handleLogin() {
-    if (email === "" || senha === "") {
+    if (emailOuCpf === "" || senha === "") {
       return;
     }
 
     try {
       await logarUsuario({
-        email,
+        emailOuCpf,
         senha,
       });
       console.log();
@@ -68,6 +71,7 @@ export default function Login() {
           direction="column"
           p={14}
           rounded={8}
+          mr={8}
         >
           <Flex mb={5}>
             <Image src={Logo} quality={100} width={120} alt="Logo mic.day" />
@@ -76,61 +80,68 @@ export default function Login() {
           <Text mb={4} fontSize={24} fontWeight="bold">
             Entrar no sistema
           </Text>
+          <FormControl>
+            <FormLabel>Email ou CPF</FormLabel>
+            <InputGroup size="lg">
+              <InputLeftElement children={<EmailIcon color="gray.400" />} />
+              <Input
+                variant={"outline"}
+                size="lg"
+                placeholder="exemplo@email.com"
+                _placeholder={{ color: "gray.400" }}
+                focusBorderColor="pink.500"
+                type="email"
+                value={emailOuCpf}
+                onChange={(e) => setEmailOuCpf(e.target.value)}
+              />
+            </InputGroup>
+            <FormHelperText mb={4}>
+              *Para logar com CPF informe apenas os números.{" "}
+            </FormHelperText>
+          </FormControl>
 
-          <InputGroup size="lg">
-            <InputLeftElement children={<EmailIcon color="gray.400" />} />
-            <Input
-              variant={"outline"}
-              size="lg"
-              placeholder="exemplo@email.com"
-              _placeholder={{ color: "gray.400" }}
-              focusBorderColor="pink.500"
-              type="email"
-              mb={5}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </InputGroup>
+          <FormControl>
+            <FormLabel>Senha</FormLabel>
+            <InputGroup size="lg" mb={3}>
+              <InputLeftElement children={<LockIcon color="gray.400" />} />
+              <Input
+                pr="4.5rem"
+                type={show ? "text" : "password"}
+                variant={"outline"}
+                placeholder="***********"
+                _placeholder={{ color: "gray.400" }}
+                focusBorderColor="pink.500"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+              />
+              <InputRightElement width="4.5rem">
+                <Button
+                  bg="transparent"
+                  size="sm"
+                  onClick={handleClick}
+                  _hover={{ bg: "transparent" }}
+                >
+                  {show ? (
+                    <ViewOffIcon
+                      boxSize={6}
+                      bg=""
+                      color="pink.600"
+                      _hover={{ bg: "transparent" }}
+                    />
+                  ) : (
+                    <ViewIcon
+                      boxSize={6}
+                      bg="transparent"
+                      color="pink.600"
+                      _hover={{ bg: "transparent" }}
+                    />
+                  )}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+          </FormControl>
 
-          <InputGroup size="lg" mb={3}>
-            <InputLeftElement children={<LockIcon color="gray.400" />} />
-            <Input
-              pr="4.5rem"
-              type={show ? "text" : "password"}
-              variant={"outline"}
-              placeholder="Digite sua senha"
-              _placeholder={{ color: "gray.400" }}
-              focusBorderColor="pink.500"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-            />
-            <InputRightElement width="4.5rem">
-              <Button
-                bg="transparent"
-                size="sm"
-                onClick={handleClick}
-                _hover={{ bg: "transparent" }}
-              >
-                {show ? (
-                  <ViewOffIcon
-                    boxSize={6}
-                    bg=""
-                    color="pink.600"
-                    _hover={{ bg: "transparent" }}
-                  />
-                ) : (
-                  <ViewIcon
-                    boxSize={6}
-                    bg="transparent"
-                    color="pink.600"
-                    _hover={{ bg: "transparent" }}
-                  />
-                )}
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-
-          <Center mb={4}  justifyContent="end">
+          <Center mb={4} justifyContent="end">
             <Text
               cursor="pointer"
               color="pink.600"
@@ -165,7 +176,7 @@ export default function Login() {
 
         <Flex display={isMobile ? "none" : "block"}>
           <Center p={4} mb={5} minW={400}>
-            <Image src={Entrar} quality={100} width={500} alt="Image login" />
+            <Image src={Entrar} quality={100} width={530} alt="Image login" />
           </Center>
         </Flex>
       </Flex>
