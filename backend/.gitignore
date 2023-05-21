@@ -1,2 +1,4 @@
-node_modules
+/node_modules
+, smtp.ts
 # Keep environment variables out of version control
+

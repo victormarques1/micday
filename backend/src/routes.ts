@@ -40,6 +40,8 @@ import { BuscarOrientacoesController } from "./controllers/fisioterapeuta/Buscar
 import { DetalhesOrientacaoController } from "./controllers/orientacao/DetalhesOrientacaoController";
 import { MarcarOrientacaoLidaService } from "./services/orientacao/MarcarOrientacaoLidaService";
 import { MarcarOrientacaoLidaController } from "./controllers/orientacao/MarcarOrientacaoLidaController";
+import enviarEmailRecuperacaoSenha from "./utils/recuperar-senha";
+import redefinirSenha from "./utils/nova-senha";
 
 const router = Router();
 
@@ -49,6 +51,9 @@ router.post('/login', new AuthUsuarioController().handle);
 router.post('/fisioterapeuta',  new CriarFisioterapeutaController().handle);
 router.post('/paciente',  new CriarPacienteController().handle);
 router.get('/fisioterapeutas',  new ListarFisioterapeutaController().handle)
+router.post('/recuperar-senha', enviarEmailRecuperacaoSenha)
+router.post('/nova-senha', redefinirSenha)
+
 
 // ROTAS FISIOTERAPEUTA
 router.post('/orientacoes', authUsuario, protegeRotaFisioterapeuta, new CriarOrientacaoController().handle);

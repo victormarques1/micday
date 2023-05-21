@@ -23,6 +23,7 @@ import Link from "next/link";
 import { AuthContext } from "../../context/AuthContext";
 
 import { canSSRGuest } from "@/utils/canSSRGuest";
+import RecuperarSenha from "@/components/modal/RecuperarSenhaModal";
 
 export default function Login() {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
@@ -129,18 +130,16 @@ export default function Login() {
             </InputRightElement>
           </InputGroup>
 
-          <Center mb={6} pr={2} justifyContent="end">
-            <Link href="/">
-              <Text
-                cursor="pointer"
-                color="pink.600"
-                fontSize={16}
-                fontWeight={"semibold"}
-                _hover={{ color: "pink.500" }}
-              >
-                Esqueceu sua senha?
-              </Text>
-            </Link>
+          <Center mb={4}  justifyContent="end">
+            <Text
+              cursor="pointer"
+              color="pink.600"
+              fontSize={16}
+              fontWeight={"semibold"}
+              _hover={{ color: "pink.500" }}
+            >
+              <RecuperarSenha />
+            </Text>
           </Center>
 
           <Button
