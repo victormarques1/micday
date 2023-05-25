@@ -27,6 +27,7 @@ import { AuthContext } from "@/context/AuthContext";
 
 import { IconType } from "react-icons";
 import { FiSettings, FiMenu, FiLogOut } from "react-icons/fi";
+import { ImStatsBars } from 'react-icons/im'
 import { HiHome } from "react-icons/hi";
 import { FaToilet, FaBell } from "react-icons/fa";
 import { MdLocalDrink } from "react-icons/md";
@@ -46,6 +47,11 @@ const LinkItems: Array<LinkItemProps> = [
   { nome: "Registrar Urina", icon: FaToilet, rota: "/urina" },
   { nome: "Registrar Bebida", icon: MdLocalDrink, rota: "/bebida" },
   { nome: "Orientações", icon: FaBell, rota: "/orientacao/paciente" },
+  {
+    nome: "Análise de Dados",
+    icon: ImStatsBars,
+    rota: "/dados",
+  },
   { nome: "Minha Conta", icon: FiSettings, rota: "/perfil/paciente" },
 ];
 
@@ -157,7 +163,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       </Flex>
 
       {LinkItems.map((link) => (
-        <NavItem icon={link.icon} rota={link.rota} key={link.nome}>
+        <NavItem icon={link.icon} rota={link.rota} key={link.nome} mb={2}>
           {link.nome}
         </NavItem>
       ))}

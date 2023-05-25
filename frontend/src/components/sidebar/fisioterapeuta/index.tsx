@@ -28,6 +28,7 @@ import { IconType } from "react-icons";
 import { FiSettings, FiMenu, FiLogOut } from "react-icons/fi";
 import { HiHome } from "react-icons/hi";
 import { FaBell } from "react-icons/fa";
+import { ImStatsBars } from 'react-icons/im'
 import { MdPersonSearch } from "react-icons/md";
 import { RiFileSearchFill } from "react-icons/ri";
 import { setupAPIClient } from "@/services/api";
@@ -64,6 +65,11 @@ const LinkItems: Array<LinkItemProps> = [
     rota: "/orientacao/fisioterapeuta/criar",
   },
 
+  {
+    nome: "Análise de Dados",
+    icon: ImStatsBars,
+    rota: "/dados",
+  },
   { nome: "Minha Conta", icon: FiSettings, rota: "/perfil/fisioterapeuta" },
 ];
 
@@ -177,7 +183,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       </Flex>
 
       {LinkItems.map((link) => (
-        <NavItem icon={link.icon} rota={link.rota} key={link.nome}>
+        <NavItem icon={link.icon} rota={link.rota} key={link.nome} mb={2}>
           {link.nome}
         </NavItem>
       ))}
@@ -303,7 +309,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       />
 
       <Flex flexDirection={"row"} ml={8}>
-        <Image src={Logo} quality={100} width={110} alt="Logo mic.day" />
+        <Image src={Logo} quality={100} width={110} alt="Logo mic.day"/>
       </Flex>
     </Flex>
   );

@@ -15,6 +15,7 @@ class AtualizarPacienteController {
             altura,
             peso,
             idade,
+            status
         })
 
         return res.json(paciente);

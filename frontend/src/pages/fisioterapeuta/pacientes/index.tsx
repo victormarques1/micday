@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import Head from "next/head";
 import {
   Flex,
@@ -6,7 +6,8 @@ import {
   Heading,
   useMediaQuery,
   Button,
-  Checkbox,
+  Stack,
+  Switch,
   Box,
   VStack,
 } from "@chakra-ui/react";
@@ -48,18 +49,54 @@ interface PacienteProps {
 
 export default function MeusPacientes({ pacientes }: PacienteProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
+  const [statusPaciente, setStatusPaciente] = useState("enabled");
+  const [pacientesFiltrados, setPacientesFiltrados] = useState(pacientes);
 
-  const pacientesOrdenados = pacientes.sort((a, b) => {
-    if (a.status === false && b.status === true) {
-      return 1;
-    } else if (a.status === true && b.status === false) {
-      return -1;
+  useEffect(() => {
+    if (statusPaciente === "enabled") {
+      const pacientesAtivos = pacientes.filter(
+        (paciente) => paciente.status === true
+      );
+      setPacientesFiltrados(pacientesAtivos);
+    } else {
+      const pacientesInativos = pacientes.filter(
+        (paciente) => paciente.status === false
+      );
+      setPacientesFiltrados(pacientesInativos);
     }
+  }, [statusPaciente, pacientes]);
 
-    const dataA = new Date(a.created_at).getTime();
-    const dataB = new Date(b.created_at).getTime();
-    return dataB - dataA;
-  });
+  async function handleStatus(e: ChangeEvent<HTMLInputElement>) {
+    setStatusPaciente(statusPaciente === "enabled" ? "disabled" : "enabled");
+  }
+
+  async function handleStatusChange(pacienteId: string, novoStatus: boolean) {
+    // console.log('novo Status:', novoStatus)
+    //   console.log('paciente_id: ', pacienteId)
+    try {
+      const apiClient = setupAPIClient();
+      const response = await apiClient.put(`/paciente/status/${pacienteId}`, {
+        status: novoStatus,
+      });
+      
+      window.location.reload();
+   
+      const pacientesAtualizados = pacientes.map((paciente) => {
+        if (paciente.id === pacienteId) {
+          return {
+            ...paciente,
+            status: novoStatus,
+          };
+        }
+        return paciente;
+      });
+  
+      setPacientesFiltrados(pacientesAtualizados);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
 
   return (
     <>
@@ -73,6 +110,7 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
             direction={isMobile ? "column" : "row"}
             w="100%"
             align={isMobile ? "flex-start" : "center"}
+            justify={isMobile ? "flex-start" : "space-between"}
             mb={isMobile ? 4 : 0}
           >
             <Link href="/dashboard/paciente">
@@ -99,10 +137,23 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
             >
               Meus pacientes
             </Heading>
+
+            <Stack ml={isMobile ? 0 : "auto"} mt={isMobile ? 2:0} align="center" direction="row" pr={2}>
+              <Text fontWeight="bold" pr={1}>
+                ATIVOS
+              </Text>
+              <Switch
+                colorScheme="pink"
+                size="lg"
+                value={statusPaciente}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => handleStatus(e)}
+                isChecked={statusPaciente === "disabled" ? false : true}
+              />
+            </Stack>
           </Flex>
 
           <VStack align="stretch" spacing={4} w="100%" maxW="1100px">
-            {pacientesOrdenados.map((paciente) => (
+            {pacientesFiltrados.map((paciente) => (
               <Box
                 key={paciente.id}
                 mt={isMobile ? 0 : 4}
@@ -130,7 +181,20 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
                   <strong>Status: </strong>
                   {paciente.status === true ? "Ativo" : "Inativo"}
                 </Text>
-
+                <Flex direction="row">
+                <Switch
+                  size="lg"
+                  colorScheme="pink"
+                  isChecked={paciente.status}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    const novoStatus = e.target.checked;
+                    handleStatusChange(paciente.id, novoStatus);
+                  }}
+                />
+                <Text fontSize="lg" ml={2}><strong>Desativar</strong></Text>
+                
+                </Flex>
+                
                 <Flex direction={isMobile ? "column" : "row"}>
                   <Link href={`/perfil/paciente/${paciente.id}`}>
                     <Button

@@ -20,6 +20,7 @@ import { AtualizarBebidaController } from "./controllers/bebida/AtualizarBebidaC
 import { AtualizarUrinaController } from "./controllers/urina/AtualizarUrinaController";
 import { AtualizarOrientacaoController } from "./controllers/orientacao/AtualizarOrientacaoController";
 import { AtualizarPacienteController } from "./controllers/paciente/AtualizarPacienteController";
+import { AtualizarStatusPacienteController } from "./controllers/paciente/AtualizarStatusPacienteController";
 import { ListarUsuarioController } from "./controllers/usuario/DetalhesUsuarioController";
 import { CriarTipoIncotinenciaController } from "./controllers/incontinencia/CriarTipoIncontinenciaController";
 import { ListarTipoIncontinenciaController } from "./controllers/incontinencia/ListarTipoIncontinenciaController";
@@ -66,6 +67,8 @@ router.get('/paciente/id', authUsuario, protegeRotaFisioterapeuta, new BuscarPac
 router.get('/registros/paciente', authUsuario, protegeRotaFisioterapeuta, new BuscarRegistrosController().handle)
 router.get('/orientacoes', authUsuario, protegeRotaFisioterapeuta, new ListarOrientacaoController().handle)
 router.get('/orientacoes/paciente', authUsuario, protegeRotaFisioterapeuta, new BuscarOrientacoesController().handle)
+router.put('/paciente/status/:paciente_id', authUsuario, protegeRotaFisioterapeuta, new AtualizarStatusPacienteController().handle)
+
 
 //ROTAS NEUTRAS
 router.get('/detalhes', authUsuario, new ListarUsuarioController().handle)
