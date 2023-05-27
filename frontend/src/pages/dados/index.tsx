@@ -4,52 +4,49 @@ import { SidebarPaciente } from "@/components/sidebar/paciente";
 import { Flex, Text, Box } from "@chakra-ui/react";
 import { canSSRAuth } from "@/utils/canSSRAuth";
 import { setupAPIClient } from "@/services/api";
-import UrineChart from "@/components/graficos/ChartComponent";
+import Registro from "@/components/graficos/ChartComponent";
 import { format } from "date-fns";
 
 export default function Dados({ urinas, bebidas }) {
-  const [urineRecords, setUrineRecords] = useState(urinas);
-  const [drinkRecords, setDrinkRecords] = useState(bebidas);
+  const [urinaRegistros, setUrinaRegistros] = useState(urinas);
+  const [bebidaRegistros, setBebidaRegistros] = useState(bebidas);
 
   useEffect(() => {
-    const fetchUrineRecords = async () => {
+    const fetchUrinaRegistros = async () => {
       try {
         const apiClient = setupAPIClient();
         const response = await apiClient.get("/urina/detalhes");
-        setUrineRecords(response.data);
+        setUrinaRegistros(response.data);
       } catch (error) {
         console.error("Erro ao buscar registros de urina:", error);
       }
     };
 
-    const fetchDrinkRecords = async () => {
+    const fetchBebidaRegistros = async () => {
       try {
         const apiClient = setupAPIClient();
         const response = await apiClient.get("/bebida/detalhes");
-        setDrinkRecords(response.data);
+        setBebidaRegistros(response.data);
       } catch (error) {
         console.error("Erro ao buscar registros de bebida:", error);
       }
     };
 
-    fetchUrineRecords();
-    fetchDrinkRecords();
+    fetchUrinaRegistros();
+    fetchBebidaRegistros();
   }, []);
 
-  const urineDates = urineRecords.map((record) => {
-    const date = new Date(record.data);
+  const urinaDatas = urinaRegistros.map((registro) => {
+    const date = new Date(registro.data);
     return date;
   });
-  const urineQuantities = urineRecords.map((record) => record.quantidade);
+  const urinaQuantidades = urinaRegistros.map((registro) => registro.quantidade);
 
-  const drinkDates = drinkRecords.map((record) => {
-    const date = new Date(record.data);
+  const bebidaDatas = bebidaRegistros.map((registro) => {
+    const date = new Date(registro.data);
     return date;
   });
-  const drinkQuantities = drinkRecords.map((record) => record.quantidade);
-
-  const combinedDates = [...urineDates, ...drinkDates];
-  const combinedQuantities = [...urineQuantities, ...drinkQuantities];
+  const bebidaQuantidades = bebidaRegistros.map((registro) => registro.quantidade);
 
   return (
     <>
@@ -57,15 +54,13 @@ export default function Dados({ urinas, bebidas }) {
         <title>Análise de Dados | mic.day</title>
       </Head>
       <SidebarPaciente>
-  <Text>Gráfico</Text>
-  <UrineChart
-    urineDates={urineDates}
-    urineQuantities={urineQuantities}
-    drinkDates={drinkDates}
-    drinkQuantities={drinkQuantities}
-  />
-</SidebarPaciente>
-
+        <Registro
+          urinaDatas={urinaDatas}
+          urinaQuantidades={urinaQuantidades}
+          bebidaDatas={bebidaDatas}
+          bebidaQuantidades={bebidaQuantidades}
+        />
+      </SidebarPaciente>
     </>
   );
 }
@@ -73,10 +68,10 @@ export default function Dados({ urinas, bebidas }) {
 export const getServerSideProps = canSSRAuth("Paciente", async (ctx) => {
   try {
     const apiClient = setupAPIClient(ctx);
-    const urineResponse = await apiClient.get("/urina/detalhes");
-    const drinkResponse = await apiClient.get("/bebida/detalhes");
+    const urinaResponse = await apiClient.get("/urina/detalhes");
+    const bebidaResponse = await apiClient.get("/bebida/detalhes");
 
-    if (urineResponse.data === null || drinkResponse.data === null) {
+    if (urinaResponse.data === null || bebidaResponse.data === null) {
       return {
         redirect: {
           destination: "/dashboard/paciente",
@@ -87,8 +82,8 @@ export const getServerSideProps = canSSRAuth("Paciente", async (ctx) => {
 
     return {
       props: {
-        urinas: urineResponse.data,
-        bebidas: drinkResponse.data,
+        urinas: urinaResponse.data,
+        bebidas: bebidaResponse.data,
       },
     };
   } catch (err) {
