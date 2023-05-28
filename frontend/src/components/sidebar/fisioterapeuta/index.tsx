@@ -68,7 +68,7 @@ const LinkItems: Array<LinkItemProps> = [
   {
     nome: "Análise de Dados",
     icon: ImStatsBars,
-    rota: "/dados",
+    rota: "/dados/fisioterapeuta",
   },
   { nome: "Minha Conta", icon: FiSettings, rota: "/perfil/fisioterapeuta" },
 ];

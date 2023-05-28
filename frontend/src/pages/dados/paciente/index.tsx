@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { SidebarPaciente } from "@/components/sidebar/paciente";
-import { Flex, Text, Box } from "@chakra-ui/react";
 import { canSSRAuth } from "@/utils/canSSRAuth";
 import { setupAPIClient } from "@/services/api";
 import Registro from "@/components/graficos/ChartComponent";
-import { format } from "date-fns";
 
-export default function Dados({ urinas, bebidas }) {
+export default function DadosPaciente({ urinas, bebidas }) {
   const [urinaRegistros, setUrinaRegistros] = useState(urinas);
   const [bebidaRegistros, setBebidaRegistros] = useState(bebidas);
 

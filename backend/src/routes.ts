@@ -43,6 +43,7 @@ import { MarcarOrientacaoLidaService } from "./services/orientacao/MarcarOrienta
 import { MarcarOrientacaoLidaController } from "./controllers/orientacao/MarcarOrientacaoLidaController";
 import enviarEmailRecuperacaoSenha from "./utils/recuperar-senha";
 import redefinirSenha from "./utils/nova-senha";
+import { BuscarRegistrosParamsController } from "./controllers/fisioterapeuta/BuscarRegistrosParamsController";
 
 const router = Router();
 
@@ -65,6 +66,7 @@ router.put('/fisioterapeuta', authUsuario, protegeRotaFisioterapeuta, new Atuali
 router.get('/fisioterapeuta/pacientes', authUsuario, protegeRotaFisioterapeuta, new MeusPacientesController().handle)
 router.get('/paciente/id', authUsuario, protegeRotaFisioterapeuta, new BuscarPacienteController().handle)
 router.get('/registros/paciente', authUsuario, protegeRotaFisioterapeuta, new BuscarRegistrosController().handle)
+router.get('/registros/paciente/:paciente_id', authUsuario, protegeRotaFisioterapeuta, new BuscarRegistrosParamsController().handle)
 router.get('/orientacoes', authUsuario, protegeRotaFisioterapeuta, new ListarOrientacaoController().handle)
 router.get('/orientacoes/paciente', authUsuario, protegeRotaFisioterapeuta, new BuscarOrientacoesController().handle)
 router.put('/paciente/status/:paciente_id', authUsuario, protegeRotaFisioterapeuta, new AtualizarStatusPacienteController().handle)
