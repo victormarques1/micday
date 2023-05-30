@@ -1,17 +1,28 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Box, Text, Input, Button, useToast, Flex, FormControl, FormLabel } from "@chakra-ui/react";
-import Image from "next/image";
-import Logo from "../../../public/images/Logo.svg";
+import {
+  Box,
+  Image,
+  Flex,
+  Input,
+  Button,
+  Text,
+  useToast,
+  FormControl,
+  FormLabel,
+} from "@chakra-ui/react";
+import Logo from "../../../../public/images/Logo.svg"
 import { setupAPIClient } from "@/services/api";
+import { canSSRAuth } from "@/utils/canSSRAuth";
 
-const RedefinirSenha = () => {
-  const router = useRouter();
+export default function AlterarSenha({ paciente }) {
   const toast = useToast();
-  const { token } = router.query;
+  const router = useRouter();
+  const [senhaAtual, setSenhaAtual] = useState("");
   const [novaSenha, setNovaSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
+  const [pacienteId, setPacienteId] = useState(paciente.usuario.id);
 
   const handleRedefinirSenha = async () => {
     if (novaSenha !== confirmarSenha) {
@@ -27,9 +38,10 @@ const RedefinirSenha = () => {
 
     try {
       const apiClient = setupAPIClient();
-      await apiClient.post("/nova-senha", {
-        token,
-        novaSenha,
+      await apiClient.put("/trocar-senha", {
+        usuario_id: pacienteId,
+        senha_atual: senhaAtual,
+        nova_senha: novaSenha,
       });
 
       toast({
@@ -40,7 +52,7 @@ const RedefinirSenha = () => {
         isClosable: true,
       });
 
-      router.push("/");
+      router.push("/dashboard/paciente");
     } catch (error) {
       console.error("Erro ao redefinir a senha:", error);
       toast({
@@ -52,13 +64,11 @@ const RedefinirSenha = () => {
       });
     }
   };
-
   return (
     <>
       <Head>
-        <title>Redefinir senha | mic.day</title>
+        <title>Alterar senha | mic.day</title>
       </Head>
-
       <Box
         maxW="md"
         mx="auto"
@@ -72,13 +82,27 @@ const RedefinirSenha = () => {
         <Flex mb={8} justifyContent="center">
           <Image src={Logo} width={180} alt="Logo mic.day" />
         </Flex>
-        <Text mb={6} fontSize={28} fontWeight="bold">
-          Redefinir senha
+        <Text mb={4} fontSize={28} fontWeight="bold">
+          Alterar senha
         </Text>
         <Text mb={6}>
-          Por favor introduza a sua palavra-passe nova duas vezes para que possamos
+          Por razões de segurança, por favor introduza a sua palavra-passe
+          antiga e depois introduza a nova duas vezes para que possamos
           verificar se introduziu corretamente.
         </Text>
+        <FormControl isRequired>
+          <FormLabel>Senha atual</FormLabel>
+          <Input
+            variant={"outline"}
+            _placeholder={{ color: "gray.400" }}
+            focusBorderColor="pink.500"
+            type="password"
+            placeholder="Nova Senha"
+            value={senhaAtual}
+            onChange={(e) => setSenhaAtual(e.target.value)}
+            mb={4}
+          />
+        </FormControl>
         <FormControl isRequired>
           <FormLabel>Nova senha</FormLabel>
           <Input
@@ -106,11 +130,31 @@ const RedefinirSenha = () => {
           />
         </FormControl>
         <Button onClick={handleRedefinirSenha} colorScheme="pink">
-          Redefinir Senha
+          Alterar Senha
         </Button>
       </Box>
     </>
   );
-};
+}
 
-export default RedefinirSenha;
+export const getServerSideProps = canSSRAuth("Paciente", async (ctx) => {
+  try {
+    const apiClient = setupAPIClient(ctx);
+    const response = await apiClient.get("/detalhes");
+
+    return {
+      props: {
+        paciente: response.data,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+
+    return {
+      redirect: {
+        destination: "/dashboard/paciente",
+        permanent: false,
+      },
+    };
+  }
+});

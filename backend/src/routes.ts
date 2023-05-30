@@ -33,17 +33,18 @@ import { BuscarUrinaController } from "./controllers/urina/BuscarUrinaController
 import { authUsuario } from "./middlewares/authUsuario";
 import { protegeRotaFisioterapeuta } from "./middlewares/authUsuario";
 import { protegeRotaPaciente } from "./middlewares/authUsuario";
+
 import { BuscarBebidaController } from "./controllers/bebida/BuscarBebidaController";
 import { MeusPacientesController } from "./controllers/fisioterapeuta/MeusPacientesController";
 import { BuscarPacienteController } from "./controllers/fisioterapeuta/BuscarPacienteController";
 import { BuscarRegistrosController } from "./controllers/fisioterapeuta/BuscarRegistrosController";
 import { BuscarOrientacoesController } from "./controllers/fisioterapeuta/BuscarOrientacoesController";
 import { DetalhesOrientacaoController } from "./controllers/orientacao/DetalhesOrientacaoController";
-import { MarcarOrientacaoLidaService } from "./services/orientacao/MarcarOrientacaoLidaService";
 import { MarcarOrientacaoLidaController } from "./controllers/orientacao/MarcarOrientacaoLidaController";
 import enviarEmailRecuperacaoSenha from "./utils/recuperar-senha";
 import redefinirSenha from "./utils/nova-senha";
 import { BuscarRegistrosParamsController } from "./controllers/fisioterapeuta/BuscarRegistrosParamsController";
+import { TrocarSenhaController } from "./controllers/usuario/TrocarSenhaController";
 
 const router = Router();
 
@@ -77,6 +78,7 @@ router.get('/detalhes', authUsuario, new ListarUsuarioController().handle)
 router.post('/tipo', new CriarTipoIncotinenciaController().handle);
 router.get('/tipos', new ListarTipoIncontinenciaController().handle)
 router.put('/usuario', authUsuario, new AtualizarUsuarioController().handle)
+router.put('/trocar-senha', authUsuario, new TrocarSenhaController().handle)
 
 // ROTAS PACIENTE --
 router.get('/paciente/detalhes', authUsuario, protegeRotaPaciente,  new DetalhesPacienteController().handle)

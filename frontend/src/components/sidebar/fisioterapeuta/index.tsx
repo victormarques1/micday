@@ -221,9 +221,20 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             <FiLogOut size="20" />
           </MenuButton>
           <MenuList bg="pink.50" borderColor="pink.100">
+          <Link href="/trocar-senha/fisioterapeuta">
+          <MenuItem
+              bg="pink.50"
+              _hover={{color: "pink.300"}}
+              color="black"
+              fontWeight="semibold"
+            >
+              Alterar senha
+            </MenuItem>
+          </Link>
             <MenuItem
               bg="pink.50"
-              color="pink.600"
+              _hover={{color: "pink.300"}}
+              color="black"
               fontWeight="semibold"
               onClick={handleLogout}
             >
