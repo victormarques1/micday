@@ -45,7 +45,7 @@ export function deslogarUsuario() {
   console.log("ERROR LOGOUT");
   try {
     destroyCookie(null, "@fisio.token", { path: "/" });
-    Router.push("/login");
+    Router.push("/");
   } catch (err) {
     console.log("Erro ao sair");
   }
@@ -153,7 +153,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       destroyCookie(null, "@fisio.token", { path: "/" });
       destroyCookie(null, "@fisio.tipoUsuario", { path: "/" });
-      Router.push("/login");
+      Router.push("/");
       setUsuario(null);
     } catch (err) {
       console.log("Erro ao sair.", err);

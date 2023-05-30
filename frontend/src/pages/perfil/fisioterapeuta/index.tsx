@@ -2,7 +2,17 @@ import { useState } from "react";
 
 import Head from "next/head";
 
-import { Flex, Text, Heading, Input, Button, useMediaQuery, Box, InputGroup, InputLeftElement } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Heading,
+  Input,
+  Button,
+  useMediaQuery,
+  Box,
+  InputGroup,
+  InputLeftElement,
+} from "@chakra-ui/react";
 
 import { SidebarFisioterapeuta } from "@/components/sidebar/fisioterapeuta";
 
@@ -10,14 +20,21 @@ import { canSSRAuth } from "@/utils/canSSRAuth";
 import { setupAPIClient } from "@/services/api";
 import { Icon } from "@chakra-ui/react";
 import { FiChevronLeft } from "react-icons/fi";
-import { HiUser, HiClipboardList, HiIdentification, HiHome } from "react-icons/hi";
+import {
+  HiUser,
+  HiClipboardList,
+  HiIdentification,
+  HiHome,
+} from "react-icons/hi";
+import { EmailIcon } from "@chakra-ui/icons";
 
-import Link from 'next/link'
+import Link from "next/link";
 import { toast } from "react-toastify";
 
 interface UsuarioProps {
   id: string;
   nome: string;
+  email: string;
   cpf: string;
 }
 
@@ -39,6 +56,7 @@ export default function PerfilFisioterapeuta({
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
   const [nome, setNome] = useState(usuario && usuario?.nome);
+  const [email, setEmail] = useState(usuario && usuario?.email);
   const [cpf, setCpf] = useState(usuario && usuario?.cpf);
   const [crefito, setCrefito] = useState(
     fisioterapeuta && fisioterapeuta?.crefito
@@ -89,7 +107,7 @@ export default function PerfilFisioterapeuta({
         <title>Minha Conta | mic.day</title>
       </Head>
       <SidebarFisioterapeuta>
-      <Flex direction="column" alignItems="center" justifyContent="center">
+        <Flex direction="column" alignItems="center" justifyContent="center">
           <Flex
             w="100%"
             maxW="1100"
@@ -134,7 +152,7 @@ export default function PerfilFisioterapeuta({
             justifyContent={"center"}
           >
             <Flex direction={"column"} w={"85%"}>
-            <Text
+              <Text
                 mb={2}
                 fontSize={isMobile ? "lg" : "xl"}
                 fontWeight="medium"
@@ -154,6 +172,29 @@ export default function PerfilFisioterapeuta({
                   mb={3}
                   value={nome}
                   onChange={(e) => setNome(e.target.value)}
+                />
+              </InputGroup>
+
+              <Text
+                mb={2}
+                fontSize={isMobile ? "lg" : "xl"}
+                fontWeight="medium"
+              >
+                Email
+              </Text>
+              <InputGroup size="lg">
+                <InputLeftElement children={<EmailIcon color="gray.400" />} />
+                <Input
+                  isReadOnly={true}
+                  variant={"outline"}
+                  size="lg"
+                  placeholder="email@email.com"
+                  _placeholder={{ color: "gray.400" }}
+                  focusBorderColor="pink.500"
+                  type="email"
+                  mb={3}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </InputGroup>
 
@@ -195,18 +236,17 @@ export default function PerfilFisioterapeuta({
                     <Icon as={HiClipboardList} color="gray.400" w={5} h={5} />
                   }
                 />
-              <Input
-                w="100%"
-                placeholder="Crefito do Fisioterapeuta"
-                focusBorderColor="pink.700"
-                size="lg"
-                type="text"
-                mb={3}
-                value={crefito}
-                onChange={(e) => setCrefito(e.target.value)}
-              />
+                <Input
+                  w="100%"
+                  placeholder="Crefito do Fisioterapeuta"
+                  focusBorderColor="pink.700"
+                  size="lg"
+                  type="text"
+                  mb={3}
+                  value={crefito}
+                  onChange={(e) => setCrefito(e.target.value)}
+                />
               </InputGroup>
-
 
               <Text
                 mb={2}
@@ -217,22 +257,19 @@ export default function PerfilFisioterapeuta({
               </Text>
               <InputGroup size="lg">
                 <InputLeftElement
-                  children={
-                    <Icon as={HiHome} color="gray.400" w={5} h={5} />
-                  }
+                  children={<Icon as={HiHome} color="gray.400" w={5} h={5} />}
                 />
-              <Input
-                w="100%"
-                placeholder="Local de atuação do Fisioterapeuta"
-                focusBorderColor="pink.700"
-                size="lg"
-                type="text"
-                mb={3}
-                value={atuacao}
-                onChange={(e) => setAtuacao(e.target.value)}
-              />
+                <Input
+                  w="100%"
+                  placeholder="Local de atuação do Fisioterapeuta"
+                  focusBorderColor="pink.700"
+                  size="lg"
+                  type="text"
+                  mb={3}
+                  value={atuacao}
+                  onChange={(e) => setAtuacao(e.target.value)}
+                />
               </InputGroup>
-
 
               <Button
                 w="25%"
@@ -264,6 +301,7 @@ export const getServerSideProps = canSSRAuth("Fisioterapeuta", async (ctx) => {
     const usuario = {
       id: usuarioResponse.data["usuario"]["id"],
       nome: usuarioResponse.data["usuario"]["nome"],
+      email: usuarioResponse.data["usuario"]["email"],
       cpf: usuarioResponse.data["usuario"]["cpf"],
     };
 

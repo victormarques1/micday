@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 import Head from "next/head";
 
@@ -21,6 +21,7 @@ import { HiUser, HiClipboardList, HiIdentification } from "react-icons/hi";
 import { GiBodyHeight } from "react-icons/gi";
 import { BiBody } from "react-icons/bi";
 import { FiChevronLeft } from "react-icons/fi";
+import { EmailIcon } from "@chakra-ui/icons";
 
 import { canSSRAuth } from "@/utils/canSSRAuth";
 import { setupAPIClient } from "@/services/api";
@@ -31,6 +32,7 @@ import Link from "next/link";
 interface UsuarioProps {
   id: string;
   nome: string;
+  email: string;
   cpf: string;
 }
 
@@ -50,6 +52,7 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
   const [nome, setNome] = useState(usuario && usuario?.nome);
+  const [email, setEmail] = useState(usuario && usuario?.email);
   const [cpf, setCpf] = useState(usuario && usuario?.cpf);
   const cpfFormatado = cpf.replace(
     /(\d{3})(\d{3})(\d{3})(\d{2})/,
@@ -189,6 +192,29 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
                   onChange={(e) => setNome(e.target.value)}
                 />
               </InputGroup>
+
+              <Text
+                mb={2}
+                fontSize={isMobile ? "lg" : "xl"}
+                fontWeight="medium"
+              >
+                Email
+              </Text>
+              <InputGroup size="lg">
+              <InputLeftElement children={<EmailIcon color="gray.400" />} />
+              <Input
+                isReadOnly={true}
+                variant={"outline"}
+                size="lg"
+                placeholder="email@email.com"
+                _placeholder={{ color: "gray.400" }}
+                focusBorderColor="pink.500"
+                type="email"
+                mb={3}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </InputGroup>
 
               <Text
                 mb={2}
@@ -335,6 +361,7 @@ export const getServerSideProps = canSSRAuth("Paciente", async (ctx) => {
     const usuario = {
       id: usuarioResponse.data["usuario"]["id"],
       nome: usuarioResponse.data["usuario"]["nome"],
+      email: usuarioResponse.data["usuario"]["email"],
       cpf: usuarioResponse.data["usuario"]["cpf"],
     };
 

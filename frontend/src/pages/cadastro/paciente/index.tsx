@@ -107,7 +107,7 @@ export default function CadastroPaciente() {
       });
 
       toast.success("Cadastrado com sucesso!!");
-      router.push("/login");
+      router.push("/");
     } catch (err) {
       console.log(err);
       toast.error("Erro ao cadastrar.");

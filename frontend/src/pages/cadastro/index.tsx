@@ -242,7 +242,7 @@ export default function Cadastro() {
             </Button>
 
             <Center>
-              <Link href="/login">
+              <Link href="/">
                 <Text cursor="pointer">
                   Já possui conta? <strong>Faça login</strong>
                 </Text>

@@ -12,7 +12,7 @@ export function canSSRAuth<P>(tipoUsuario: string, fn: GetServerSideProps<P>){
         if(!token || !tipoUsuarioToken || tipoUsuarioToken !== tipoUsuario){
             return{
                 redirect:{
-                    destination: '/login',
+                    destination: '/',
                     permanent: false,
                 }
             }

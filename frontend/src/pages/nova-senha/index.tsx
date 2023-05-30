@@ -40,7 +40,7 @@ const RedefinirSenha = () => {
         isClosable: true,
       });
 
-      router.push("/login");
+      router.push("/");
     } catch (error) {
       console.error("Erro ao redefinir a senha:", error);
       toast({
