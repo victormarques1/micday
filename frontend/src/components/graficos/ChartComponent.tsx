@@ -304,7 +304,7 @@ const Registro: React.FC<RegistroProps> = ({
           </FormControl>
         </Flex>
       </Flex>
-      <Flex h="500px">
+      <Flex h="100vh" maxH="450px">
         <canvas ref={chartRef} />
       </Flex>
     </Box>

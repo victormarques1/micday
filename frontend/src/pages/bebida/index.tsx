@@ -150,7 +150,7 @@ export default function Bebida() {
                 <option value="Chimarrão">Chimarrão</option>
                 <option value="Leite / laticínios">Leite / laticínios</option>
                 <option value="Refrigerante">Refrigerante</option>
-                <option value="Suco">Refrigerante</option>
+                <option value="Suco">Suco</option>
               </Select>
             </Flex>
 

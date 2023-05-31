@@ -15,6 +15,7 @@ import {
 import Logo from "../../../../public/images/Logo.svg"
 import { setupAPIClient } from "@/services/api";
 import { canSSRAuth } from "@/utils/canSSRAuth";
+import { SidebarPaciente } from "@/components/sidebar/paciente";
 
 export default function AlterarSenha({ paciente }) {
   const toast = useToast();
@@ -69,6 +70,7 @@ export default function AlterarSenha({ paciente }) {
       <Head>
         <title>Alterar senha | mic.day</title>
       </Head>
+      <SidebarPaciente>
       <Box
         maxW="md"
         mx="auto"
@@ -133,6 +135,7 @@ export default function AlterarSenha({ paciente }) {
           Alterar Senha
         </Button>
       </Box>
+      </SidebarPaciente>
     </>
   );
 }

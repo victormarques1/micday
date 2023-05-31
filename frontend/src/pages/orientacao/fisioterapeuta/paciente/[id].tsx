@@ -95,6 +95,7 @@ export default function OrientacoesPacienteId({
                 {orientacao.descricao}
                 </Text>
                 <Checkbox
+                readOnly
                 colorScheme="pink"
                 size="md"
                 borderColor="pink.600"

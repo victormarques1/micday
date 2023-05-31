@@ -108,10 +108,8 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
         altura: Number(altura),
         peso: Number(peso),
         idade: Number(idade),
-        etnia: etnia,
       });
 
-      console.log(altura, peso, idade);
       toast.success("Perfil atualizado sucesso!");
     } catch (err) {
       toast.error("Erro ao editar perfil");

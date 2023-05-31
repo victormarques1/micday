@@ -101,7 +101,7 @@ export default function Registros({ registros }: PacienteRegistrosProps) {
               mb={isMobile ? 0 : 4}
               fontSize={isMobile ? "28px" : "3xl"}
             >
-              Perfil do paciente
+              Registros de {registros.usuario.nome}
             </Heading>
           </Flex>
           </Flex>

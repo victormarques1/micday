@@ -3,14 +3,13 @@ import prismaClient from "../../prisma";
 interface PacienteRequest {
   paciente_id: string;
   usuario_id: string;
-  altura: string;
-  peso: string;
+  altura: number;
+  peso: number;
   idade: number;
-  status: boolean;
 }
 
 class AtualizarPacienteService {
-  async execute({ paciente_id, usuario_id, altura, peso, idade, status }) {
+  async execute({ paciente_id, usuario_id, altura, peso, idade}) {
     try {
       const pacienteExiste = await prismaClient.paciente.findFirst({
         where: {
