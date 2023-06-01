@@ -1,7 +1,17 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Box, Text, Input, Button, useToast, Flex, FormControl, FormLabel } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Input,
+  Button,
+  useToast,
+  Flex,
+  FormControl,
+  FormLabel,
+  FormHelperText,
+} from "@chakra-ui/react";
 import Image from "next/image";
 import Logo from "../../../public/images/Logo.svg";
 import { setupAPIClient } from "@/services/api";
@@ -14,6 +24,17 @@ const RedefinirSenha = () => {
   const [confirmarSenha, setConfirmarSenha] = useState("");
 
   const handleRedefinirSenha = async () => {
+    if (novaSenha.length < 6) {
+      toast({
+        title: "Erro",
+        description: "Sua senha precisar ter no mínimo 6 dígitos!",
+        status: "error",
+        duration: 2500,
+        isClosable: true,
+      });
+      return;
+    }
+
     if (novaSenha !== confirmarSenha) {
       toast({
         title: "Erro",
@@ -76,7 +97,7 @@ const RedefinirSenha = () => {
           Redefinir senha
         </Text>
         <Text mb={6}>
-          Por favor introduza a sua palavra-passe nova duas vezes para que possamos
+          Por favor introduza a sua nova senha duas vezes para que possamos
           verificar se introduziu corretamente.
         </Text>
         <FormControl isRequired>
@@ -89,8 +110,10 @@ const RedefinirSenha = () => {
             placeholder="Nova Senha"
             value={novaSenha}
             onChange={(e) => setNovaSenha(e.target.value)}
-            mb={4}
           />
+          <FormHelperText mb={4}>
+            Sua senha precisa ter no mínimo 6 dígitos.
+          </FormHelperText>
         </FormControl>
         <FormControl isRequired>
           <FormLabel>Confirmar nova senha</FormLabel>

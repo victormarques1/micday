@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Image from "next/image";
 import {
   Box,
-  Image,
   Flex,
   Input,
   Button,
   Text,
   useToast,
   FormControl,
+  FormHelperText,
   FormLabel,
 } from "@chakra-ui/react";
-import Logo from "../../../../public/images/Logo.svg"
+import Logo from "../../../../public/images/Logo.svg";
 import { setupAPIClient } from "@/services/api";
 import { canSSRAuth } from "@/utils/canSSRAuth";
 import { SidebarPaciente } from "@/components/sidebar/paciente";
@@ -26,6 +27,28 @@ export default function AlterarSenha({ paciente }) {
   const [pacienteId, setPacienteId] = useState(paciente.usuario.id);
 
   const handleRedefinirSenha = async () => {
+    if (novaSenha === senhaAtual) {
+      toast({
+        title: "Erro",
+        description: "Sua nova senha precisa ser diferente da antiga",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    if (novaSenha.length < 6) {
+      toast({
+        title: "Erro",
+        description: "Sua senha precisar ter no mínimo 6 dígitos!",
+        status: "error",
+        duration: 2500,
+        isClosable: true,
+      });
+      return;
+    }
+
     if (novaSenha !== confirmarSenha) {
       toast({
         title: "Erro",
@@ -71,70 +94,72 @@ export default function AlterarSenha({ paciente }) {
         <title>Alterar senha | mic.day</title>
       </Head>
       <SidebarPaciente>
-      <Box
-        maxW="md"
-        mx="auto"
-        mt={10}
-        p={4}
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Flex mb={8} justifyContent="center">
-          <Image src={Logo} width={180} alt="Logo mic.day" />
-        </Flex>
-        <Text mb={4} fontSize={28} fontWeight="bold">
-          Alterar senha
-        </Text>
-        <Text mb={6}>
-          Por razões de segurança, por favor introduza a sua palavra-passe
-          antiga e depois introduza a nova duas vezes para que possamos
-          verificar se introduziu corretamente.
-        </Text>
-        <FormControl isRequired>
-          <FormLabel>Senha atual</FormLabel>
-          <Input
-            variant={"outline"}
-            _placeholder={{ color: "gray.400" }}
-            focusBorderColor="pink.500"
-            type="password"
-            placeholder="Nova Senha"
-            value={senhaAtual}
-            onChange={(e) => setSenhaAtual(e.target.value)}
-            mb={4}
-          />
-        </FormControl>
-        <FormControl isRequired>
-          <FormLabel>Nova senha</FormLabel>
-          <Input
-            variant={"outline"}
-            _placeholder={{ color: "gray.400" }}
-            focusBorderColor="pink.500"
-            type="password"
-            placeholder="Nova Senha"
-            value={novaSenha}
-            onChange={(e) => setNovaSenha(e.target.value)}
-            mb={4}
-          />
-        </FormControl>
-        <FormControl isRequired>
-          <FormLabel>Confirmar nova senha</FormLabel>
-          <Input
-            variant={"outline"}
-            _placeholder={{ color: "gray.400" }}
-            focusBorderColor="pink.500"
-            type="password"
-            placeholder="Confirmar Senha"
-            value={confirmarSenha}
-            onChange={(e) => setConfirmarSenha(e.target.value)}
-            mb={8}
-          />
-        </FormControl>
-        <Button onClick={handleRedefinirSenha} colorScheme="pink">
-          Alterar Senha
-        </Button>
-      </Box>
+        <Box
+          maxW="md"
+          mx="auto"
+          mt={10}
+          p={4}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Flex mb={8} justifyContent="center">
+            <Image src={Logo} width={180} alt="Logo mic.day" />
+          </Flex>
+          <Text mb={4} fontSize={28} fontWeight="bold">
+            Alterar senha
+          </Text>
+          <Text mb={6}>
+            Por razões de segurança, por favor introduza a sua palavra-passe
+            antiga e depois introduza a nova duas vezes para que possamos
+            verificar se introduziu corretamente.
+          </Text>
+          <FormControl isRequired>
+            <FormLabel>Senha atual</FormLabel>
+            <Input
+              variant={"outline"}
+              _placeholder={{ color: "gray.400" }}
+              focusBorderColor="pink.500"
+              type="password"
+              placeholder="Nova Senha"
+              value={senhaAtual}
+              onChange={(e) => setSenhaAtual(e.target.value)}
+              mb={4}
+            />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel>Nova senha</FormLabel>
+            <Input
+              variant={"outline"}
+              _placeholder={{ color: "gray.400" }}
+              focusBorderColor="pink.500"
+              type="password"
+              placeholder="Nova Senha"
+              value={novaSenha}
+              onChange={(e) => setNovaSenha(e.target.value)}
+            />
+            <FormHelperText mb={4}>
+              Sua senha precisa ter no mínimo 6 dígitos.
+            </FormHelperText>
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel>Confirmar nova senha</FormLabel>
+            <Input
+              variant={"outline"}
+              _placeholder={{ color: "gray.400" }}
+              focusBorderColor="pink.500"
+              type="password"
+              placeholder="Confirmar Senha"
+              value={confirmarSenha}
+              onChange={(e) => setConfirmarSenha(e.target.value)}
+              mb={8}
+            />
+          </FormControl>
+          <Button onClick={handleRedefinirSenha} colorScheme="pink">
+            Alterar Senha
+          </Button>
+        </Box>
       </SidebarPaciente>
     </>
   );

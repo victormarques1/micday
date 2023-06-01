@@ -8,8 +8,18 @@ import {
   Button,
   Stack,
   Switch,
-  Box,
+  Table,
+  TableContainer,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
   VStack,
+  Tooltip,
+  Input,
+  InputGroup,
+  InputLeftElement,
 } from "@chakra-ui/react";
 
 import { canSSRAuth } from "@/utils/canSSRAuth";
@@ -17,13 +27,17 @@ import { setupAPIClient } from "@/services/api";
 import { SidebarFisioterapeuta } from "../../../components/sidebar/fisioterapeuta";
 
 import Link from "next/link";
-import { FiChevronLeft } from "react-icons/fi";
-import { BsPerson } from "react-icons/bs";
-import { AiOutlineFileSearch } from "react-icons/ai";
-import { FaRegBell } from "react-icons/fa";
-import { format } from "date-fns";
+import { Icon } from "@chakra-ui/react";
 
-interface PacienteItem {
+import { FiChevronLeft } from "react-icons/fi";
+import { BsPersonFill, BsCheckCircle } from "react-icons/bs";
+import { AiOutlineFileSearch, AiOutlineSearch } from "react-icons/ai";
+import { FaRegBell } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
+
+import PerfilPacienteModal from '../../../components/modal/PerfilPacienteModal'
+
+export interface PacienteItem {
   id: string;
   idade: number;
   created_at: string;
@@ -34,53 +48,66 @@ interface PacienteItem {
   tipo: TipoProps;
 }
 
-interface UsuarioProps {
+export interface UsuarioProps {
   nome: string;
   cpf: string;
 }
 
-interface TipoProps {
+export interface TipoProps {
   nome: string;
 }
 
-interface PacienteProps {
+export interface PacienteProps {
   pacientes: PacienteItem[];
 }
 
 export default function MeusPacientes({ pacientes }: PacienteProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
   const [statusPaciente, setStatusPaciente] = useState("enabled");
+  const [filtroNome, setFiltroNome] = useState("");
   const [pacientesFiltrados, setPacientesFiltrados] = useState(pacientes);
+  const [selectedPaciente, setSelectedPaciente] = useState<PacienteItem | null>(
+    null
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    if (statusPaciente === "enabled") {
-      const pacientesAtivos = pacientes.filter(
-        (paciente) => paciente.status === true
+    const filtrarPacientes = () => {
+      let pacientesFiltrados = pacientes;
+
+      if (statusPaciente === "enabled") {
+        pacientesFiltrados = pacientesFiltrados.filter(
+          (paciente) => paciente.status === true
+        );
+      } else {
+        pacientesFiltrados = pacientesFiltrados.filter(
+          (paciente) => paciente.status === false
+        );
+      }
+
+      pacientesFiltrados = pacientesFiltrados.filter((paciente) =>
+        paciente.usuario.nome.toLowerCase().includes(filtroNome.toLowerCase())
       );
-      setPacientesFiltrados(pacientesAtivos);
-    } else {
-      const pacientesInativos = pacientes.filter(
-        (paciente) => paciente.status === false
-      );
-      setPacientesFiltrados(pacientesInativos);
-    }
-  }, [statusPaciente, pacientes]);
+
+      setPacientesFiltrados(pacientesFiltrados);
+    };
+
+    filtrarPacientes();
+  }, [statusPaciente, filtroNome]);
 
   async function handleStatus(e: ChangeEvent<HTMLInputElement>) {
     setStatusPaciente(statusPaciente === "enabled" ? "disabled" : "enabled");
   }
 
   async function handleStatusChange(pacienteId: string, novoStatus: boolean) {
-    // console.log('novo Status:', novoStatus)
-    //   console.log('paciente_id: ', pacienteId)
     try {
       const apiClient = setupAPIClient();
       const response = await apiClient.put(`/paciente/status/${pacienteId}`, {
         status: novoStatus,
       });
-      
+
       window.location.reload();
-   
+
       const pacientesAtualizados = pacientes.map((paciente) => {
         if (paciente.id === pacienteId) {
           return {
@@ -90,13 +117,22 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
         }
         return paciente;
       });
-  
+
       setPacientesFiltrados(pacientesAtualizados);
     } catch (error) {
       console.log(error);
     }
   }
-  
+
+  async function handleButtonClick(pacienteId: string, status: boolean) {
+    const novoStatus = !status; // Inverte o status atual
+    handleStatusChange(pacienteId, novoStatus);
+  }
+
+  function handleOpenModal(paciente: PacienteItem) {
+    setSelectedPaciente(paciente);
+    setIsModalOpen(true);
+  }
 
   return (
     <>
@@ -132,13 +168,19 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
               color="pink.700"
               mt={4}
               mr={4}
-              mb={isMobile ? 0 : 4}
+              mb={isMobile ? 2 : 4}
               fontSize={isMobile ? "28px" : "3xl"}
             >
               Meus pacientes
             </Heading>
 
-            <Stack ml={isMobile ? 0 : "auto"} mt={isMobile ? 2:0} align="center" direction="row" pr={2}>
+            <Stack
+              ml={isMobile ? 0 : "auto"}
+              mt={isMobile ? 2 : 0}
+              align="center"
+              direction="row"
+              pr={2}
+            >
               <Text fontWeight="bold" pr={1}>
                 ATIVOS
               </Text>
@@ -153,98 +195,114 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
           </Flex>
 
           <VStack align="stretch" spacing={4} w="100%" maxW="1100px">
-            {pacientesFiltrados.map((paciente) => (
-              <Box
-                key={paciente.id}
-                mt={isMobile ? 0 : 4}
-                p={4}
-                shadow="md"
-                bg="pink.50"
-                borderBottomColor="pink.700"
-                borderBottomWidth={2}
-                fontSize="lg"
-              >
-                <Text fontSize="lg" mb={2}>
-                  <strong>Nome:</strong> {paciente.usuario.nome}
-                </Text>
-                <Text fontSize="lg" mb={2}>
-                  <strong>Idade:</strong> {paciente.idade}
-                </Text>
-                <Text fontSize="lg" mb={2}>
-                  <strong>Tipo de IU:</strong> {paciente.tipo?.nome}
-                </Text>
-                <Text fontSize="lg" mb={2}>
-                  <strong>Usuário desde:</strong>{" "}
-                  {format(new Date(paciente.created_at), "dd/MM/yyyy")}
-                </Text>
-                <Text fontSize="lg" mb={2}>
-                  <strong>Status: </strong>
-                  {paciente.status === true ? "Ativo" : "Inativo"}
-                </Text>
-                <Flex direction="row">
-                <Switch
-                  size="lg"
-                  colorScheme="pink"
-                  isChecked={paciente.status}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    const novoStatus = e.target.checked;
-                    handleStatusChange(paciente.id, novoStatus);
-                  }}
-                />
-                <Text fontSize="lg" ml={2}><strong>Desativar</strong></Text>
-                
-                </Flex>
-                
-                <Flex direction={isMobile ? "column" : "row"}>
-                  <Link href={`/perfil/paciente/${paciente.id}`}>
-                    <Button
-                      leftIcon={<BsPerson size={16} />}
-                      mt={3}
-                      mr={4}
-                      bg="pink.600"
-                      color="white"
-                      size="md"
-                      _hover={{ bg: "pink.500" }}
-                      isDisabled={paciente.status === false}
-                    >
-                      Perfil
-                    </Button>
-                  </Link>
+            <InputGroup size="lg" mt={isMobile ? 0 : 4} mb={isMobile ? 0 : 4}>
+              <InputLeftElement
+                pointerEvents="none"
+                children={
+                  <Icon as={AiOutlineSearch} color="gray.400" w={5} h={5} />
+                }
+              />
+              <Input
+                focusBorderColor="pink.500"
+                placeholder="Buscar paciente"
+                value={filtroNome}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setFiltroNome(e.target.value)
+                }
+              />
+            </InputGroup>
+            <TableContainer borderWidth={1} borderRadius={12}>
+              <Table variant="striped">
+                <Thead>
+                  <Tr>
+                    <Th>Nome</Th>
+                    <Th>Idade</Th>
+                    <Th>Tipo de IU</Th>
+                    <Th>Status</Th>
+                    <Th>Ações</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {pacientesFiltrados.map((paciente) => (
+                    <Tr key={paciente.id}>
+                      <Td>{paciente.usuario.nome}</Td>
+                      <Td>{paciente.idade}</Td>
+                      <Td>{paciente.tipo?.nome}</Td>
+                      <Td>{paciente.status === true ? "Ativo" : "Inativo"}</Td>
+                      <Td>
+                        <Tooltip label="Perfil" placement="top">
+                          <Button
+                            variant="unstyled"
+                            leftIcon={<BsPersonFill size={16} />}
+                            color="pink.600"
+                            size="sm"
+                            isDisabled={paciente.status === false}
+                            onClick={() => handleOpenModal(paciente)}
+                          />
+                        </Tooltip>
 
-                  <Link href={`/registros/paciente/${paciente.id}`}>
-                    <Button
-                      leftIcon={<AiOutlineFileSearch size={16} />}
-                      mt={3}
-                      mr={4}
-                      bg="pink.600"
-                      color="white"
-                      size="md"
-                      _hover={{ bg: "pink.500" }}
-                      isDisabled={paciente.status === false}
-                    >
-                      Registros
-                    </Button>
-                  </Link>
-                  <Link
-                    href={`/orientacao/fisioterapeuta/paciente/${paciente.id}`}
-                  >
-                    <Button
-                      leftIcon={<FaRegBell size={16} />}
-                      mt={3}
-                      mr={4}
-                      bg="pink.600"
-                      color="white"
-                      size="md"
-                      _hover={{ bg: "pink.500" }}
-                      isDisabled={paciente.status === false}
-                    >
-                      Orientações
-                    </Button>
-                  </Link>
-                </Flex>
-              </Box>
-            ))}
+                        <Tooltip label="Registros" placement="top">
+                          <Link href={`/registros/paciente/${paciente.id}`}>
+                            <Button
+                              variant="unstyled"
+                              leftIcon={<AiOutlineFileSearch size={16} />}
+                              color="pink.600"
+                              size="sm"
+                              isDisabled={paciente.status === false}
+                            />
+                          </Link>
+                        </Tooltip>
+
+                        <Tooltip label="Orientações" placement="top">
+                          <Link
+                            href={`/orientacao/fisioterapeuta/paciente/${paciente.id}`}
+                          >
+                            <Button
+                              variant="unstyled"
+                              leftIcon={<FaRegBell size={16} />}
+                              color={"pink.600"}
+                              size="sm"
+                              isDisabled={paciente.status === false}
+                            />
+                          </Link>
+                        </Tooltip>
+
+                        <Tooltip
+                          label={
+                            paciente.status === true ? "Desativar" : "Ativar"
+                          }
+                          placement="top"
+                        >
+                          <Button
+                            variant="unstyled"
+                            leftIcon={
+                              paciente.status === true ? (
+                                <MdDeleteForever size={18} />
+                              ) : (
+                                <BsCheckCircle size={16} />
+                              )
+                            }
+                            color={
+                              paciente.status === true ? "red.500" : "green.500"
+                            }
+                            size="sm"
+                            onClick={() =>
+                              handleButtonClick(paciente.id, paciente.status)
+                            }
+                          />
+                        </Tooltip>
+                      </Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </TableContainer>
           </VStack>
+          {/* <PerfilPacienteModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            paciente={selectedPaciente}
+          /> */}
         </Flex>
       </SidebarFisioterapeuta>
     </>
