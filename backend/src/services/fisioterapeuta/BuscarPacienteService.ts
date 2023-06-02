@@ -17,11 +17,6 @@ class BuscarPacienteService {
                         cpf: true
                     }
                 },
-                tipo: {
-                    select:{
-                        nome: true
-                    }
-                }
             }
         })
 

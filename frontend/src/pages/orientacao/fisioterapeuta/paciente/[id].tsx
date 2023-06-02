@@ -52,7 +52,7 @@ export default function OrientacoesPacienteId({
             align={isMobile ? "flex-start" : "center"}
             mb={isMobile ? 4 : 0}
           >
-            <Link href="/dashboard/paciente">
+            <Link href="/fisioterapeuta/pacientes">
               <Button
                 p={4}
                 display="flex"

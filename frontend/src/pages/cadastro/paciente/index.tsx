@@ -17,7 +17,6 @@ import {
   useMediaQuery,
   FormControl,
   FormLabel,
-  FormHelperText,
 } from "@chakra-ui/react";
 
 import { Icon } from "@chakra-ui/react";
@@ -42,20 +41,10 @@ export default function CadastroPaciente() {
   const [altura, setAltura] = useState("");
   const [peso, setPeso] = useState("");
   const [etnia, setEtnia] = useState("");
-  const [tiposIncontinencia, setTipoIncontinencia] = useState([]);
   const [tipoSelecionado, setTipoSelecionado] = useState("");
   const [fisioterapeutas, setFisioterapeutas] = useState([]);
   const [fisioterapeutaSelecionado, setFisioterapeutaSelecionado] =
     useState("");
-
-  useEffect(() => {
-    async function fetchTipos() {
-      const apiClient = setupAPIClient();
-      const response = await apiClient.get("/tipos");
-      setTipoIncontinencia(response.data);
-    }
-    fetchTipos();
-  }, []);
 
   useEffect(() => {
     async function fetchFisioterapeutas() {
@@ -103,7 +92,7 @@ export default function CadastroPaciente() {
         etnia: etnia,
         usuario_id: usuario_id,
         fisioterapeuta_id: fisioterapeutaSelecionado,
-        tipo_id: tipoSelecionado,
+        tipo_incontinencia: tipoSelecionado,
       });
 
       toast.success("Cadastrado com sucesso!!");
@@ -195,7 +184,7 @@ export default function CadastroPaciente() {
             </FormControl>
 
             <FormControl isRequired>
-              <FormLabel>Cor / raça</FormLabel>
+              <FormLabel>Etnia</FormLabel>
               <Select
                 size="lg"
                 focusBorderColor="pink.600"
@@ -219,14 +208,19 @@ export default function CadastroPaciente() {
                 value={tipoSelecionado}
                 onChange={(e) => setTipoSelecionado(e.target.value)}
               >
-                {tiposIncontinencia.map((tipoIncontinencia) => (
-                  <option
-                    key={tipoIncontinencia.id}
-                    value={tipoIncontinencia.id}
-                  >
-                    {tipoIncontinencia.nome}
-                  </option>
-                ))}
+                <option value="esforço">
+                  Incontinência Urinária de Esforço
+                </option>
+                <option value="urgencia">
+                  Incontinência Urinária de Urgência
+                </option>
+                <option value="mista">Incontinência Urinária Mista</option>
+                <option value="funcional">
+                  Incontinência Urinária Funcional
+                </option>
+                <option value="transbordamento">
+                  Incontinência Urinária de Transbordamento
+                </option>
               </Select>
             </FormControl>
 

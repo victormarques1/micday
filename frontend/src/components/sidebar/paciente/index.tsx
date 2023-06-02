@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Children, ReactNode } from "react";
+import { useRouter } from "next/router";
 import {
   IconButton,
   Box,
@@ -27,7 +28,7 @@ import { AuthContext } from "@/context/AuthContext";
 
 import { IconType } from "react-icons";
 import { FiSettings, FiMenu, FiLogOut } from "react-icons/fi";
-import { ImStatsBars } from 'react-icons/im'
+import { ImStatsBars } from "react-icons/im";
 import { HiHome } from "react-icons/hi";
 import { FaToilet, FaBell } from "react-icons/fa";
 import { MdLocalDrink } from "react-icons/md";
@@ -136,8 +137,6 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
     <Box
       bg="pink.700"
-      borderRightWidth={"1px"}
-      borderRightColor={useColorModeValue("pink.200", "gray.700")}
       w={{ base: "full", md: 60 }}
       pos="fixed"
       h="full"
@@ -199,25 +198,27 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           >
             <FiLogOut size="20" />
           </MenuButton>
-          <MenuList bg="pink.50" borderColor="pink.100">
-          <Link href="/trocar-senha/paciente">
-          <MenuItem
-              bg="pink.50"
-              _hover={{color: "pink.300"}}
-              color="black"
-              fontWeight="semibold"
-            >
-              Alterar senha
-            </MenuItem>
-          </Link>
+          <MenuList bg="pink.50" borderColor="transparent">
+            <Link href="/trocar-senha/paciente">
+              <MenuItem
+                bg="pink.50"
+                _hover={{ fontWeight:"semibold" }}
+                color="black"
+              >
+                Alterar senha
+              </MenuItem>
+            </Link>
             <MenuItem
               bg="pink.50"
-              color="black"
-              _hover={{color: "pink.300"}}
+              color="red.600"
+              _hover={{ fontWeight:"bold" }}
               fontWeight="semibold"
               onClick={handleLogout}
             >
-              Sair da conta
+              <Flex alignItems="center">
+                <Icon as={FiLogOut} color="red.600" mr={2} />
+                Sair da conta
+              </Flex>
             </MenuItem>
           </MenuList>
         </Menu>
@@ -237,21 +238,23 @@ interface NavItemProps extends FlexProps {
 }
 
 const NavItem = ({ icon, children, rota, ...rest }: NavItemProps) => {
+  const router = useRouter();
+  const isActive = router.pathname === rota;
+
   return (
-    <Link href={rota} style={{ textDecoration: "none" }}>
+    <Link href={rota} passHref>
       <Flex
         align="center"
-        px="4"
-        mx="4"
-        p={3}
-        borderRadius={4}
-        color="white"
+        pl={6}
+        py={3}
+        color={isActive ? "pink.600" : "white"}
+        bg={isActive ? "pink.100" : ""}
         role="group"
         cursor="pointer"
         fontWeight="semibold"
         _hover={{
-          bg: "pink.100",
-          color: "pink.600",
+          bg: "transparent",
+          color: "pink.100",
         }}
         {...rest}
       >
@@ -261,7 +264,7 @@ const NavItem = ({ icon, children, rota, ...rest }: NavItemProps) => {
             fontSize="18"
             as={icon}
             _groupHover={{
-              color: "pink.600",
+              color: "pink.100",
             }}
           />
         )}

@@ -3,7 +3,7 @@ import { CriarPacienteService } from "../../services/paciente/CriarPacienteServi
 
 class CriarPacienteController {
     async handle(req: Request, res: Response){
-        const { idade, altura, peso, etnia, usuario_id, fisioterapeuta_id, tipo_id } = req.body;
+        const { idade, altura, peso, etnia, usuario_id, fisioterapeuta_id, tipo_incontinencia } = req.body;
 
         const criarPacienteService = new CriarPacienteService();
 
@@ -14,7 +14,7 @@ class CriarPacienteController {
             etnia, 
             usuario_id, 
             fisioterapeuta_id, 
-            tipo_id 
+            tipo_incontinencia 
         });
 
         return res.json(paciente);

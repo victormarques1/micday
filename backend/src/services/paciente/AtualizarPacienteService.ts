@@ -6,10 +6,12 @@ interface PacienteRequest {
   altura: number;
   peso: number;
   idade: number;
+  etnia: string;
+  tipo_incontinencia: string;
 }
 
 class AtualizarPacienteService {
-  async execute({ paciente_id, usuario_id, altura, peso, idade}) {
+  async execute({ paciente_id, usuario_id, altura, peso, idade, tipo_incontinencia, etnia}) {
     try {
       const pacienteExiste = await prismaClient.paciente.findFirst({
         where: {
@@ -30,6 +32,8 @@ class AtualizarPacienteService {
           altura,
           peso,
           idade,
+          etnia,
+          tipo_incontinencia
         },
         select: {
           id: true,
@@ -37,6 +41,7 @@ class AtualizarPacienteService {
           peso: true,
           etnia: true,
           idade: true,
+          tipo_incontinencia: true,
         },
       });
 

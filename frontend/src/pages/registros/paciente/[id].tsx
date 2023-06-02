@@ -15,6 +15,7 @@ import {
   Th,
   Thead,
   Tr,
+  TableContainer
 } from "@chakra-ui/react";
 
 import { FiChevronLeft } from "react-icons/fi";
@@ -55,7 +56,7 @@ interface PacienteRegistrosProps {
     updated_at: string;
     usuario_id: string;
     fisioterapeuta_id: string;
-    tipo_id: string;
+    tipo_incontinencia: string;
     usuario: { nome: string };
     urinas: Registro[];
     bebidas: Bebida[];
@@ -79,7 +80,7 @@ export default function Registros({ registros }: PacienteRegistrosProps) {
             align={isMobile ? "flex-start" : "center"}
             mb={isMobile ? 4 : 0}
           >
-            <Link href="/dashboard/paciente">
+            <Link href="/fisioterapeuta/pacientes">
               <Button
                 p={4}
                 display="flex"
@@ -112,13 +113,9 @@ export default function Registros({ registros }: PacienteRegistrosProps) {
               Registros de Urina
             </Text>
             <Box overflowX="auto" mb={4}>
+            <TableContainer borderWidth={1} borderRadius={12}>
               <Table
-                variant="unstyled"
-                mb={2}
-                shadow="md"
-                bg="pink.50"
-                borderBottomColor="pink.700"
-                borderBottomWidth={2}
+                variant="striped"
               >
                 <Thead>
                   <Tr>
@@ -147,21 +144,18 @@ export default function Registros({ registros }: PacienteRegistrosProps) {
                     ))}
                 </Tbody>
               </Table>
+              </TableContainer>
             </Box>
           </Box>
 
           <Box textAlign="left" w="100%" maxW="1100">
-            <Text fontWeight="semibold" fontSize="xl" mb={2} pl={1}>
+            <Text fontWeight="semibold" fontSize="xl" mb={2} mt={2}pl={1}>
               Registros de Bebida
             </Text>
             <Box overflowX="auto">
+            <TableContainer borderWidth={1} borderRadius={12}>
               <Table
-                variant="unstyled"
-                mb={2}
-                shadow="md"
-                bg="pink.50"
-                borderBottomColor="pink.700"
-                borderBottomWidth={2}
+                variant="striped"
               >
                 <Thead>
                   <Tr>
@@ -188,6 +182,7 @@ export default function Registros({ registros }: PacienteRegistrosProps) {
                     ))}
                 </Tbody>
               </Table>
+              </TableContainer>
             </Box>
           </Box>
         </Flex>
