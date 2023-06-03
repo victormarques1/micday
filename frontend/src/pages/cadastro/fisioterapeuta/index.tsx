@@ -22,7 +22,6 @@ import { Icon } from "@chakra-ui/react";
 import { HiOfficeBuilding, HiIdentification } from "react-icons/hi";
 
 import { toast } from "react-toastify";
-import Link from "next/link";
 
 import { useRouter } from "next/router";
 
@@ -46,7 +45,7 @@ export default function CadastroFisioterapeuta() {
       return;
     }
 
-    if (crefito.length < 5) {
+    if (crefito.length < 5 || crefito.length > 8) {
       toast.warning("Informe um código CREFITO válido!");
       return;
     }

@@ -1,5 +1,4 @@
 import { useState, useContext } from "react";
-
 import Head from "next/head";
 import Image from "next/image";
 import Logo from "../../../public/images/Logo.svg";
@@ -23,15 +22,11 @@ import {
   FormHelperText
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon, EmailIcon, LockIcon } from "@chakra-ui/icons";
-
 import { Icon } from "@chakra-ui/react";
 import { HiUser, HiClipboardList } from "react-icons/hi";
-
 import Link from "next/link";
 import { canSSRGuest } from "@/utils/canSSRGuest";
-
 import { AuthContext } from "../../context/AuthContext";
-
 import { toast } from "react-toastify";
 
 export default function Cadastro() {
@@ -60,12 +55,18 @@ export default function Cadastro() {
     }
 
     if (senha.length < 6) {
-      toast.warning("Sua senha precisar ter no mínimo 6 dígitos!");
+      toast.warning("Sua senha precisa ter no mínimo 6 dígitos!");
       return;
     }
 
-    if (cpf.length != 11) {
-      toast.warning("CPF Inválido! Informe apenas os 11 números.");
+    if (cpf.length !== 11) {
+      toast.warning("CPF inválido! Informe apenas os 11 números.");
+      return;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      toast.warning("E-mail inválido! Verifique o formato do e-mail.");
       return;
     }
 
@@ -100,133 +101,140 @@ export default function Cadastro() {
             </Text>
 
             <FormControl isRequired>
-            <FormLabel>Nome</FormLabel>
-            <InputGroup size="lg">
-              <InputLeftElement
-                children={<Icon as={HiUser} color="gray.400" w={5} h={5} />}
-              />
-              <Input
-                size="lg"
-                placeholder="Nome completo"
-                _placeholder={{ color: "gray.400" }}
-                focusBorderColor="pink.500"
-                type="text"
-                mb={3}
-                isRequired
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-              />
-            </InputGroup>
+              <FormLabel>Nome</FormLabel>
+              <InputGroup size="lg">
+                <InputLeftElement
+                  children={<Icon as={HiUser} color="gray.400" w={5} h={5} />}
+                />
+                <Input
+                  size="lg"
+                  placeholder="Nome completo"
+                  _placeholder={{ color: "gray.400" }}
+                  focusBorderColor="pink.500"
+                  type="text"
+                  mb={3}
+                  isRequired
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                />
+              </InputGroup>
             </FormControl>
 
             <FormControl isRequired>
-            <FormLabel>E-mail </FormLabel>
-            <InputGroup size="lg">
-              <InputLeftElement children={<EmailIcon color="gray.400" />} />
-              <Input
-                variant={"outline"}
-                size="lg"
-                placeholder="email@email.com"
-                _placeholder={{ color: "gray.400" }}
-                focusBorderColor="pink.500"
-                type="email"
-                mb={3}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </InputGroup>
+              <FormLabel>E-mail </FormLabel>
+              <InputGroup size="lg">
+                <InputLeftElement children={<EmailIcon color="gray.400" />} />
+                <Input
+                  variant={"outline"}
+                  size="lg"
+                  placeholder="email@email.com"
+                  _placeholder={{ color: "gray.400" }}
+                  focusBorderColor="pink.500"
+                  type="email"
+                  mb={3}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </InputGroup>
             </FormControl>
 
             <FormControl isRequired>
-            <FormLabel>Senha </FormLabel>
-            <InputGroup size="lg" mb={3}>
-              <InputLeftElement children={<LockIcon color="gray.400" />} />
-              <Input
-                pr="4.5rem"
-                type={show ? "text" : "password"}
-                variant={"outline"}
-                placeholder="*************"
-                _placeholder={{ color: "gray.400" }}
-                focusBorderColor="pink.500"
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-              />
-              <InputRightElement width="4.5rem">
-                <Button
-                  bg="transparent"
-                  size="sm"
-                  onClick={handleClick}
-                  _hover={{ bg: "transparent" }}
-                >
-                  {show ? (
-                    <ViewOffIcon
-                      boxSize={6}
-                      bg=""
-                      color="pink.600"
-                      _hover={{ bg: "transparent" }}
-                    />
-                  ) : (
-                    <ViewIcon
-                      boxSize={6}
-                      bg="transparent"
-                      color="pink.600"
-                      _hover={{ bg: "transparent" }}
-                    />
-                  )}
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-            
+              <FormLabel>Senha </FormLabel>
+              <InputGroup size="lg" mb={3}>
+                <InputLeftElement children={<LockIcon color="gray.400" />} />
+                <Input
+                  pr="4.5rem"
+                  type={show ? "text" : "password"}
+                  variant={"outline"}
+                  placeholder="*************"
+                  _placeholder={{ color: "gray.400" }}
+                  focusBorderColor="pink.500"
+                  value={senha}
+                  onChange={(e) => setSenha(e.target.value)}
+                />
+                <InputRightElement width="4.5rem">
+                  <Button
+                    bg="transparent"
+                    size="sm"
+                    onClick={handleClick}
+                    _hover={{ bg: "transparent" }}
+                  >
+                    {show ? (
+                      <ViewOffIcon
+                        boxSize={6}
+                        bg=""
+                        color="pink.600"
+                        _hover={{ bg: "transparent" }}
+                      />
+                    ) : (
+                      <ViewIcon
+                        boxSize={6}
+                        bg="transparent"
+                        color="pink.600"
+                        _hover={{ bg: "transparent" }}
+                      />
+                    )}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
             </FormControl>
 
-              <FormControl isRequired>
+            <FormControl isRequired>
               <FormLabel>CPF</FormLabel>
-            <InputGroup size="lg">
-              <InputLeftElement
-                children={
-                  <Icon as={HiClipboardList} color="gray.400" w={5} h={5} />
-                }
-              />
-              <Input
-                size="lg"
-                placeholder="000.000.000-00"
-                _placeholder={{ color: "gray.400" }}
-                focusBorderColor="pink.500"
-                type="number"
-                maxLength={11}
-                mb={3}
-                value={cpf}
-                onChange={(e) => {
-                  const inputValue = e.target.value;
-                  if (inputValue.length <= 11) {
-                    setCpf(inputValue);
+              <InputGroup size="lg">
+                <InputLeftElement
+                  children={
+                    <Icon as={HiClipboardList} color="gray.400" w={5} h={5} />
                   }
-                }}
-              />
-            </InputGroup>
-              <FormHelperText mt={0} mb={4}>Informe apenas números no CPF.</FormHelperText>
-              </FormControl>
+                />
+                <Input
+                  size="lg"
+                  placeholder="000.000.000-00"
+                  _placeholder={{ color: "gray.400" }}
+                  focusBorderColor="pink.500"
+                  type="number"
+                  maxLength={11}
+                  mb={3}
+                  value={cpf}
+                  onChange={(e) => {
+                    const inputValue = e.target.value;
+                    if (inputValue.length <= 11) {
+                      setCpf(inputValue);
+                    }
+                  }}
+                />
+              </InputGroup>
+              <FormHelperText mt={0} mb={4}>
+                Informe apenas números no CPF.
+              </FormHelperText>
+            </FormControl>
 
             <FormControl isRequired>
-              <FormLabel>Tipo de usuário</FormLabel>    
-            <RadioGroup size="lg" p={1} mb={3} value={tipo} onChange={setTipo}>
-              <Stack spacing={6} direction="row" mb={3}>
-                <Radio
-                  value="Paciente"
-                  colorScheme="pink"
-                  borderColor="pink.600"
-                >
-                  Paciente
-                </Radio>
-                <Radio
-                  value="Fisioterapeuta"
-                  colorScheme="pink"
-                  borderColor="pink.600"
-                >
-                  Fisioterapeuta
-                </Radio>
-              </Stack>
-            </RadioGroup>
+              <FormLabel>Tipo de usuário</FormLabel>
+              <RadioGroup
+                size="lg"
+                p={1}
+                mb={3}
+                value={tipo}
+                onChange={setTipo}
+              >
+                <Stack spacing={6} direction="row" mb={3}>
+                  <Radio
+                    value="Paciente"
+                    colorScheme="pink"
+                    borderColor="pink.600"
+                  >
+                    Paciente
+                  </Radio>
+                  <Radio
+                    value="Fisioterapeuta"
+                    colorScheme="pink"
+                    borderColor="pink.600"
+                  >
+                    Fisioterapeuta
+                  </Radio>
+                </Stack>
+              </RadioGroup>
             </FormControl>
 
             <Button

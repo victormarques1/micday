@@ -6,16 +6,17 @@ import {
   Heading,
   useMediaQuery,
   Button,
-  Select,
+  Box,
 } from "@chakra-ui/react";
 
 import { canSSRAuth } from "@/utils/canSSRAuth";
 import { setupAPIClient } from "@/services/api";
 import { SidebarFisioterapeuta } from "../../../components/sidebar/fisioterapeuta";
-import { BsPerson } from "react-icons/bs";
-import { AiOutlineFileSearch } from "react-icons/ai";
-import { FaRegBell } from "react-icons/fa";
-import Link from "next/link";
+import { MdOutlineWaterDrop } from "react-icons/md";
+import { TbBottle } from "react-icons/tb";
+import { MdReport } from "react-icons/md";
+
+import { format, isToday, parseISO } from "date-fns";
 
 interface PacienteItem {
   id: string;
@@ -26,50 +27,111 @@ interface PacienteItem {
   usuario_id: string;
   fisioterapeuta_id: string;
   tipo_id: string;
-  usuario: UsuarioProps;
+  usuario: {
+    nome: string;
+  };
+  urinas: UrinasItem[];
+  bebidas: BebidasItem[];
 }
 
-interface UsuarioProps {
+interface UsuarioItem {
   nome: string;
-  cpf: string;
 }
 
-interface FisioterapeutaProps {
-  usuario: UsuarioProps;
+interface UrinasItem {
+  id: string;
+  data: Date;
+  perda_urina: boolean;
+  quantidade: number;
+  necessidade_urina: boolean;
+  paciente_id: string;
+  tipoList: "urina";
+  nome: string;
+}
+
+interface BebidasItem {
+  id: string;
+  data: Date;
+  tipo: string;
+  quantidade: number;
+  tipoList: "bebida";
+  paciente_id: string;
+  nome: string;
 }
 
 interface UsuarioProps {
   pacientes: PacienteItem[];
-  fisioterapeuta: FisioterapeutaProps;
 }
 
-export default function DashboardFisioterapeuta({
-  pacientes,
-  fisioterapeuta,
-}: UsuarioProps) {
+export default function DashboardFisioterapeuta({ pacientes }: UsuarioProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
-  const [nome, setNome] = useState("");
-  const [nomes, setNomes] = useState([]);
-  const [nomeSelecionado, setNomeSelecionado] = useState(false);
-  const [fisioterapeutaNome, setFisioterapeutaNome] = useState(
-    fisioterapeuta?.usuario.nome
-  );
-  const [pacienteId, setPacienteId] = useState(pacientes[0]?.id);
+  const [urinasList, setUrinasList] = useState<UrinasItem[]>([]);
+  const [bebidasList, setBebidasList] = useState<BebidasItem[]>([]);
+
+  const getNomePaciente = (registro: UrinasItem | BebidasItem) => {
+    if (registro.tipoList === "urina") {
+      const paciente = pacientes.find((p) => p.id === registro.paciente_id);
+      return paciente?.usuario.nome || "";
+    } else {
+      const paciente = pacientes.find((p) => p.id === registro.paciente_id);
+      return paciente?.usuario.nome || "";
+    }
+  };
 
   useEffect(() => {
-    const nomes = pacientes.map((paciente) => paciente.usuario.nome);
-    setNomes(nomes);
+    const listarUrinas: UrinasItem[] = pacientes.flatMap((paciente) =>
+      paciente.urinas.map((urina) => ({
+        id: urina.id,
+        data: new Date(urina.data),
+        perda_urina: urina.perda_urina,
+        quantidade: urina.quantidade,
+        necessidade_urina: urina.necessidade_urina,
+        paciente_id: paciente.id,
+        tipoList: "urina",
+        nome: paciente.usuario.nome,
+      }))
+    );
+    setUrinasList(listarUrinas);
+
+    const listarBebidas: BebidasItem[] = pacientes.flatMap((paciente) =>
+      paciente.bebidas.map((bebida) => ({
+        id: bebida.id,
+        data: new Date(bebida.data),
+        tipo: bebida.tipo,
+        quantidade: bebida.quantidade,
+        tipoList: "bebida",
+        paciente_id: paciente.id,
+        nome: paciente.usuario.nome,
+      }))
+    );
+    setBebidasList(listarBebidas);
   }, [pacientes]);
 
-  useEffect(() => {
-    const pacienteSelecionado = pacientes.find(
-      (paciente) => paciente.usuario.nome === nome
-    );
-    if (pacienteSelecionado) {
-      setPacienteId(pacienteSelecionado.id);
-    }
-  }, [nome, pacientes]);
+  
+  const registros = [
+    ...urinasList.map((urina) => ({ ...urina, tipoList: "urina" })),
+    ...bebidasList.map((bebida) => ({ ...bebida, tipoList: "bebida" })),
+  ];
+  registros.sort((a, b) => {
+    const aDate = new Date(a.data);
+    const bDate = new Date(b.data);
+
+    return (bDate.getTime() || 0) - (aDate.getTime() || 0);
+  });
+
+  const [filtro, setFiltro] = useState("todos");
+
+  const filtrarRegistros = (tipoList: string) => {
+    setFiltro(tipoList);
+  };
+
+  const registrosDoDia = registros.filter((registro) =>
+    isToday(registro.data)
+  );
+  
+  const registrosFiltrados =
+  filtro === "todos" ? registrosDoDia : registrosDoDia.filter((registro) => registro.tipoList === filtro);
 
   return (
     <>
@@ -78,107 +140,134 @@ export default function DashboardFisioterapeuta({
       </Head>
       <SidebarFisioterapeuta>
         <Flex direction="column" alignItems="center" justifyContent="center">
-          <Flex
-            mt={2}
-            maxW="1100px"
-            direction={isMobile ? "column" : "row"}
-            w="100%"
-            justifyContent="flex-start"
-            align={isMobile ? "flex-start" : "center"}
-            mb={isMobile ? 4 : 6}
-          >
-            <Heading color="pink.700" fontSize={isMobile ? "28px" : "3xl"}>
-              Bem vindo(a), {fisioterapeutaNome}
-            </Heading>
-          </Flex>
-          <Flex
-            w="100%"
-            maxW="1100px"
-            align="center"
-            justifyContent="center"
-            pt={8}
-            pb={8}
-            direction="column"
-            shadow="md"
-            bg="pink.50"
-            borderBottomColor="pink.700"
-            borderBottomWidth={2}
-          >
-            <Flex justifyContent="flex-start" w="85%" direction="column">
-              <Text fontSize="lg" mb={2} fontWeight="medium">
-                Buscar Paciente
-              </Text>
-            </Flex>
-            <Select
-              size="lg"
-              w="85%"
-              focusBorderColor="pink.700"
-              borderColor={"pink.700"}
-              _hover={{ borderColor: "pink.700" }}
-              placeholder="Selecione o paciente"
-              mb={4}
-              value={nome}
-              onChange={(e) => {
-                const pacienteSelecionado = pacientes.find(
-                  (paciente) => paciente.usuario.nome === e.target.value
-                );
-                setNome(e.target.value);
-                setNomeSelecionado(Boolean(e.target.value));
-                setPacienteId(pacienteSelecionado?.id);
-              }}
+          <Box p={4} w="100%" maxW="1100px">
+            <Flex
+              mt={2}
+              maxW="1100px"
+              direction={isMobile ? "column" : "row"}
+              w="100%"
+              justifyContent="flex-start"
+              align={isMobile ? "flex-start" : "center"}
+              mb={isMobile ? 4 : 6}
             >
-              {nomes.map((nome) => (
-                <option key={nome} value={nome}>
-                  {nome}
-                </option>
-              ))}
-            </Select>
-            <Flex justifyContent="flex-start" w="85%" direction={isMobile ? "column" : "row"}>
-              <Link href={`/perfil/paciente/${pacienteId}`}>
-                <Button
-                  leftIcon={<BsPerson size={20} />}
-                  mt={3}
-                  mr={4}
-                  bg="pink.600"
-                  color="white"
-                  size="lg"
-                  _hover={{ bg: "pink.500" }}
-                  isDisabled={!nomeSelecionado}
-                >
-                  Perfil
-                </Button>
-              </Link>
-
-              <Link href={`/registros/paciente/${pacienteId}`}>
-                <Button
-                  leftIcon={<AiOutlineFileSearch size={20} />}
-                  mt={3}
-                  mr={4}
-                  bg="pink.600"
-                  color="white"
-                  size="lg"
-                  _hover={{ bg: "pink.500" }}
-                  isDisabled={!nomeSelecionado}
-                >
-                  Registros
-                </Button>
-              </Link>
-              <Link href={`/orientacao/fisioterapeuta/paciente/${pacienteId}`}>
-                <Button
-                  leftIcon={<FaRegBell size={20} />}
-                  mt={3}
-                  mr={4}
-                  bg="pink.600"
-                  color="white"
-                  size="lg"
-                  _hover={{ bg: "pink.500" }}
-                  isDisabled={!nomeSelecionado}
-                >
-                  Orientações
-                </Button>
-              </Link>
+              <Heading color="pink.700" fontSize={isMobile ? "28px" : "3xl"}>
+                Últimos registros
+              </Heading>
             </Flex>
-          </Flex>
+
+            <Flex mb={5}>
+              <Button
+                mr={2}
+                bg={filtro === "todos" ? "pink.400" : "pink.600"}
+                color="white"
+                _hover={{ bg: filtro === "todos" ? "pink.500" : "pink.500" }}
+                onClick={() => filtrarRegistros("todos")}
+              >
+                Todos
+              </Button>
+              <Button
+                mr={2}
+                bg={filtro === "urina" ? "pink.400" : "pink.600"}
+                color="white"
+                _hover={{ bg: filtro === "urina" ? "pink.500" : "pink.500" }}
+                onClick={() => filtrarRegistros("urina")}
+              >
+                Urina
+              </Button>
+              <Button
+                bg={filtro === "bebida" ? "pink.400" : "pink.600"}
+                color="white"
+                _hover={{ bg: filtro === "bebida" ? "pink.500" : "pink.500" }}
+                onClick={() => filtrarRegistros("bebida")}
+              >
+                Bebida
+              </Button>
+            </Flex>
+
+            {registrosFiltrados.length > 0 ? (
+              registrosFiltrados.map((registro) => {
+                const urinaRegistro = registro as UrinasItem;
+                const bebidaRegistro = registro as BebidasItem;
+
+                return (
+                  <Box
+                    key={registro.id}
+                    shadow="md"
+                    bg="pink.50"
+                    borderBottomColor="pink.700"
+                    borderBottomWidth={2}
+                    mb={4}
+                    p={4}
+                  >
+                    <Flex alignItems="center" mb={2}>
+                      {registro.tipoList === "urina" ? (
+                        <Box
+                          as={MdOutlineWaterDrop}
+                          size={24}
+                          color="#97266D"
+                          mr={2}
+                        />
+                      ) : (
+                        <Box as={TbBottle} size={24} color="#97266D" mr={2} />
+                      )}
+                      <Text
+                        fontWeight="semibold"
+                        fontSize={isMobile ? "md" : "lg"}
+                      >
+                        {registro.tipoList === "urina" ? "Urina" : "Bebida"} |{" "}
+                        <strong>
+                          {getNomePaciente(
+                            registro as UrinasItem | BebidasItem
+                          )}
+                        </strong> - {" "}
+                            {format(
+                              new Date(registro.data),
+                              "dd/MM/yyyy HH:mm"
+                            )}
+                      </Text>
+                    </Flex>
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      justifyContent="space-between"
+                      fontSize={isMobile ? "md" : "lg"}
+                    >
+                      {registro.tipoList === "urina" && (
+                        <>
+                          <Text>
+                             Quantidade: {registro.quantidade} ml 
+                          </Text>
+                          <Text>
+                          Perda de
+                            urina: {urinaRegistro.perda_urina ? "Sim" : "Não"}</Text>
+                            <Text>
+                            Necessidade urgente de urinar:{" "}
+                            {urinaRegistro.necessidade_urina ? "Sim" : "Não"}
+                            </Text>
+                        </>
+                      )}
+                      {registro.tipoList === "bebida" && (
+                        <>
+                          Quantidade: {registro.quantidade} ml 
+                          <Text>Tipo: {bebidaRegistro.tipo}</Text>
+                        </>
+                      )}
+                    </Box>
+                  </Box>
+                );
+              })
+            ) : (
+              <Flex direction="column" align="center" justify="center" mt={10}>
+                <MdReport
+                  size={isMobile ? 120 : 200}
+                  color="RGBA(0, 0, 0, 0.24)"
+                />
+                <Text fontSize={isMobile ? "md" : "lg"} color="blackAlpha.600">
+                  Ainda não existem registros no dia de hoje
+                </Text>
+              </Flex>
+            )}
+          </Box>
         </Flex>
       </SidebarFisioterapeuta>
     </>
@@ -189,9 +278,8 @@ export const getServerSideProps = canSSRAuth("Fisioterapeuta", async (ctx) => {
   try {
     const apiClient = setupAPIClient(ctx);
     const response = await apiClient.get("/fisioterapeuta/pacientes");
-    const fisioterapeuta = await apiClient.get("/detalhes");
 
-    if (response.data === null || fisioterapeuta.data === null) {
+    if (response.data === null) {
       return {
         redirect: {
           destination: "/dashboard/fisioterapeuta",
@@ -203,7 +291,6 @@ export const getServerSideProps = canSSRAuth("Fisioterapeuta", async (ctx) => {
     return {
       props: {
         pacientes: response.data,
-        fisioterapeuta: fisioterapeuta.data,
       },
     };
   } catch (err) {

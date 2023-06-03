@@ -56,6 +56,8 @@ export default function OrientacoesFisioterapeuta({
 }: OrientacaoListProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const [orientacaoSelecionada, setOrientacaoSelecionada] = useState(null);
 
@@ -78,6 +80,11 @@ export default function OrientacoesFisioterapeuta({
     onOpen();
   };
 
+  const handleOpenDeleteModal = (orientacao: OrientacaoItem) => {
+    setOrientacaoSelecionada(orientacao);
+    setIsDeleteModalOpen(true);
+  };
+
   async function handleDelete(orientacao) {
     try {
       const apiClient = setupAPIClient();
@@ -85,7 +92,7 @@ export default function OrientacoesFisioterapeuta({
         params: { orientacao_id: orientacao.id },
       });
 
-      toast.success("Orientação excluída com sucesso!");
+      onCloseDeleteModal();
       Router.push("/orientacao/fisioterapeuta/lista");
     } catch (err) {
       console.log(err);
@@ -113,6 +120,10 @@ export default function OrientacoesFisioterapeuta({
       toast.error("Erro ao atualizar orientação.");
     }
   }
+
+  const onCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
 
   return (
     <>
@@ -161,7 +172,8 @@ export default function OrientacoesFisioterapeuta({
                 fontSize="lg"
               >
                 <Text borderTopWidth={2} borderBottomWidth={2} p={2}>
-                  {format(new Date(orientacao.data), "dd/MM/yyyy HH:mm")} | Para:
+                  {format(new Date(orientacao.data), "dd/MM/yyyy HH:mm")} |
+                  Para:
                   <strong> {orientacao.paciente.usuario.nome} </strong>
                 </Text>
                 <Text p={2}>
@@ -195,7 +207,7 @@ export default function OrientacoesFisioterapeuta({
                     _hover={{ bg: "gray.300" }}
                     size="sm"
                     leftIcon={<FaRegTrashAlt />}
-                    onClick={() => handleDelete(orientacao)}
+                    onClick={() => handleOpenDeleteModal(orientacao)}
                   >
                     Excluir
                   </Button>
@@ -291,6 +303,32 @@ export default function OrientacoesFisioterapeuta({
                   onClick={() => handleEdit()}
                 >
                   Salvar
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+
+          <Modal
+            isOpen={isDeleteModalOpen}
+            onClose={onCloseDeleteModal}
+            size="sm"
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Excluir orientação</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Text>Você tem certeza de que deseja excluir a orientação?</Text>
+              </ModalBody>
+              <ModalFooter>
+                <Button mr={2} size="sm" onClick={onCloseDeleteModal} colorScheme="gray">
+                  Cancelar
+                </Button>
+                <Button size="sm"
+                  colorScheme="pink"
+                  onClick={() => handleDelete(orientacaoSelecionada!)}
+                >
+                  Confirmar
                 </Button>
               </ModalFooter>
             </ModalContent>
