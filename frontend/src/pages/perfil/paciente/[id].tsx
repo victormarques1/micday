@@ -9,7 +9,6 @@ import Link from "next/link";
 
 import { Text, Flex, Heading, Button, useMediaQuery } from "@chakra-ui/react";
 import { FiChevronLeft } from "react-icons/fi";
-import { Icon } from "@chakra-ui/react";
 
 interface PacienteProps {
   id: string;
@@ -19,13 +18,8 @@ interface PacienteProps {
   etnia: string;
   fisioterapeuta_id: string;
   usuario_id: string;
-  tipo_id: string;
+  tipo_incontinencia: string;
   usuario: UsuarioProps;
-  tipo: TipoProps;
-}
-
-interface TipoProps {
-  nome: string;
 }
 
 interface UsuarioProps {
@@ -125,7 +119,7 @@ export default function PerfilPacienteId({ paciente }: PacienteIdProps) {
             </Text>
             <Text mb={2} fontSize={isMobile ? "md" : "lg"}>
               <strong>Tipo de IU: </strong>
-              {paciente.tipo.nome}
+              {paciente.tipo_incontinencia}
             </Text>
           </Flex>
         </Flex>

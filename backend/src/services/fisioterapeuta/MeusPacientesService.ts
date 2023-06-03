@@ -11,15 +11,11 @@ class MeusPacientesService {
             include: {
                 usuario: {
                     select: {
+                        email: true,
                         nome: true,
                         cpf: true
                     }
                 },
-                tipo:{
-                    select:{
-                        nome: true
-                    }
-                }
             }
         })
 

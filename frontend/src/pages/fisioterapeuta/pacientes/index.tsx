@@ -20,6 +20,12 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
 } from "@chakra-ui/react";
 
 import { canSSRAuth } from "@/utils/canSSRAuth";
@@ -35,26 +41,24 @@ import { AiOutlineFileSearch, AiOutlineSearch } from "react-icons/ai";
 import { FaRegBell } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 
-import PerfilPacienteModal from '../../../components/modal/PerfilPacienteModal'
-
 export interface PacienteItem {
   id: string;
   idade: number;
+  peso: number;
+  altura: number;
+  etnia: string;
   created_at: string;
   usuario_id: string;
+  tipo_incontinencia: string;
   status: boolean;
   fisioterapeuta_id: string;
   usuario: UsuarioProps;
-  tipo: TipoProps;
 }
 
 export interface UsuarioProps {
+  email: string;
   nome: string;
   cpf: string;
-}
-
-export interface TipoProps {
-  nome: string;
 }
 
 export interface PacienteProps {
@@ -125,7 +129,7 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
   }
 
   async function handleButtonClick(pacienteId: string, status: boolean) {
-    const novoStatus = !status; // Inverte o status atual
+    const novoStatus = !status; 
     handleStatusChange(pacienteId, novoStatus);
   }
 
@@ -227,13 +231,13 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
                     <Tr key={paciente.id}>
                       <Td>{paciente.usuario.nome}</Td>
                       <Td>{paciente.idade}</Td>
-                      <Td>{paciente.tipo?.nome}</Td>
+                      <Td>{paciente.tipo_incontinencia}</Td>
                       <Td>{paciente.status === true ? "Ativo" : "Inativo"}</Td>
                       <Td>
                         <Tooltip label="Perfil" placement="top">
                           <Button
                             variant="unstyled"
-                            leftIcon={<BsPersonFill size={16} />}
+                            leftIcon={<BsPersonFill size={18} />}
                             color="pink.600"
                             size="sm"
                             isDisabled={paciente.status === false}
@@ -245,7 +249,7 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
                           <Link href={`/registros/paciente/${paciente.id}`}>
                             <Button
                               variant="unstyled"
-                              leftIcon={<AiOutlineFileSearch size={16} />}
+                              leftIcon={<AiOutlineFileSearch size={18} />}
                               color="pink.600"
                               size="sm"
                               isDisabled={paciente.status === false}
@@ -259,7 +263,7 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
                           >
                             <Button
                               variant="unstyled"
-                              leftIcon={<FaRegBell size={16} />}
+                              leftIcon={<FaRegBell size={18} />}
                               color={"pink.600"}
                               size="sm"
                               isDisabled={paciente.status === false}
@@ -277,7 +281,7 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
                             variant="unstyled"
                             leftIcon={
                               paciente.status === true ? (
-                                <MdDeleteForever size={18} />
+                                <MdDeleteForever size={20} />
                               ) : (
                                 <BsCheckCircle size={16} />
                               )
@@ -298,11 +302,55 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
               </Table>
             </TableContainer>
           </VStack>
-          {/* <PerfilPacienteModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            paciente={selectedPaciente}
-          /> */}
+          {isModalOpen && selectedPaciente && (
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>Visualizar paciente</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <Flex>
+                    <Flex direction="column" p={2}>
+                      <Text mb={2} fontSize={isMobile ? "md" : "lg"}>
+                        <strong>NOME </strong>
+                        <Text>{selectedPaciente.usuario.nome}</Text>
+                      </Text>
+                      <Text mb={2} fontSize={isMobile ? "md" : "lg"}>
+                        <strong>EMAIL </strong>
+                        <Text>{selectedPaciente.usuario.email}</Text>
+                      </Text>
+                      <Text mb={2} fontSize={isMobile ? "md" : "lg"}>
+                        <strong>CPF </strong>
+                        <Text>{selectedPaciente.usuario.cpf}</Text>
+                      </Text>
+                      <Text mb={2} fontSize={isMobile ? "md" : "lg"}>
+                        <strong>TIPO DE IU </strong>
+                        <Text>{selectedPaciente.tipo_incontinencia}</Text>
+                      </Text>
+                    </Flex>
+                    <Flex direction="column" p={2}>
+                      <Text mb={2} fontSize={isMobile ? "md" : "lg"}>
+                        <strong>ETNIA </strong>
+                        <Text>{selectedPaciente.etnia}</Text>
+                      </Text>
+                      <Text mb={2} fontSize={isMobile ? "md" : "lg"}>
+                        <strong>IDADE </strong>
+                        <Text>{selectedPaciente.idade} anos</Text>
+                      </Text>
+                      <Text mb={2} fontSize={isMobile ? "md" : "lg"}>
+                        <strong>ALTURA </strong>
+                        <Text>{selectedPaciente.altura} m</Text>
+                      </Text>
+                      <Text mb={2} fontSize={isMobile ? "md" : "lg"}>
+                        <strong>PESO </strong>
+                        <Text>{selectedPaciente.peso} kg</Text>
+                      </Text>
+                    </Flex>
+                  </Flex>
+                </ModalBody>
+              </ModalContent>
+            </Modal>
+          )}
         </Flex>
       </SidebarFisioterapeuta>
     </>

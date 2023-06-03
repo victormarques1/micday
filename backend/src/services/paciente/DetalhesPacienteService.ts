@@ -15,7 +15,7 @@ class DetalhesPacienteService {
                 etnia: true,
                 usuario_id: true,
                 fisioterapeuta_id: true,
-                tipo_id: true,
+                tipo_incontinencia: true,
                 idade: true,
             }
         })

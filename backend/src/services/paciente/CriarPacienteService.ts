@@ -4,10 +4,10 @@ interface PacienteRequest {
   idade: number;
   altura: number;
   peso: number;
-  etnia?: string;
+  etnia: string;
   usuario_id: string;
   fisioterapeuta_id: string;
-  tipo_id: string;
+  tipo_incontinencia: string;
 }
 
 class CriarPacienteService {
@@ -18,7 +18,7 @@ class CriarPacienteService {
     etnia,
     usuario_id,
     fisioterapeuta_id,
-    tipo_id,
+    tipo_incontinencia,
   }: PacienteRequest) {
     const paciente = await prismaClient.paciente.create({
       data: {
@@ -28,7 +28,7 @@ class CriarPacienteService {
         etnia: etnia,
         usuario_id: usuario_id,
         fisioterapeuta_id: fisioterapeuta_id,
-        tipo_id: tipo_id,
+        tipo_incontinencia: tipo_incontinencia,
       },
     });
 

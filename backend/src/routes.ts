@@ -22,8 +22,6 @@ import { AtualizarOrientacaoController } from "./controllers/orientacao/Atualiza
 import { AtualizarPacienteController } from "./controllers/paciente/AtualizarPacienteController";
 import { AtualizarStatusPacienteController } from "./controllers/paciente/AtualizarStatusPacienteController";
 import { ListarUsuarioController } from "./controllers/usuario/DetalhesUsuarioController";
-import { CriarTipoIncotinenciaController } from "./controllers/incontinencia/CriarTipoIncontinenciaController";
-import { ListarTipoIncontinenciaController } from "./controllers/incontinencia/ListarTipoIncontinenciaController";
 import { AtualizarUsuarioController } from "./controllers/usuario/AtualizarUsuarioController";
 import { AtualizarFisioterapeutaController } from "./controllers/fisioterapeuta/AtualizarFisioterapeutaController";
 import { DetalhesUrinaController } from "./controllers/urina/DetalhesUrinaController";
@@ -75,8 +73,6 @@ router.put('/paciente/status/:paciente_id', authUsuario, protegeRotaFisioterapeu
 
 //ROTAS NEUTRAS
 router.get('/detalhes', authUsuario, new ListarUsuarioController().handle)
-router.post('/tipo', new CriarTipoIncotinenciaController().handle);
-router.get('/tipos', new ListarTipoIncontinenciaController().handle)
 router.put('/usuario', authUsuario, new AtualizarUsuarioController().handle)
 router.put('/trocar-senha', authUsuario, new TrocarSenhaController().handle)
 

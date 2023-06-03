@@ -46,34 +46,24 @@ model Paciente {
   idade Int
   altura Float
   peso Float
-  etnia String?
+  tipo_incontinencia String
+  etnia String
   status Boolean @default(true)
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
 
   usuario Usuario @relation(fields: [usuario_id], references: [id])
   fisioterapeuta Fisioterapeuta @relation(fields: [fisioterapeuta_id], references: [id])
-  tipo TipoIncontinencia @relation(fields:[tipo_id], references: [id] )
    
   @@map("pacientes")
   usuario_id String
   fisioterapeuta_id String
-  tipo_id String
 
   urinas Urina[]
   bebidas Bebida[]
   orientacoes Orientacao[]
 }
 
-model TipoIncontinencia {
-  id String @id @default(uuid())
-  nome String
-  created_at DateTime? @default(now())
-  updated_at DateTime? @updatedAt
-
-  @@map("tipos_incontinencia")
-  pacientes Paciente[]
-}
 
 model Urina {
   id String @id @default(uuid())

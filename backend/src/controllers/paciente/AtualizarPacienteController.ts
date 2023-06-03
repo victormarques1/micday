@@ -3,7 +3,7 @@ import { AtualizarPacienteService } from "../../services/paciente/AtualizarPacie
 
 class AtualizarPacienteController {
     async handle(req: Request, res: Response){
-        const { altura, peso, idade } = req.body;
+        const { altura, peso, idade, tipo_incontinencia, etnia } = req.body;
         const paciente_id = req.paciente_id;
         const usuario_id = req.usuario_id;
 
@@ -15,6 +15,8 @@ class AtualizarPacienteController {
             altura,
             peso,
             idade,
+            etnia,
+            tipo_incontinencia,
         })
 
         return res.json(paciente);

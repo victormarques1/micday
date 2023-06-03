@@ -17,7 +17,13 @@ import {
   useMediaQuery,
   FormControl,
   FormLabel,
-  FormHelperText,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 
 import { Icon } from "@chakra-ui/react";
@@ -42,20 +48,11 @@ export default function CadastroPaciente() {
   const [altura, setAltura] = useState("");
   const [peso, setPeso] = useState("");
   const [etnia, setEtnia] = useState("");
-  const [tiposIncontinencia, setTipoIncontinencia] = useState([]);
   const [tipoSelecionado, setTipoSelecionado] = useState("");
   const [fisioterapeutas, setFisioterapeutas] = useState([]);
   const [fisioterapeutaSelecionado, setFisioterapeutaSelecionado] =
     useState("");
-
-  useEffect(() => {
-    async function fetchTipos() {
-      const apiClient = setupAPIClient();
-      const response = await apiClient.get("/tipos");
-      setTipoIncontinencia(response.data);
-    }
-    fetchTipos();
-  }, []);
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 
   useEffect(() => {
     async function fetchFisioterapeutas() {
@@ -66,7 +63,15 @@ export default function CadastroPaciente() {
     fetchFisioterapeutas();
   }, []);
 
-  async function handleCadastro() {
+  const openConfirmationModal = () => {
+    setIsConfirmationOpen(true);
+  };
+
+  const closeConfirmationModal = () => {
+    setIsConfirmationOpen(false);
+  };
+
+  async function realizarCadastro() {
     if (
       idade === "" ||
       altura === "" ||
@@ -76,23 +81,29 @@ export default function CadastroPaciente() {
       fisioterapeutaSelecionado === ""
     ) {
       toast.error("Preencha todos os campos.");
+      setIsConfirmationOpen(false);
       return;
     }
 
     if (+idade > 110) {
       toast.warning("Informe uma idade válida.");
+      setIsConfirmationOpen(false);
       return;
     }
 
     if (+altura > 2.3) {
       toast.warning("Informe uma altura válida. Exemplo: 1.65");
+      setIsConfirmationOpen(false);
       return;
     }
 
     if (+peso < 10 || +peso > 180) {
       toast.warning("Informe um peso válido em kg. Exemplo: 75.5");
+      setIsConfirmationOpen(false);
       return;
     }
+
+    openConfirmationModal();
 
     try {
       const apiClient = setupAPIClient();
@@ -103,7 +114,7 @@ export default function CadastroPaciente() {
         etnia: etnia,
         usuario_id: usuario_id,
         fisioterapeuta_id: fisioterapeutaSelecionado,
-        tipo_id: tipoSelecionado,
+        tipo_incontinencia: tipoSelecionado,
       });
 
       toast.success("Cadastrado com sucesso!!");
@@ -195,7 +206,7 @@ export default function CadastroPaciente() {
             </FormControl>
 
             <FormControl isRequired>
-              <FormLabel>Cor / raça</FormLabel>
+              <FormLabel>Etnia</FormLabel>
               <Select
                 size="lg"
                 focusBorderColor="pink.600"
@@ -219,14 +230,19 @@ export default function CadastroPaciente() {
                 value={tipoSelecionado}
                 onChange={(e) => setTipoSelecionado(e.target.value)}
               >
-                {tiposIncontinencia.map((tipoIncontinencia) => (
-                  <option
-                    key={tipoIncontinencia.id}
-                    value={tipoIncontinencia.id}
-                  >
-                    {tipoIncontinencia.nome}
-                  </option>
-                ))}
+                <option value="esforço">
+                  Incontinência Urinária de Esforço
+                </option>
+                <option value="urgencia">
+                  Incontinência Urinária de Urgência
+                </option>
+                <option value="mista">Incontinência Urinária Mista</option>
+                <option value="funcional">
+                  Incontinência Urinária Funcional
+                </option>
+                <option value="transbordamento">
+                  Incontinência Urinária de Transbordamento
+                </option>
               </Select>
             </FormControl>
 
@@ -251,7 +267,7 @@ export default function CadastroPaciente() {
             <TextoComLinks />
 
             <Button
-              onClick={handleCadastro}
+              onClick={openConfirmationModal}
               background="pink.600"
               color="#FFF"
               size="lg"
@@ -262,6 +278,51 @@ export default function CadastroPaciente() {
             </Button>
           </Flex>
         </Flex>
+
+        <Modal isOpen={isConfirmationOpen} onClose={closeConfirmationModal}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Confirmação do Fisioterapeuta</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text mb={4}>
+                Por favor, confirme que esse é o seu fisioterapeuta responsável
+                para completar o cadastro:
+              </Text>
+              <Text>
+                <strong>Nome do Fisioterapeuta:</strong>{" "}
+                {fisioterapeutas
+                  .find(
+                    (fisioterapeuta) =>
+                      fisioterapeuta.id === fisioterapeutaSelecionado
+                  )
+                  ?.usuario.nome.toUpperCase() || ""}
+              </Text>
+              <Text mt={2}>
+                <strong>Local de atuação:</strong>{" "}
+                {fisioterapeutas
+                  .find(
+                    (fisioterapeuta) =>
+                      fisioterapeuta.id === fisioterapeutaSelecionado
+                  )
+                  ?.atuacao.toUpperCase() || ""}
+              </Text>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                colorScheme="gray"
+                mr={3}
+                onClick={closeConfirmationModal}
+              >
+                Cancelar
+              </Button>
+              <Button colorScheme="green" onClick={realizarCadastro}>
+                Confirmar
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
 
         <Box
           bg="pink.600"

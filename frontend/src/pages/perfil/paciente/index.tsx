@@ -12,6 +12,7 @@ import {
   InputGroup,
   InputLeftElement,
   useMediaQuery,
+  Select,
 } from "@chakra-ui/react";
 
 import { SidebarPaciente } from "@/components/sidebar/paciente";
@@ -41,6 +42,7 @@ interface PacienteProps {
   altura: string;
   peso: string;
   etnia: string;
+  tipo_incontinencia: string;
 }
 
 interface PerfilProps {
@@ -63,6 +65,13 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
   const [altura, setAltura] = useState(paciente && paciente?.altura);
   const [peso, setPeso] = useState(paciente && paciente?.peso);
   const [etnia, setEtnia] = useState(paciente && paciente?.etnia);
+  const [etniaSelecionado, setEtniaSelecionado] = useState(etnia);
+  const [tipoIncontinenciaAtual, setTipoIncontinenciaAtual] = useState(
+    paciente && paciente?.tipo_incontinencia
+  );
+  const [tipoSelecionado, setTipoSelecionado] = useState(
+    tipoIncontinenciaAtual
+  );
 
   async function handleEditarUsuario() {
     if (
@@ -108,6 +117,8 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
         altura: Number(altura),
         peso: Number(peso),
         idade: Number(idade),
+        etnia: etniaSelecionado,
+        tipo_incontinencia: tipoSelecionado,
       });
 
       toast.success("Perfil atualizado sucesso!");
@@ -167,181 +178,222 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
             alignItems="center"
             justifyContent={"center"}
           >
-            <Flex direction={"column"} w={"85%"}>
-              <Text
-                mb={2}
-                fontSize={isMobile ? "lg" : "xl"}
-                fontWeight="medium"
-              >
-                Nome completo
-              </Text>
-              <InputGroup size="lg">
-                <InputLeftElement
-                  children={<Icon as={HiUser} color="gray.400" w={5} h={5} />}
-                />
-                <Input
+            <Flex direction={isMobile ? "column" : "row"} w={"85%"}>
+              <Box mr={isMobile ? 0 : 8}>
+                <Text
+                  mb={2}
+                  fontSize={isMobile ? "lg" : "xl"}
+                  fontWeight="medium"
+                >
+                  Nome completo
+                </Text>
+                <InputGroup size="lg">
+                  <InputLeftElement
+                    children={<Icon as={HiUser} color="gray.400" w={5} h={5} />}
+                  />
+                  <Input
+                    w="100%"
+                    placeholder="Nome do paciente"
+                    focusBorderColor="pink.700"
+                    size="lg"
+                    type="text"
+                    mb={3}
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)}
+                  />
+                </InputGroup>
+                <Text
+                  mb={2}
+                  fontSize={isMobile ? "lg" : "xl"}
+                  fontWeight="medium"
+                >
+                  Email
+                </Text>
+                <InputGroup size="lg">
+                  <InputLeftElement children={<EmailIcon color="gray.400" />} />
+                  <Input
+                    isReadOnly={true}
+                    variant={"outline"}
+                    size="lg"
+                    placeholder="email@email.com"
+                    _placeholder={{ color: "gray.400" }}
+                    focusBorderColor="pink.500"
+                    type="email"
+                    mb={3}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </InputGroup>
+                <Text
+                  mb={2}
+                  fontSize={isMobile ? "lg" : "xl"}
+                  fontWeight="medium"
+                >
+                  CPF
+                </Text>
+                <InputGroup size="lg">
+                  <InputLeftElement
+                    children={
+                      <Icon as={HiClipboardList} color="gray.400" w={5} h={5} />
+                    }
+                  />
+                  <Input
+                    size="lg"
+                    placeholder="000.000.000-00"
+                    _placeholder={{ color: "gray.400" }}
+                    focusBorderColor="pink.700"
+                    type="number"
+                    maxLength={11}
+                    mb={3}
+                    value={cpf}
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      if (inputValue.length <= 11) {
+                        setCpf(inputValue);
+                      }
+                    }}
+                  />
+                </InputGroup>
+
+                <Text
+                  mb={2}
+                  fontSize={isMobile ? "lg" : "xl"}
+                  fontWeight="medium"
+                >
+                  Tipo de IU
+                </Text>
+                <Select
+                  size="lg"
+                  focusBorderColor="pink.700"
+                  mb={3}
+                  value={tipoSelecionado}
+                  onChange={(e) => setTipoSelecionado(e.target.value)}
+                >
+                  <option value="Incontinência Urinária de Esforço">
+                    Incontinência Urinária de Esforço
+                  </option>
+                  <option value="Incontinência Urinária de Urgência">
+                    Incontinência Urinária de Urgência
+                  </option>
+                  <option value="Incontinência Urinária Mista">
+                    Incontinência Urinária Mista
+                  </option>
+                  <option value="Incontinência Urinária Funcional">
+                    Incontinência Urinária Funcional
+                  </option>
+                  <option value="Incontinência Urinária de Transbordamento">
+                    Incontinência Urinária de Transbordamento
+                  </option>
+                </Select>
+              </Box>
+
+              <Box>
+                <Text
+                  mb={2}
+                  fontSize={isMobile ? "lg" : "xl"}
+                  fontWeight="medium"
+                >
+                  Idade
+                </Text>
+                <InputGroup size="lg">
+                  <InputLeftElement
+                    children={
+                      <Icon
+                        as={HiIdentification}
+                        color="gray.400"
+                        w={5}
+                        h={5}
+                      />
+                    }
+                  />
+                  <Input
+                    w="100%"
+                    placeholder="Idade do paciente"
+                    focusBorderColor="pink.700"
+                    size="lg"
+                    type="number"
+                    mb={3}
+                    value={idade}
+                    onChange={(e) => setIdade(e.target.value)}
+                  />
+                </InputGroup>
+                <Text
+                  mb={2}
+                  fontSize={isMobile ? "lg" : "xl"}
+                  fontWeight="medium"
+                >
+                  Altura (m)
+                </Text>
+                <InputGroup size="lg">
+                  <InputLeftElement
+                    children={<Icon as={GiBodyHeight} color="gray.400" />}
+                  />
+                  <Input
+                    w="100%"
+                    placeholder="Altura do paciente"
+                    focusBorderColor="pink.700"
+                    size="lg"
+                    type="number"
+                    mb={3}
+                    value={altura}
+                    onChange={(e) => setAltura(e.target.value)}
+                  />
+                </InputGroup>
+                <Text
+                  mb={2}
+                  fontSize={isMobile ? "lg" : "xl"}
+                  fontWeight="medium"
+                >
+                  Peso (kg):{" "}
+                </Text>
+                <InputGroup size="lg">
+                  <InputLeftElement
+                    children={<Icon as={BiBody} color="gray.400" w={5} h={5} />}
+                  />
+                  <Input
+                    w="100%"
+                    placeholder="Peso do paciente"
+                    focusBorderColor="pink.700"
+                    size="lg"
+                    type="number"
+                    mb={3}
+                    value={peso}
+                    onChange={(e) => setPeso(e.target.value)}
+                  />
+                </InputGroup>
+                <Text
+                  mb={2}
+                  fontSize={isMobile ? "lg" : "xl"}
+                  fontWeight="medium"
+                >
+                  Etnia:{" "}
+                </Text>
+                <Select
                   w="100%"
-                  placeholder="Nome do paciente"
                   focusBorderColor="pink.700"
                   size="lg"
-                  type="text"
                   mb={3}
-                  value={nome}
-                  onChange={(e) => setNome(e.target.value)}
-                />
-              </InputGroup>
-
-              <Text
-                mb={2}
-                fontSize={isMobile ? "lg" : "xl"}
-                fontWeight="medium"
-              >
-                Email
-              </Text>
-              <InputGroup size="lg">
-              <InputLeftElement children={<EmailIcon color="gray.400" />} />
-              <Input
-                isReadOnly={true}
-                variant={"outline"}
-                size="lg"
-                placeholder="email@email.com"
-                _placeholder={{ color: "gray.400" }}
-                focusBorderColor="pink.500"
-                type="email"
-                mb={3}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </InputGroup>
-
-              <Text
-                mb={2}
-                fontSize={isMobile ? "lg" : "xl"}
-                fontWeight="medium"
-              >
-                CPF
-              </Text>
-              <InputGroup size="lg">
-                <InputLeftElement
-                  children={
-                    <Icon as={HiClipboardList} color="gray.400" w={5} h={5} />
-                  }
-                />
-                <Input
-                  w="100%"
-                  placeholder="CPF do paciente"
-                  focusBorderColor="pink.700"
+                  value={etniaSelecionado}
+                  onChange={(e) => setEtniaSelecionado(e.target.value)}
+                >
+                  <option value="Branca">Branca</option>
+                  <option value="Preta">Preta</option>
+                  <option value="Parda">Parda</option>
+                </Select>
+                <Button
+                  w="75%"
+                  mt={4}
+                  mb={3}
+                  bg="pink.600"
+                  color="white"
                   size="lg"
-                  type="number"
-                  mb={3}
-                  value={cpf}
-                  onChange={(e) => setCpf(e.target.value)}
-                />
-              </InputGroup>
-
-              <Text
-                mb={2}
-                fontSize={isMobile ? "lg" : "xl"}
-                fontWeight="medium"
-              >
-                Idade
-              </Text>
-              <InputGroup size="lg">
-                <InputLeftElement
-                  children={
-                    <Icon as={HiIdentification} color="gray.400" w={5} h={5} />
-                  }
-                />
-                <Input
-                  w="100%"
-                  placeholder="Idade do paciente"
-                  focusBorderColor="pink.700"
-                  size="lg"
-                  type="number"
-                  mb={3}
-                  value={idade}
-                  onChange={(e) => setIdade(e.target.value)}
-                />
-              </InputGroup>
-
-              <Text
-                mb={2}
-                fontSize={isMobile ? "lg" : "xl"}
-                fontWeight="medium"
-              >
-                Altura (m)
-              </Text>
-              <InputGroup size="lg">
-                <InputLeftElement
-                  children={<Icon as={GiBodyHeight} color="gray.400" />}
-                />
-                <Input
-                  w="100%"
-                  placeholder="Altura do paciente"
-                  focusBorderColor="pink.700"
-                  size="lg"
-                  type="number"
-                  mb={3}
-                  value={altura}
-                  onChange={(e) => setAltura(e.target.value)}
-                />
-              </InputGroup>
-
-              <Text
-                mb={2}
-                fontSize={isMobile ? "lg" : "xl"}
-                fontWeight="medium"
-              >
-                Peso (kg):{" "}
-              </Text>
-              <InputGroup size="lg">
-                <InputLeftElement
-                  children={<Icon as={BiBody} color="gray.400" w={5} h={5} />}
-                />
-                <Input
-                  w="100%"
-                  placeholder="Peso do paciente"
-                  focusBorderColor="pink.700"
-                  size="lg"
-                  type="number"
-                  mb={3}
-                  value={peso}
-                  onChange={(e) => setPeso(e.target.value)}
-                />
-              </InputGroup>
-
-              <Text
-                mb={2}
-                fontSize={isMobile ? "lg" : "xl"}
-                fontWeight="medium"
-              >
-                Etnia:{" "}
-              </Text>
-              <Input
-                w="100%"
-                placeholder="Etnia do paciente"
-                focusBorderColor="pink.700"
-                size="lg"
-                type="text"
-                mb={3}
-                value={etnia}
-                onChange={(e) => setEtnia(e.target.value)}
-                isReadOnly={true}
-              />
-
-              <Button
-                w="25%"
-                mt={4}
-                mb={3}
-                bg="pink.600"
-                color="white"
-                size="lg"
-                _hover={{ bg: "pink.500" }}
-                onClick={handleEditarUsuario}
-                mr={4}
-              >
-                Salvar
-              </Button>
+                  _hover={{ bg: "pink.500" }}
+                  onClick={handleEditarUsuario}
+                  mr={4}
+                >
+                  Salvar
+                </Button>
+              </Box>
             </Flex>
           </Flex>
         </Flex>
@@ -371,6 +423,7 @@ export const getServerSideProps = canSSRAuth("Paciente", async (ctx) => {
       altura: response.data["paciente"]["altura"],
       peso: response.data["paciente"]["peso"],
       etnia: response.data["paciente"]["etnia"],
+      tipo_incontinencia: response.data["paciente"]["tipo_incontinencia"],
     };
 
     return {
