@@ -323,7 +323,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       />
 
       <Flex flexDirection={"row"} ml={8}>
-        <Image src={Logo} quality={100} width={110} alt="Logo mic.day" />
+        <Link href="/dashboard/fisioterapeuta">
+          <Image src={Logo} quality={100} width={110} alt="Logo mic.day" />
+        </Link>
       </Flex>
     </Flex>
   );

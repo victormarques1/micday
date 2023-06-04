@@ -112,7 +112,6 @@ export default function OrientacoesFisioterapeuta({
         data: dataFormatada,
         paciente_id: paciente.id,
       });
-      toast.success("Orientação atualizada com sucesso!");
       onClose();
       Router.push("/orientacao/fisioterapeuta/lista");
     } catch (err) {

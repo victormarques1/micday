@@ -18,7 +18,12 @@ import {
 import { SidebarPaciente } from "@/components/sidebar/paciente";
 
 import { Icon } from "@chakra-ui/react";
-import { HiUser, HiClipboardList, HiIdentification } from "react-icons/hi";
+import {
+  HiUser,
+  HiClipboardList,
+  HiIdentification,
+  HiPhone,
+} from "react-icons/hi";
 import { GiBodyHeight } from "react-icons/gi";
 import { BiBody } from "react-icons/bi";
 import { FiChevronLeft } from "react-icons/fi";
@@ -35,6 +40,7 @@ interface UsuarioProps {
   nome: string;
   email: string;
   cpf: string;
+  telefone: string;
 }
 
 interface PacienteProps {
@@ -56,6 +62,7 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
   const [nome, setNome] = useState(usuario && usuario?.nome);
   const [email, setEmail] = useState(usuario && usuario?.email);
   const [cpf, setCpf] = useState(usuario && usuario?.cpf);
+  const [telefone, setTelefone] = useState(usuario && usuario?.telefone);
   const cpfFormatado = cpf.replace(
     /(\d{3})(\d{3})(\d{3})(\d{2})/,
     "$1.$2.$3-$4"
@@ -77,6 +84,7 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
     if (
       nome === "" ||
       cpf === "" ||
+      telefone === "" ||
       idade === "" ||
       altura === "" ||
       peso === ""
@@ -111,6 +119,7 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
       await apiClient.put("/usuario", {
         nome: nome,
         cpf: cpf,
+        telefone: telefone,
       });
 
       await apiClient.put("/paciente", {
@@ -224,6 +233,38 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </InputGroup>
+
+                <Text
+                  mb={2}
+                  fontSize={isMobile ? "lg" : "xl"}
+                  fontWeight="medium"
+                >
+                  Número de celular
+                </Text>
+                <InputGroup size="lg">
+                  <InputLeftElement
+                    children={
+                      <Icon as={HiPhone} color="gray.400" w={5} h={5} />
+                    }
+                  />
+                  <Input
+                    size="lg"
+                    placeholder="(55) 99999-9999"
+                    _placeholder={{ color: "gray.400" }}
+                    focusBorderColor="pink.700"
+                    type="text"
+                    maxLength={15}
+                    mb={3}
+                    value={telefone}
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      if (inputValue.length <= 16) {
+                        setTelefone(inputValue);
+                      }
+                    }}
+                  />
+                </InputGroup>
+
                 <Text
                   mb={2}
                   fontSize={isMobile ? "lg" : "xl"}
@@ -381,8 +422,8 @@ export default function PerfilPaciente({ usuario, paciente }: PerfilProps) {
                   <option value="Parda">Parda</option>
                 </Select>
                 <Button
-                  w="75%"
-                  mt={4}
+                  w="100%"
+                  mt={isMobile ? 2:9}
                   mb={3}
                   bg="pink.600"
                   color="white"
@@ -413,6 +454,7 @@ export const getServerSideProps = canSSRAuth("Paciente", async (ctx) => {
       nome: usuarioResponse.data["usuario"]["nome"],
       email: usuarioResponse.data["usuario"]["email"],
       cpf: usuarioResponse.data["usuario"]["cpf"],
+      telefone: usuarioResponse.data["usuario"]["telefone"],
     };
 
     const response = await apiClient.get("/paciente/detalhes");

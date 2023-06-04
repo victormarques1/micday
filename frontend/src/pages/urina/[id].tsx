@@ -108,7 +108,7 @@ export default function EditUrina({ urina }: EditUrinaProps) {
               mb={isMobile ? 0 : 4}
               fontSize={isMobile ? "28px" : "3xl"}
             >
-              Registro de urina
+              Editar registro de urina
             </Heading>
           </Flex>
 

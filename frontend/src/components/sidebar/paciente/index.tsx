@@ -202,7 +202,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             <Link href="/trocar-senha/paciente">
               <MenuItem
                 bg="pink.50"
-                _hover={{ fontWeight:"semibold" }}
+                _hover={{ fontWeight: "semibold" }}
                 color="black"
               >
                 Alterar senha
@@ -211,7 +211,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             <MenuItem
               bg="pink.50"
               color="red.600"
-              _hover={{ fontWeight:"bold" }}
+              _hover={{ fontWeight: "bold" }}
               fontWeight="semibold"
               onClick={handleLogout}
             >
@@ -302,7 +302,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       />
 
       <Flex flexDirection={"row"} ml={8}>
-        <Image src={Logo} quality={100} width={110} alt="Logo mic.day" />
+        <Link href="/dashboard/paciente">
+          <Image src={Logo} quality={100} width={110} alt="Logo mic.day" />
+        </Link>
       </Flex>
     </Flex>
   );

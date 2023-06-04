@@ -73,7 +73,6 @@ export default function CriarOrientacoes({ pacientes }: PacienteProps) {
         descricao: descricao,
       });
 
-      toast.success("Registrado com sucesso!");
       Router.push("/orientacao/fisioterapeuta/lista");
     } catch (err) {
       console.log(err);

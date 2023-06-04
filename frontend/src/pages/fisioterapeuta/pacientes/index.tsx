@@ -33,6 +33,7 @@ import { setupAPIClient } from "@/services/api";
 import { SidebarFisioterapeuta } from "../../../components/sidebar/fisioterapeuta";
 
 import Link from "next/link";
+import Router from "next/router";
 import { Icon } from "@chakra-ui/react";
 
 import { FiChevronLeft } from "react-icons/fi";
@@ -59,6 +60,7 @@ export interface UsuarioProps {
   email: string;
   nome: string;
   cpf: string;
+  telefone: string;
 }
 
 export interface PacienteProps {
@@ -110,8 +112,6 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
         status: novoStatus,
       });
 
-      window.location.reload();
-
       const pacientesAtualizados = pacientes.map((paciente) => {
         if (paciente.id === pacienteId) {
           return {
@@ -122,6 +122,7 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
         return paciente;
       });
 
+      Router.push("/fisioterapeuta/pacientes");
       setPacientesFiltrados(pacientesAtualizados);
     } catch (error) {
       console.log(error);
@@ -129,7 +130,7 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
   }
 
   async function handleButtonClick(pacienteId: string, status: boolean) {
-    const novoStatus = !status; 
+    const novoStatus = !status;
     handleStatusChange(pacienteId, novoStatus);
   }
 
@@ -322,6 +323,10 @@ export default function MeusPacientes({ pacientes }: PacienteProps) {
                       <Text mb={2} fontSize={isMobile ? "md" : "lg"}>
                         <strong>CPF </strong>
                         <Text>{selectedPaciente.usuario.cpf}</Text>
+                      </Text>
+                      <Text mb={2} fontSize={isMobile ? "md" : "lg"}>
+                        <strong>CELULAR </strong>
+                        <Text>{selectedPaciente.usuario.telefone}</Text>
                       </Text>
                       <Text mb={2} fontSize={isMobile ? "md" : "lg"}>
                         <strong>TIPO DE IU </strong>

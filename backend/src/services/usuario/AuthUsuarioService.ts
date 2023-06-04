@@ -58,6 +58,7 @@ class AuthUsuarioService {
       email: usuario.email,
       tipo: usuario.tipo,
       cpf: usuario.cpf,
+      telefone: usuario.telefone,
       tokenUsuario: token,
     };
   }

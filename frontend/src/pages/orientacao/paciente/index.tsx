@@ -19,6 +19,7 @@ import { FiChevronLeft } from "react-icons/fi";
 import { format } from "date-fns";
 import { TiInputChecked } from "react-icons/ti";
 import { toast } from "react-toastify";
+import Router from "next/router";
 
 interface OrientacaoItem {
   id: string;
@@ -56,8 +57,8 @@ export default function OrientacoesPaciente({
       await apiClient.put(`/orientacoes/marcar/${orientacaoId}`, {
         status: true,
       });
-
-      toast.success("Orientação marcada como lida.");
+      
+      Router.push("/orientacao/paciente");
 
       setListOrientacoes((prevOrientacoes) =>
         prevOrientacoes.map((orientacao) => {

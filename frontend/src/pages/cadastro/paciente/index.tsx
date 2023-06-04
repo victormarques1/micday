@@ -230,17 +230,17 @@ export default function CadastroPaciente() {
                 value={tipoSelecionado}
                 onChange={(e) => setTipoSelecionado(e.target.value)}
               >
-                <option value="esforço">
+                <option value="Incontinência Urinária de Esforço">
                   Incontinência Urinária de Esforço
                 </option>
-                <option value="urgencia">
+                <option value="Incontinência Urinária de Urgência">
                   Incontinência Urinária de Urgência
                 </option>
-                <option value="mista">Incontinência Urinária Mista</option>
-                <option value="funcional">
+                <option value="Incontinência Urinária Mista">Incontinência Urinária Mista</option>
+                <option value="Incontinência Urinária Funcionall">
                   Incontinência Urinária Funcional
                 </option>
-                <option value="transbordamento">
+                <option value="Incontinência Urinária de Transbordamento">
                   Incontinência Urinária de Transbordamento
                 </option>
               </Select>

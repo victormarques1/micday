@@ -14,6 +14,7 @@ class MeusPacientesService {
             email: true,
             nome: true,
             cpf: true,
+            telefone: true,
           },
         },
         urinas: {

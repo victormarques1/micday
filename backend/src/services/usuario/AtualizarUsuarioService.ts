@@ -4,10 +4,11 @@ interface UsuarioRequest {
   user_id: string;
   nome: string;
   cpf: string;
+  telefone: string;
 }
 
 class AtualizarUsuarioService {
-  async execute({ usuario_id, nome, cpf }) {
+  async execute({ usuario_id, nome, cpf, telefone }) {
     try {
       const usuarioExiste = await prismaClient.usuario.findFirst({
         where: {
@@ -26,10 +27,12 @@ class AtualizarUsuarioService {
         data: {
           nome,
           cpf,
+          telefone,
         },
         select: {
           nome: true,
           cpf: true,
+          telefone: true,
         },
       });
 

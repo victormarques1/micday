@@ -103,7 +103,7 @@ export default function EditBebida({ bebida }: EditBebidaProps) {
               mb={isMobile ? 0 : 4}
               fontSize={isMobile ? "28px" : "3xl"}
             >
-              Registro de bebida
+              Editar registro de bebida
             </Heading>
           </Flex>
 

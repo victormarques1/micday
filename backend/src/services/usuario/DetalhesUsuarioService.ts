@@ -12,6 +12,7 @@ class ListarUsuarioService {
                 nome: true,
                 email: true,
                 cpf: true,
+                telefone: true,
                 tipo: true,
             }
         })

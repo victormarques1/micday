@@ -19,7 +19,8 @@ interface UsuarioProps {
   nome: string;
   email: string;
   tipo: string;
-  cpf: string | null;
+  cpf: string;
+  telefone: string;
 }
 
 interface AuthProviderProps {
@@ -36,6 +37,7 @@ interface CadastrarUsuarioProps {
   email: string;
   senha: string;
   cpf: string;
+  telefone: string;
   tipo: string;
 }
 
@@ -62,12 +64,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       api
         .get("/detalhes")
         .then((response) => {
-          const { id, nome, email, cpf, tipo } = response.data;
+          const { id, nome, email, cpf, telefone, tipo } = response.data;
           setUsuario({
             id,
             nome,
             email,
             cpf,
+            telefone,
             tipo,
           });
         })
@@ -84,7 +87,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         senha,
       });
 
-      const { id, nome, tipo, email, cpf, tokenUsuario } = response.data;
+      const { id, nome, tipo, email, cpf, telefone, tokenUsuario } = response.data;
       
       setCookie(undefined, "@fisio.token", tokenUsuario, {
         maxAge: 60 * 60 * 24 * 30,
@@ -101,12 +104,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
         nome,
         email,
         tipo,
+        telefone,
         cpf,
       });
 
       api.defaults.headers.common["Authorization"] = `Bearer ${tokenUsuario}`;
-
-      toast.success('Logado com sucesso!');
 
       const rota =
         tipo === "Fisioterapeuta"
@@ -124,6 +126,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     email,
     senha,
     cpf,
+    telefone,
     tipo,
   }: CadastrarUsuarioProps) {
     try {
@@ -132,6 +135,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         email,
         senha,
         cpf,
+        telefone,
         tipo,
       });
 

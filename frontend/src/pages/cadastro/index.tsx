@@ -23,7 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon, EmailIcon, LockIcon } from "@chakra-ui/icons";
 import { Icon } from "@chakra-ui/react";
-import { HiUser, HiClipboardList } from "react-icons/hi";
+import { HiUser, HiClipboardList, HiPhone } from "react-icons/hi";
 import Link from "next/link";
 import { canSSRGuest } from "@/utils/canSSRGuest";
 import { AuthContext } from "../../context/AuthContext";
@@ -37,6 +37,7 @@ export default function Cadastro() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [cpf, setCpf] = useState("");
+  const [telefone, setTelefone] = useState("");
   const [tipo, setTipo] = useState("");
 
   const [show, setShow] = useState(false);
@@ -48,7 +49,8 @@ export default function Cadastro() {
       email === "" ||
       senha === "" ||
       cpf === "" ||
-      tipo === ""
+      tipo === "" ||
+      telefone === ""
     ) {
       toast.error("Preencha todos os campos.");
       return;
@@ -70,11 +72,19 @@ export default function Cadastro() {
       return;
     }
 
+    const telefonePattern = /^\+?\d{0,3}[-.\s]?\(?\d{2,3}\)?[-.\s]?\d{3,4}[-.\s]?\d{4}$/;
+    ;
+    if (!telefonePattern.test(telefone)) {
+      toast.warning("Informe um número de telefone válido!");
+      return;
+    }
+
     await cadastrarUsuario({
       nome,
       email,
       senha,
       cpf,
+      telefone,
       tipo,
     });
   }
@@ -176,6 +186,33 @@ export default function Cadastro() {
                     )}
                   </Button>
                 </InputRightElement>
+              </InputGroup>
+            </FormControl>
+
+            <FormControl isRequired>
+              <FormLabel>Número de celular</FormLabel>
+              <InputGroup size="lg">
+                <InputLeftElement
+                  children={
+                    <Icon as={HiPhone} color="gray.400" w={5} h={5} />
+                  }
+                />
+                <Input
+                  size="lg"
+                  placeholder="(55) 99999-9999"
+                  _placeholder={{ color: "gray.400" }}
+                  focusBorderColor="pink.500"
+                  type="text"
+                  maxLength={15}
+                  mb={3}
+                  value={telefone}
+                  onChange={(e) => {
+                    const inputValue = e.target.value;
+                    if (inputValue.length <= 16) {
+                      setTelefone(inputValue);
+                    }
+                  }}
+                />
               </InputGroup>
             </FormControl>
 
