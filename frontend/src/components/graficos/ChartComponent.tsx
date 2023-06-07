@@ -49,7 +49,7 @@ const Registro: React.FC<RegistroProps> = ({
   const [dataFinal, setDataFinal] = useState<Date | null>(null);
   const [tipoSelecionado, setTipoSelecionado] = useState<string>("ambos");
 
-  const MAX_RANGE_DAYS = 10; 
+  const MAX_RANGE_DAYS = 10;
 
   useEffect(() => {
     if (chartRef.current) {
@@ -67,7 +67,9 @@ const Registro: React.FC<RegistroProps> = ({
             const dateString = format(data, "dd/MM/yyyy");
             if (
               (!dataInicio || isAfter(data, dataInicio)) &&
-              (!dataFinal || isBefore(data, dataFinal) || isSameDay(data, dataFinal))
+              (!dataFinal ||
+                isBefore(data, dataFinal) ||
+                isSameDay(data, dataFinal))
             ) {
               if (!dataUrinaFiltrada[dateString]) {
                 dataUrinaFiltrada[dateString] = urinaQuantidades[index];
@@ -83,7 +85,9 @@ const Registro: React.FC<RegistroProps> = ({
             const dateString = format(data, "dd/MM/yyyy");
             if (
               (!dataInicio || isAfter(data, dataInicio)) &&
-              (!dataFinal || isBefore(data, dataFinal) || isSameDay(data, dataFinal))
+              (!dataFinal ||
+                isBefore(data, dataFinal) ||
+                isSameDay(data, dataFinal))
             ) {
               if (!dataBebidaFiltrada[dateString]) {
                 dataBebidaFiltrada[dateString] = bebidaQuantidades[index];
@@ -94,11 +98,27 @@ const Registro: React.FC<RegistroProps> = ({
           });
         }
 
-        const datasUrinaFiltrada = Object.keys(dataUrinaFiltrada);
-        const quantidadesUrinaFiltrada = Object.values(dataUrinaFiltrada);
+        const datasUrinaFiltrada = Object.keys(dataUrinaFiltrada).sort(
+          (a, b) => {
+            const dateA = parse(a, "dd/MM/yyyy", new Date());
+            const dateB = parse(b, "dd/MM/yyyy", new Date());
+            return dateA.getTime() - dateB.getTime();
+          }
+        );
+        const quantidadesUrinaFiltrada = datasUrinaFiltrada.map(
+          (data) => dataUrinaFiltrada[data]
+        );
 
-        const datasBebidaFiltrada = Object.keys(dataBebidaFiltrada);
-        const quantidadesBebidaFiltrada = Object.values(dataBebidaFiltrada);
+        const datasBebidaFiltrada = Object.keys(dataBebidaFiltrada).sort(
+          (a, b) => {
+            const dateA = parse(a, "dd/MM/yyyy", new Date());
+            const dateB = parse(b, "dd/MM/yyyy", new Date());
+            return dateA.getTime() - dateB.getTime();
+          }
+        );
+        const quantidadesBebidaFiltrada = datasBebidaFiltrada.map(
+          (data) => dataBebidaFiltrada[data]
+        );
 
         const datasets = [
           {
@@ -185,9 +205,7 @@ const Registro: React.FC<RegistroProps> = ({
     isMobile,
   ]);
 
-  const handleDataInicio = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleDataInicio = (event: React.ChangeEvent<HTMLInputElement>) => {
     const dataInicioSelecionada = parse(
       event.target.value,
       "yyyy-MM-dd",
@@ -202,14 +220,18 @@ const Registro: React.FC<RegistroProps> = ({
   };
 
   const handleDataFinal = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const dataFinalSelecionada = parse(event.target.value, "yyyy-MM-dd", new Date());
+    const dataFinalSelecionada = parse(
+      event.target.value,
+      "yyyy-MM-dd",
+      new Date()
+    );
 
     if (dataInicio && isBefore(dataFinalSelecionada, dataInicio)) {
-      setDataInicio(dataInicio); 
+      setDataInicio(dataInicio);
     }
 
     if (dataFinalSelecionada === dataFinal) {
-      setDataFinal(dataFinalSelecionada); 
+      setDataFinal(dataFinalSelecionada);
     } else {
       setDataFinal(dataFinalSelecionada);
     }
@@ -266,7 +288,9 @@ const Registro: React.FC<RegistroProps> = ({
               value={dataInicio ? format(dataInicio, "yyyy-MM-dd") : ""}
               onChange={handleDataInicio}
             />
-            <FormHelperText>Limite máximo de 10 dias entre o intervalo das datas.</FormHelperText>
+            <FormHelperText>
+              Limite máximo de 10 dias entre o intervalo das datas.
+            </FormHelperText>
           </FormControl>
           <FormControl marginRight={4}>
             <FormLabel htmlFor="end-date">Data Final:</FormLabel>
@@ -276,29 +300,35 @@ const Registro: React.FC<RegistroProps> = ({
               size="lg"
               id="end-date"
               type="date"
-              value={dataFinal ? format(dataFinal, "yyyy-MM-dd") : (dataFinal === null ? "" : undefined)}
+              value={
+                dataFinal
+                  ? format(dataFinal, "yyyy-MM-dd")
+                  : dataFinal === null
+                  ? ""
+                  : undefined
+              }
               onChange={handleDataFinal}
             />
           </FormControl>
         </Flex>
         <Flex mt={2} mb={2} p={1}>
           <FormControl>
-            <FormLabel htmlFor="type">Tipo de registros:</FormLabel>
+            <FormLabel>Tipo:</FormLabel>
             <RadioGroup
-              id="type"
+              colorScheme="pink"
               value={tipoSelecionado}
               onChange={handleTipoSelecionado}
-              size="lg"
-              colorScheme="pink"
             >
-              <Flex mt={2}>
+              <Flex direction={isMobile ? "column" : "row"}>
                 <Radio value="ambos" mr={2}>
                   Ambos
                 </Radio>
                 <Radio value="urina" mr={2}>
                   Urina
                 </Radio>
-                <Radio value="bebida">Bebida</Radio>
+                <Radio value="bebida" mr={2}>
+                  Bebida
+                </Radio>
               </Flex>
             </RadioGroup>
           </FormControl>

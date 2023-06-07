@@ -144,15 +144,35 @@ const RegistroFisio: React.FC<RegistroProps> = ({
           });
         }
 
+        const sortedDatasUrinaFiltrada = datasUrinaFiltrada.sort((a, b) => {
+          const dateA = parse(a, "dd/MM/yyyy", new Date());
+          const dateB = parse(b, "dd/MM/yyyy", new Date());
+          return dateA.getTime() - dateB.getTime();
+        });
+
+        const sortedDatasBebidaFiltrada = datasBebidaFiltrada.sort((a, b) => {
+          const dateA = parse(a, "dd/MM/yyyy", new Date());
+          const dateB = parse(b, "dd/MM/yyyy", new Date());
+          return dateA.getTime() - dateB.getTime();
+        });
+
+        const sortedQuantidadesUrinaFiltrada = sortedDatasUrinaFiltrada.map(
+          (data) => dataUrinaFiltrada[data]
+        );
+
+        const sortedQuantidadesBebidaFiltrada = sortedDatasBebidaFiltrada.map(
+          (data) => dataBebidaFiltrada[data]
+        );
+
         const chartInstance = new Chart(ctx, {
           type: "bar",
           data: {
             labels:
               tipoSelecionado === "urina"
-                ? datasUrinaFiltrada
+                ? sortedDatasUrinaFiltrada
                 : tipoSelecionado === "bebida"
-                ? datasBebidaFiltrada
-                : datasUrinaFiltrada,
+                ? sortedDatasBebidaFiltrada
+                : sortedDatasUrinaFiltrada,
             datasets: datasets,
           },
           options: {

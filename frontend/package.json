@@ -27,6 +27,7 @@
     "intl": "^1.2.5",
     "js-cookie": "^3.0.1",
     "jwt-decode": "^3.1.2",
+    "lodash": "^4.17.21",
     "moment-timezone": "^0.5.43",
     "next": "13.3.0",
     "nookies": "^2.5.2",
