@@ -7,8 +7,6 @@ import {
   Input,
   Radio,
   useMediaQuery,
-  Button,
-  Heading,
   FormHelperText,
 } from "@chakra-ui/react";
 import { format, parse, isAfter, isBefore, isSameDay } from "date-fns";
@@ -21,8 +19,6 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-import Link from "next/link";
-import { FiChevronLeft } from "react-icons/fi";
 import "chartjs-adapter-date-fns";
 
 Chart.register(BarController, CategoryScale, LinearScale, Title, Tooltip);
