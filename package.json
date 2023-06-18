@@ -1,0 +1,10 @@
+{
+  "name": "mic.day",
+  "version": "1.0.0",
+  "description": "Sistema para acompanhamento de pacientes em tratamento de incontinência urinária",
+  "scripts": {
+    "install-backend": "cd backend && npm install",
+    "install-frontend": "cd frontend && npm install",
+    "install": "npm run install-backend && npm run install-frontend"
+  }
+}
