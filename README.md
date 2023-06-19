@@ -69,10 +69,20 @@ Crie o banco de dados
 # No painel de navegação, clique com o botão direito em "Databases" e selecione "Create" (Criar).
 # Digite um nome para a database e salve
 ```
-Depois de criar a database no PostgreSQL, você precisará configurar a string de conexão, portanto navegue para o diretorio <strong>backend</strong> da aplicação e crie o arquivo .env na raiz da pasta
+Depois de criar a database no PostgreSQL, você precisará configurar a string de conexão, portanto navegue para o diretorio <strong>backend</strong>  
 
 ```
 cd backend
+```
+
+Crie o arquivo .env 
+
+```
+#para Windows
+echo "" > .env 
+
+#para Linux ou macOS
+touch .env
 ```
 
 Defina as seguintes variavéis de ambientes no arquivo <strong>.env</strong> criado:
@@ -104,21 +114,18 @@ Agora será necessário criar as migrações no banco de dados, portanto execute
 npx prisma migrate dev
 ```
 
+Volte ao diretório principal onde iremos rodar a aplicação:
+
+```
+cd ..
+```
+
 Para rodar o servidor execute o comando: 
 
 ```
-npm run dev
+npm run start-app
 ```
 
-Abra um novo terminal e va até o diretório <strong>frontend</strong>
-
-```
-cd micday/frontend
-```
-Para rodar o frontend da aplicação execute o comando:
-```
-npm run dev
-````
 Pronto! A aplicação está no ar!
 
 Para testar a aplicação recomenda-se criar primeiramente um usuário do tipo *Fisioterapeuta* pois será necessário informar um responsável ao criar um paciente.
