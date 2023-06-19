@@ -2,9 +2,18 @@
   "name": "mic.day",
   "version": "1.0.0",
   "description": "Sistema para acompanhamento de pacientes em tratamento de incontinência urinária",
+  "author": {
+    "email": "victorsmarqs@gmail.com",
+    "name": "Victor Santos Marques",
+    "url": "https://github.com/victormarques1"
+  },
   "scripts": {
     "install-backend": "cd backend && npm install",
     "install-frontend": "cd frontend && npm install",
-    "install": "npm run install-backend && npm run install-frontend"
+    "install": "npm run install-backend && npm run install-frontend",
+    "start-app": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
   }
 }
