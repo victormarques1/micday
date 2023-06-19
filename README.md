@@ -23,9 +23,8 @@ Este repositório contém o meu projeto de Trabalho Final de Graduação II, int
 </p>
 
 <br>
-<br>
 
-<a href="https://imgur.com/mCwYRSK"><img src="https://i.imgur.com/mCwYRSK.gif" title="source: imgur.com" /></a>
+<a href="https://imgur.com/h19HKQy"><img src="https://i.imgur.com/h19HKQy.gif" title="source: imgur.com" /></a>
 
 ## 📋 Pré-requisitos
 
