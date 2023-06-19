@@ -11,6 +11,7 @@
     "install-backend": "cd backend && npm install",
     "install-frontend": "cd frontend && npm install",
     "install": "npm run install-backend && npm run install-frontend",
+    "migrate:dev": "npx prisma migrate dev",
     "start-app": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\""
   },
   "devDependencies": {
