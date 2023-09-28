@@ -75,7 +75,7 @@ Depois de criar a database no PostgreSQL, você precisará configurar a string d
 cd backend
 ```
 
-Crie o arquivo .env 
+Crie o arquivo .env diretamente na pasta backend ou:
 
 ```
 #para Windows
